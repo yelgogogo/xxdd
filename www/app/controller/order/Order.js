@@ -1,0 +1,848 @@
+Ext.define('app.controller.order.Order', {
+    extend: 'Ext.app.Controller',
+
+    config: {
+        refs: {
+            roomContainer: 'roomContainer',
+            roomslist: 'rooms',
+            orderedlist: 'ordereds',
+            goodslist: 'goods',
+            goodstypelist: 'goodstypes',
+
+            overviewform: 'overviewform',
+
+            pos: "pos",
+            txtTotalMoney: '#txtTotalMoney',
+            txtTruePayMoney: '#txtTruePayMoney',
+            txtPayMode: '#txtPayMode',
+
+            txtSubTotal: '#txtSubTotal',
+            txtReserver: '#txtReserver',
+            txtConsumed: '#txtConsumed',
+            txtPresented: '#txtPresented',
+            orderingsButton: 'orderings button',
+            doBalanceButton: '#doBalanceButton',
+            refreshButton: '#refreshButton',
+            posButton: '#posButton',
+            closeButton: '#closeButton',
+            queryButton: '#queryButton',
+            hisQueryButton: '#hisqueryButton',
+            orderButton: '#orderButton',
+            mngButton: '#mngButton',
+            orderMemButton: '#orderMemButton',
+            presentButton: '#presentButton',
+            qrCodeButton: '#qrCodeButton',
+            customerButton: '#customerButton',
+
+            posButton: '#posButton',
+            posOkButton: 'pos #posOkButton',
+            closeButton2: 'pos #closeButton2'
+        },
+        control: {
+            roomContainer: {
+                pop: 'onMainPop'
+            },
+            orderedlist: {
+                activate: 'onRoomOrdersActivate'
+            },
+            roomslist: {
+                itemtap: 'onRoomTap'
+            },
+            goodslist: {
+                onPackGoodsClicked: 'onPackGoodsClicked'
+            },
+            goodstypelist: {
+                itemtap: 'onGoodsTypeTap'
+            },
+            orderingslist: {
+                onPackGoodsClicked: 'onPackGoodsClicked',
+                activate: 'onOrderingActivate'
+            },
+            pos: {
+                activate: 'onPosActivate'
+            },
+            orderingsButton: {
+                tap: 'onOkOrder'
+            },
+            //refreshButton: {
+            //    tap: 'onRefresh'
+            //},
+            queryButton: {
+                tap: 'onQuery'
+            },
+            hisQueryButton: {
+                tap: 'onHisQuery'
+            },
+            orderButton: {
+                tap: 'onLuodan'
+            },
+            mngButton: {
+                tap: 'onJinglichaxun'
+            },
+            orderMemButton: {
+                tap: 'onLuodanMem'
+            },
+            closeButton: {
+                tap: 'onClose'
+            },
+            presentButton: {
+                tap: 'onZengsong'
+            },
+            posButton: {
+                tap: 'onPos'
+            },
+            posOkButton: {
+                tap: 'onOkPos'
+            },
+            qrCodeButton: {
+                tap: 'onQrCodeButton_Clicked'
+            },
+            customerButton: {
+                tap: 'onCustomerButton_Clicked'
+            },
+            closeButton2: {
+                tap: 'onClose'
+            }
+        }
+    },
+    onRoomTap: function (dataView, index, dataItem, dataItemModel, e, eOpts) {
+        if (dataItemModel.data.RoomStateName == "坏房")
+            return;
+        if (dataItemModel.data.RoomStateName == "空房"
+        || dataItemModel.data.RoomStateName == "订房"
+        || dataItemModel.data.RoomStateName == "带位") {
+            Ext.Msg.confirm("开台", "确认要开台吗?",
+                function (btn) {
+                    if (btn == 'yes')
+                        app.util.Proxy.openRoom(dataItemModel.data.ID, function () { dataView.refresh(); })
+                });
+            return;
+        }
+        //获取房台ID
+        var roomID = dataItemModel.data.ID;
+        app.CurRoom = dataItemModel.data;
+        var frmMain = this.getRoomContainer();
+        //        if (!this.roomDetail) {
+        //            this.roomDetail = Ext.widget('roomdetail');
+        //        }
+        //        frmMain.push(this.roomDetail);
+        frmMain.getNavigationBar().show();
+        frmMain.down('titlebar').show();
+        this.hideRefreshButton();
+        this.hideDoBalanceButton();
+        this.hideMngButton();
+        if (app.CurRoom.RoomStateName == "打单" || app.CurRoom.RoomStateName == "收银") {
+            this.loadRoomOrder(app.CurRoom.ID);
+            this.showCloseButton();
+            this.hideOrderButton();
+            this.hideOrderMemButton();
+            this.hidePresentButton();
+            this.hideQueryButton();
+            this.hideHisQueryButton();
+            this.hideQrCodeButton();
+            this.hideCustomerButton();
+        }
+        else {
+            var user = Ext.getStore('User').load().data.items[0].data;
+            this.showCustomerButton();
+            if (Ext.Array.contains(user.rights, "赠送")) {
+                app.OrderType = "赠送";
+                this.showOrderButton();
+                this.showOrderMemButton();
+                this.showPresentButton();
+                this.showQueryButton();
+                this.showHisQueryButton();
+                //this.setPresentButton();
+                this.loadPresentGoods(app.CurRoom.ID);
+            }
+            else if (Ext.Array.contains(user.rights, "落单")) {
+                app.OrderType = "落单";
+                this.showQrCodeButton();
+                this.showCustomerButton();
+                this.showOrderButton();
+                this.showOrderMemButton();
+                this.showPresentButton();
+                this.showQueryButton();
+                this.showHisQueryButton();
+                this.loadOrderGoods(app.CurRoom.ID);
+            }
+        }
+    },
+    onRoomOrdersActivate: function () {
+        var room = app.CurRoom;
+        this.getTxtReserver().setValue(room.ReservationEmpName + '(' + room.ReservationDateTime + ')');
+        this.getTxtConsumed().setValue(room.ConsumeAmount);
+        this.getTxtPresented().setValue(room.PresentAmount);
+    },
+    loadRoomOrder: function (roomID) {
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        var frmMain = this.getRoomContainer();
+        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' 消费查询');
+        app.util.Proxy.loadOrder(roomID, function () {
+            //点击房台后，先载入房台消费信息
+            if (!this.orderedlist) {
+                this.orderedlist = Ext.widget('orderedslist');
+                //roomDetail.add(this.orderedlist);
+            }
+            frmMain.push(this.orderedlist);
+            //roomDetail.setActiveItem(this.orderedlist);
+            Ext.Viewport.setMasked(false);
+        });
+    },
+    loadHisRoomOrder: function (roomID) {
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        var frmMain = this.getRoomContainer();
+        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' 历史查询');
+        app.util.Proxy.loadHisOrder(roomID, function () {
+            //点击房台后，先载入房台消费信息
+            if (!this.orderedlist) {
+                this.orderedlist = Ext.widget('orderedslist');
+                //roomDetail.add(this.orderedlist);
+            }
+            frmMain.push(this.orderedlist);
+            //roomDetail.setActiveItem(this.orderedlist);
+            Ext.Viewport.setMasked(false);
+        });
+    },
+    loadPresentGoods: function (roomID) {
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        var frmMain = this.getRoomContainer();
+        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' 赠送');
+        app.util.Proxy.loadPresentGoods(roomID, function () {
+            //点击房台后，先载入点单菜品信息 
+            if (!this.goodstypelist) {
+                this.goodstypelist = Ext.widget('goodstypelist');
+                //roomDetail.add(this.goodstypelist);
+            }
+            frmMain.push(this.goodstypelist);
+            //roomDetail.setActiveItem(this.goodstypelist);
+            Ext.Viewport.setMasked(false);
+        });
+    },
+    loadOrderGoods: function (roomID) {
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        var frmMain = this.getRoomContainer();
+        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' 落单');
+        app.util.Proxy.loadOrderGoods(roomID, function () {
+            //点击房台后，先载入赠送菜品信息 
+            if (!this.goodstypelist) {
+                this.goodstypelist = Ext.widget('goodstypelist');
+            }
+            frmMain.push(this.goodstypelist);
+            Ext.Viewport.setMasked(false);
+        });
+    },
+    loadOrderMemGoods: function (roomID) {
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        var frmMain = this.getRoomContainer();
+        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' 会员点单');
+        app.util.Proxy.loadOrderMemGoods(roomID, function () {
+            //点击房台后，先载入赠送菜品信息 
+            if (!this.goodstypelist) {
+                this.goodstypelist = Ext.widget('goodstypelist');
+            }
+            frmMain.push(this.goodstypelist);
+            Ext.Viewport.setMasked(false);
+        });
+    },
+    onGoodsTypeTap: function (dataView, index, dataItem, dataItemModel, e, eOpts) {
+        app.GoodsTypeName = dataItemModel.data.GoodsTypeName;
+        var goodsStore = Ext.getStore('Goods');
+        this.hideQueryButton();
+        this.hideHisQueryButton();
+        this.hideQrCodeButton();
+        this.hideCustomerButton();
+        if (app.OrderType == "落单") {
+            this.hideOrderMemButton();
+            this.hidePresentButton();
+        }
+        else if (app.OrderType == "赠送") {
+            this.hideOrderButton();
+            this.hideOrderMemButton();
+        }
+        else if (app.OrderType == "会员点单") {
+            this.hideOrderButton();
+            this.hidePresentButton();
+        }
+        goodsStore.clearFilter(true);
+        goodsStore.filterBy(function (goods) {
+            return goods.get('GoodsTypeName') == app.GoodsTypeName;
+        });
+        var frmMain = this.getRoomContainer();
+        if (!this.goodslist) {
+            this.goodslist = Ext.widget('goodslist');
+            //this.getRoomDetail().add(this.goodslist);
+        }
+        frmMain.push(this.goodslist);
+        //this.getRoomDetail().setActiveItem(this.goodslist);
+    },
+    onOrderingActivate: function () {
+        var goodsStore = Ext.getStore('Goods');
+        var sub = 0;
+        goodsStore.each(function (item, index, length) {
+            sub += item.data.Price * item.data.GoodsCount;
+        });
+        this.getTxtSubTotal().setValue(sub);
+    },
+    onPackGoodsClicked: function (list, record, item, index, btn) {
+        var detailStore = Ext.getStore('GoodsDetails');
+        detailStore.removeAll();
+        Ext.Array.each(record.data.GoodsDetails, function (Good) {
+            detailStore.add(Good);
+        });
+        var frmMain = this.getRoomContainer();
+        if (!this.goodsdetaillist) {
+            this.goodsdetaillist = Ext.widget('goodsdetaillist');
+        }
+        this.hideOrderButton();
+        this.hidePresentButton();
+        this.hideOrderMemButton();
+        this.hideQueryButton();
+        this.hideHisQueryButton();
+        this.hideQrCodeButton();
+        this.hideCustomerButton();
+        frmMain.push(this.goodsdetaillist);
+    },
+    //选单
+    selectOrders: function () {
+        var goodsStore = Ext.getStore('Goods');
+        var idx = goodsStore.findBy(function (goods) {
+            return goods.get('GoodsCount') > 0;
+        });
+        if (idx < 0) {
+            Ext.Msg.alert("没有点取菜品!");
+            return;
+        }
+        this.hideOrderButton();
+        this.hidePresentButton();
+        this.hideOrderMemButton();
+        this.hideQueryButton();
+        this.hideHisQueryButton();
+        this.hideQrCodeButton();
+        this.hideCustomerButton();
+
+        goodsStore.clearFilter(true);
+        goodsStore.filterBy(function (goods) {
+            return goods.get('GoodsCount') > 0;
+        });
+
+        var frmMain = this.getRoomContainer();
+        if (!this.orderingslist) {
+            this.orderingslist = Ext.widget('orderingslist');
+            //this.getRoomDetail().add(this.orderingslist);
+        }
+        frmMain.push(this.orderingslist);
+        //this.getRoomDetail().setActiveItem(this.orderingslist);
+        if (app.OrderType == "赠送")
+            this.getOrderingsButton().setText('确认赠送');
+        else
+            this.getOrderingsButton().setText('确认落单');
+    },
+    //落单
+    onLuodan: function () {
+        var frmMain = this.getRoomContainer();
+        var curView = frmMain.getActiveItem();
+        if (curView.xtype == 'ordereds' || app.OrderType != "落单") {
+            app.OrderType = "落单";
+            this.showOrderButton();
+            this.showPresentButton();
+            this.showOrderMemButton();
+            this.showQueryButton();
+            this.loadOrderGoods(app.CurRoom.ID);
+        }
+        else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods') {
+            this.selectOrders();
+        }
+    },
+    //会员点单
+    onLuodanMem: function () {
+        var frmMain = this.getRoomContainer();
+        var curView = frmMain.getActiveItem();
+        if (curView.xtype == 'ordereds' || app.OrderType != "会员点单") {
+            var me = this;
+            Ext.Msg.prompt('尊敬的客人，您好!', '请输入手机号:', function (buttonId, text) {
+                if (buttonId == 'cancel')
+                    return;
+                Ext.Viewport.setMasked({ xtype: 'loadmask' });
+                var successCallback = function (resp, ops) {
+                    Ext.Viewport.setMasked(false);
+                    var msg = Ext.decode(resp.responseText).d;
+                    if (msg.indexOf("ok") > -1) {
+                        app.CardNo = text;
+                        app.CardCurrentMoney = msg.substr(2).split(';')[1].split(':')[1];
+                        Ext.Msg.alert(msg.substr(2));
+                        app.OrderType = "会员点单";
+                        me.showOrderButton();
+                        me.showPresentButton();
+                        me.showOrderMemButton();
+                        me.showQueryButton();
+                        me.loadOrderMemGoods(app.CurRoom.ID);
+                    }
+                    else {
+                        Ext.Msg.alert(msg);
+                        return;
+                    }
+                };
+                var failureCallback = function (resp, ops) {
+                    Ext.Viewport.setMasked(false);
+                    Ext.Msg.alert("请求失败!", resp.responseText);
+                };
+                Ext.Ajax.request({
+                    method: 'POST',
+                    url: '../WebServiceEx.asmx/JSON_CheckMemberCard',
+                    async: true, //异步执行
+                    //params: text,
+                    jsonData: {
+                        cardNo: text
+                    },
+                    success: successCallback,
+                    failure: failureCallback
+                });
+            });
+        }
+        else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods') {
+            this.selectOrders();
+        }
+    },
+    //赠送
+    onZengsong: function (isPresent) {
+        var frmMain = this.getRoomContainer();
+        var curView = frmMain.getActiveItem();
+        if (curView.xtype == 'ordereds' || app.OrderType != "赠送") {
+            app.OrderType = "赠送";
+            this.showOrderButton();
+            this.showPresentButton();
+            this.showOrderMemButton();
+            this.showQueryButton();
+            this.loadPresentGoods(app.CurRoom.ID);
+        }
+        else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods') {
+            this.selectOrders();
+        }
+    },
+    //消费查询
+    onQuery: function () {
+        var frmMain = this.getRoomContainer();
+        var curView = frmMain.getActiveItem();
+        if (curView.xtype != 'ordereds') {
+            this.hideCommandButton();
+            if (app.CurRoom.RoomStateName == "消费")
+                this.showPosButton();
+            if (app.CurRoom.RoomStateName == "开房" || app.CurRoom.RoomStateName == "收银")
+                this.showCloseButton();
+            this.loadRoomOrder(app.CurRoom.ID);
+        }
+    },
+    //消费历史查询
+    onHisQuery: function () {
+        var frmMain = this.getRoomContainer();
+        var curView = frmMain.getActiveItem();
+        if (curView.xtype != 'ordereds') {
+            this.hideCommandButton();
+    //        if (app.CurRoom.RoomStateName == "消费")
+    //            this.showPosButton();
+    //        if (app.CurRoom.RoomStateName == "开房" || app.CurRoom.RoomStateName == "收银")
+    //            this.showCloseButton();
+            this.loadHisRoomOrder(app.CurRoom.ID);
+        }
+    },
+    //经理查询
+    onJinglichaxun: function () {
+        var frmMain = this.getRoomContainer();
+        var curView = frmMain.getActiveItem();
+        this.hideDoBalanceButton();
+        this.hideMngButton();
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+
+        app.util.Proxy.loadOverView(function () {
+            //点击房台后，先载入房台消费信息
+            if (!this.overviewform) {
+                this.overviewform = Ext.widget('overviewform');
+                //roomDetail.add(this.orderedlist);
+            }
+            var viewStore = Ext.getStore('OverViews');
+            this.overviewform.setValues(viewStore.data.items[0].data);
+            frmMain.push(this.overviewform);
+            //roomDetail.setActiveItem(this.orderedlist);
+            Ext.Viewport.setMasked(false);
+        });
+    },
+    //生成房台点单二维码
+    onQrCodeButton_Clicked: function () {
+        //console.log("onGoodsImgClick" + btn);
+        if (!app.qrCode) {
+            app.qrCode = Ext.create('Ext.form.Panel', {
+                itemID: 'goodsImgOverlay',
+                xtype: 'panel',
+                left: 0,
+                top: 0,
+                modal: true,
+                hideOnMaskTap: true,
+                hidden: true,
+                width: 400,
+                height: 400,
+                contentEl: '',
+                styleHtmlContent: true,
+                scrollable: true,
+                showAnimation: Ext.os.is.Android ? false : {
+                    type: 'pop',
+                    duration: 200
+                }
+            });
+        }
+//        app.util.Proxy.getEnStr(app.CurRoom.RoomOpCode + app.CurRoom.ID, function (enstr) {
+//            var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Op=" + escape(enstr);
+//        });
+        var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Op=" + app.CurRoom.RoomOpCode + app.CurRoom.ID;
+        var url = "http://qr.topscan.com/api.php?&w=300&text=" + myUrl;
+        console.log(url);
+        //app.qrCode.setHtml('<img src="http://qr.topscan.com/api.php?text="' + window.location.href + app.CurRoom.RoomOpCode + '>');
+        app.qrCode.setHtml('<h3 align="center">扫描二维码点单</h3><p style="text-align:center"><img align="center" src="' + url + '"/></p>');
+        app.qrCode.showBy(this.getQrCodeButton());
+    },
+    //顾客自选单
+    onCustomerButton_Clicked: function () {
+        var me = this;
+        app.util.Proxy.loadCustomerOrder(app.CurRoom.ID, app.CurRoom.RoomOpCode,
+             function () {
+                 me.selectOrders();
+             })
+    },
+    //关台 
+    onClose: function () {
+        var frmMain = this.getRoomContainer();
+        var dataView = this.getRoomslist();
+        if (app.CurRoom.RoomStateName == "开房" || app.CurRoom.RoomStateName == "收银") {
+            app.util.Proxy.closeRoom(app.CurRoom.ID,
+             function () {
+                 dataView.refresh();
+                 frmMain.pop(frmMain.getInnerItems().length - 1);
+             })
+        }
+    },
+    //买单
+    onPos: function () {
+        var frmMain = this.getRoomContainer();
+        if (app.CurRoom.RoomStateName == "消费") {
+            if (!this.pos) {
+                this.pos = Ext.widget('posform');
+            }
+            frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' 买单');
+            frmMain.push(this.pos);
+            this.hidePosButton();
+        }
+    },
+    //买单界面激活时
+    onPosActivate: function () {
+        this.getPosOkButton().show();
+        this.getCloseButton2().hide();
+        var goodsStore = Ext.getStore('Orders');
+        var sub = 0;
+        goodsStore.each(function (item, index, length) {
+            if (!item.data.IsPresent && !item.data.IsCanceled && item.data.Status && item.data.Status != "收银")
+                sub += Number(item.data.SubTotal);
+        });
+        this.getTxtTotalMoney().setValue(sub);
+        this.getTxtTruePayMoney().setValue(sub);
+    },
+    //确认买单
+    onOkPos: function () {
+        var pB = this.getPosOkButton();
+        var cB = this.getCloseButton2();
+        var dataView = this.getRoomslist();
+        app.util.Proxy.posRoom(app.CurRoom.ID,
+        this.getTxtTotalMoney().getValue(),
+        this.getTxtTruePayMoney().getValue(),
+        this.getTxtPayMode().getValue(),
+             function () {
+                 //frmMain.pop(frmMain.getInnerItems().length - 1);
+                 //dataView.refresh();
+                 pB.hide();
+                 cB.show();
+                 dataView.refresh();
+             })
+    },
+    //确认下单
+    onOkOrder: function () {
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        var goodsStore = Ext.getStore('Goods');
+        var allData = [];
+        goodsStore.filterBy(function (goods) {
+            return goods.get('GoodsCount') > 0;
+        });
+        goodsStore.each(function (records) {
+            if (records.data.GoodsDetails && records.data.GoodsDetails.length > 0) {
+                records.data.GoodsDetails = records.data.GoodsDetails.filter(function (goodsDetail) {
+                    delete goodsDetail.id;
+                    return goodsDetail.GoodsDetailCount > 0;
+                });
+            }
+            delete records.data.id;
+            allData.push(records.data);
+        });
+        if (allData.length == 0) {
+            Ext.Viewport.setMasked(false);
+            return;
+        }
+        var subTotal = 0;
+        if (app.OrderType == "会员点单") {
+            //            Ext.Array.each(allData, function (records) {
+            //                subTotal += records.Price * records.GoodsCount;
+            //            });
+            //            if (subTotal > app.CardCurrentMoney) {
+            //                Ext.Msg.alert("卡内余额不足(" + app.CardCurrentMoney + ")!");
+            //                Ext.Viewport.setMasked(false);
+            //                return;
+            //            }
+        }
+        else
+            app.CardNo = "";
+        var submitMobile = {};
+        submitMobile.SubmitOrders = allData;
+        submitMobile.isPresent = app.OrderType == "赠送" ? true : false;
+        submitMobile.roomID = app.CurRoom.ID;
+        submitMobile.userNo = Ext.getStore('User').load().data.items[0].data.userno;
+        submitMobile.cardNo = app.CardNo;
+        submitMobile.orderType = app.OrderType;
+
+        var dataToBeSentToServer = Ext.JSON.encode(submitMobile);
+
+        var roomCard = this.getRoomContainer();
+        var dataView = this.getRoomslist();
+        app.util.Proxy.orderRoom(dataToBeSentToServer,
+             function () {
+                 dataView.refresh();
+                 roomCard.pop(roomCard.getInnerItems().length - 1);
+             });
+    },
+    showRefreshButton: function () {
+        var refreshButton = this.getRefreshButton();
+        if (!refreshButton || !refreshButton.isHidden()) {
+            return;
+        }
+        refreshButton.show();
+    },
+    hideRefreshButton: function () {
+        var refreshButton = this.getRefreshButton();
+        if (!refreshButton || refreshButton.isHidden()) {
+            return;
+        }
+        refreshButton.hide();
+    },
+    showDoBalanceButton: function () {
+        var doBalanceButton = this.getDoBalanceButton();
+        if (!doBalanceButton || !doBalanceButton.isHidden()) {
+            return;
+        }
+        doBalanceButton.show();
+    },
+    hideDoBalanceButton: function () {
+        var doBalanceButton = this.getDoBalanceButton();
+        if (!doBalanceButton || doBalanceButton.isHidden()) {
+            return;
+        }
+        doBalanceButton.hide();
+    },
+    showOrderButton: function () {
+        var orderButton = this.getOrderButton();
+        if (!orderButton || !orderButton.isHidden()) {
+            return;
+        }
+        orderButton.show();
+    },
+    showMngButton: function () {
+        var mngButton = this.getMngButton();
+        if (!mngButton || !mngButton.isHidden()) {
+            return;
+        }
+        mngButton.show();
+    },
+    hideOrderButton: function () {
+        var orderButton = this.getOrderButton();
+        if (!orderButton || orderButton.isHidden()) {
+            return;
+        }
+        orderButton.hide();
+    },
+    hideMngButton: function () {
+        var mngButton = this.getMngButton();
+        if (!mngButton || mngButton.isHidden()) {
+            return;
+        }
+        mngButton.hide();
+    },
+    showOrderMemButton: function () {
+        var orderMemButton = this.getOrderMemButton();
+        if (!orderMemButton || !orderMemButton.isHidden()) {
+            return;
+        }
+        orderMemButton.show();
+    },
+    hideOrderMemButton: function () {
+        var orderMemButton = this.getOrderMemButton();
+        if (!orderMemButton || orderMemButton.isHidden()) {
+            return;
+        }
+        orderMemButton.hide();
+    },
+    showPresentButton: function () {
+        var presentButton = this.getPresentButton();
+        if (!presentButton || !presentButton.isHidden()) {
+            return;
+        }
+        presentButton.show();
+        //presentButton.setUi('confirm');
+    },
+    hidePresentButton: function () {
+        var presentButton = this.getPresentButton();
+        if (!presentButton || presentButton.isHidden()) {
+            return;
+        }
+        presentButton.hide();
+        //presentButton.setUi('decline');
+    },
+    showQueryButton: function () {
+        var queryButton = this.getQueryButton();
+        if (!queryButton || !queryButton.isHidden()) {
+            return;
+        }
+        queryButton.show();
+    },
+    hideQueryButton: function () {
+        var queryButton = this.getQueryButton();
+        if (!queryButton || queryButton.isHidden()) {
+            return;
+        }
+        queryButton.hide();
+    },
+    showHisQueryButton: function () {
+        var hisqueryButton = this.getHisQueryButton();
+        if (!hisqueryButton || !hisqueryButton.isHidden()) {
+            return;
+        }
+        hisqueryButton.show();
+    },
+    hideHisQueryButton: function () {
+        var hisqueryButton = this.getHisQueryButton();
+        if (!hisqueryButton || hisqueryButton.isHidden()) {
+            return;
+        }
+        hisqueryButton.hide();
+    },
+    showCustomerButton: function () {
+        var customerButton = this.getCustomerButton();
+        if (!customerButton || !customerButton.isHidden()) {
+            return;
+        }
+        customerButton.show();
+    },
+    hideCustomerButton: function () {
+        var customerButton = this.getCustomerButton();
+        if (!customerButton || customerButton.isHidden()) {
+            return;
+        }
+        customerButton.hide();
+    },
+    showPosButton: function () {
+        var posButton = this.getPosButton();
+        if (!posButton || !posButton.isHidden()) {
+            return;
+        }
+        posButton.show();
+    },
+    hidePosButton: function () {
+        var posButton = this.getPosButton();
+        if (!posButton || posButton.isHidden()) {
+            return;
+        }
+        posButton.hide();
+    },
+    showQrCodeButton: function () {
+        var qrCodeButton = this.getQrCodeButton();
+        if (!qrCodeButton || !qrCodeButton.isHidden()) {
+            return;
+        }
+        qrCodeButton.show();
+    },
+    hideQrCodeButton: function () {
+        var qrCodeButton = this.getQrCodeButton();
+        if (!qrCodeButton || qrCodeButton.isHidden()) {
+            return;
+        }
+        qrCodeButton.hide();
+    },
+    showCloseButton: function () {
+        var closeButton = this.getCloseButton();
+        if (!closeButton || !closeButton.isHidden()) {
+            return;
+        }
+        closeButton.show();
+    },
+    hideCloseButton: function () {
+        var closeButton = this.getCloseButton();
+        if (!closeButton || closeButton.isHidden()) {
+            return;
+        }
+        closeButton.hide();
+    },
+    onMainPop: function (view, item) {
+        this.setButtonVisiable(view._activeItem.xtype);
+    },
+    hideCommandButton: function (view, item) {
+        this.hidePosButton();
+        this.hideCloseButton();
+        this.hideQueryButton();
+        this.hideHisQueryButton();
+        this.hideOrderButton();
+        this.hidePresentButton();
+        this.hideOrderMemButton();
+        this.hideQrCodeButton();
+        this.hideCustomerButton();
+    },
+    setButtonVisiable: function (viewType) {
+        switch (viewType) {
+            case "goods":
+                if (app.CurRoom.RoomStateName == "开房"
+                || app.CurRoom.RoomStateName == "消费") {
+                    if (app.OrderType == "赠送")
+                        this.showPresentButton();
+                    else if (app.OrderType == "落单")
+                        this.showOrderButton();
+                    else if (app.OrderType == "会员点单")
+                        this.showOrderMemButton();
+                }
+                this.hidePosButton();
+                this.hideCloseButton();
+                break;
+            case "goodstypes":
+                if (app.CurRoom.RoomStateName == "开房"
+                || app.CurRoom.RoomStateName == "消费") {
+                    this.showOrderButton();
+                    this.showPresentButton();
+                    this.showOrderMemButton();
+                    this.showQueryButton();
+                    this.showHisQueryButton();
+                    this.showQrCodeButton();
+                    this.showCustomerButton();
+                }
+                this.hidePosButton();
+                this.hideCloseButton();
+                var frmMain = this.getRoomContainer();
+                frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + app.OrderType);
+                break;
+            case "ordereds": //消费查询界面
+                if (app.CurRoom.RoomStateName == "开房"
+                || app.CurRoom.RoomStateName == "消费") {
+                    //                    this.showOrderButton();
+                    //                    this.showPresentButton();
+                    //                    this.showOrderMemButton();
+                }
+                this.showPosButton();
+                this.hideCloseButton();
+                break;
+            default:
+                this.hideCommandButton();
+                break;
+        }
+    }
+});
