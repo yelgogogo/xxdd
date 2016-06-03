@@ -47,7 +47,7 @@ Ext.define('app.view.customer.CustMainForm', {
         this.callParent();
         var me = this;
         me.CreateMyButton('queryButton', '消费查询', 'right', false);
-        me.CreateMyButton('orderButton', '落单', 'right', false);
+        me.CreateMyButton('orderButton', '下单', 'right', false);
 
 //        Ext.Array.each(userStore.rights, function (rights) {
 //            if (rights == "落单") {

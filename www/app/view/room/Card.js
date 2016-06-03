@@ -47,24 +47,41 @@ Ext.define('app.view.room.Card', {
         this.callParent();
         var userStore = Ext.getStore('User').load().data.items[0].data
         var me = this;
-        me.CreateMyButton('doBalanceButton', '营业结束', 'left', false);
+        
         me.CreateMyButton('refreshButton', '刷新', 'right', false);
-        me.CreateMyButton('qrCodeButton', '台码', 'left', true);
-        me.CreateMyButton('closeButton', '关台', 'right', true);
-        me.CreateMyButton('posButton', '买单', 'right', true);
-        me.CreateMyButton('hisqueryButton', '历史', 'right', true);
-        me.CreateMyButton('queryButton', '消费', 'right', true);
-        me.CreateMyButton('customerButton', '自选', 'left', true);
 
         Ext.Array.each(userStore.rights, function (rights) {
-            if (rights == "落单") {
-                me.CreateMyButton('orderButton', '落单', 'right', true);
-                //me.CreateMyButton('orderMemButton', '会员点单', 'right', true);
+//            if (rights == "落单") {
+//                me.CreateMyButton('orderButton', '落单', 'right', true);
+//                //me.CreateMyButton('orderMemButton', '会员点单', 'right', true);
+//            }
+//            if (rights == "经理查询")
+//                me.CreateMyButton('mngButton', '经理查询', 'left', false);
+//            if (rights == "经理查询")
+//                me.CreateMyButton('mngButton', '经理查询', 'left', false);
+//            if (rights == "赠送")
+//                me.CreateMyButton('presentButton', '赠送', 'right', true);    
+            switch (rights)
+            {
+            case "落单":{
+               me.CreateMyButton('qrCodeButton', '台码', 'left', true);
+               me.CreateMyButton('closeButton', '关台', 'right', true);
+               me.CreateMyButton('queryButton', '消费', 'right', true);
+               me.CreateMyButton('customerButton', '自选', 'left', true);
+               me.CreateMyButton('orderButton', '落单', 'right', true);
+               };
+               break;
+            case "经理查询":{
+               me.CreateMyButton('mngButton', '经理查询', 'left', false);
+               };
+               break;
+            case "收银":{
+               me.CreateMyButton('hisqueryButton', '历史', 'right', true);
+               me.CreateMyButton('posButton', '买单', 'right', true);
+			   me.CreateMyButton('doBalanceButton', '营业结束', 'left', false);
+               };
+               break;
             }
-            if (rights == "经理查询")
-                me.CreateMyButton('mngButton', '经理查询', 'left', false);
-            if (rights == "赠送")
-                me.CreateMyButton('presentButton', '赠送', 'right', true);               
         });
     }
 });
