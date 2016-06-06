@@ -1,12 +1,12 @@
 Ext.application({
-    //命名工程
+    //鍛藉悕宸ョ▼
     name: "app",
 
     requires: ['app.util.CustomerProxy'],
 
-    //指明模型，User代表model/User.js
+    //鎸囨槑妯″瀷锛孶ser浠ｈ〃model/User.js
     models: ["GoodsType", "Good", 'GoodsDetail', 'Order'],
-    //指明控制器，controller/Login.js
+    //鎸囨槑鎺у埗鍣紝controller/Login.js
     controllers: ["customer.Customer", ],
     stores: [
      "GoodsTypes",
@@ -15,8 +15,8 @@ Ext.application({
      'Orderings',
      'Orders'
     ],
-    //指明视图,view/Login.js,TopToolBar.js;Form.js;BottomToolBar.js
-    //都是被Login.js包含的，所以这里只要指明Login.js
+    //鎸囨槑瑙嗗浘,view/Login.js,TopToolBar.js;Form.js;BottomToolBar.js
+    //閮芥槸琚獿ogin.js鍖呭惈鐨勶紝鎵�浠ヨ繖閲屽彧瑕佹寚鏄嶭ogin.js
     views: [
     'order.ListGoods',
     'order.ListGoodsDetail',
@@ -61,7 +61,7 @@ Ext.application({
         var reg = new RegExp("(^|&)" + "Op" + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
         if (r == null) {
-            Ext.Msg.alert('提示', '地址错误!', Ext.emptyFn);
+            Ext.Msg.alert('鎻愮ず', '鍦板潃閿欒!', Ext.emptyFn);
             return;
         }
         var para = unescape(r[2]);
@@ -72,10 +72,10 @@ Ext.application({
             Ext.Viewport.setMasked({ xtype: 'loadmask' });
             app.util.CustomerProxy.loadCustomerGoods(app.CurRoom.ID, function () {
                 var mainView = Ext.create('app.view.customer.CustMainForm');
-                app.OrderType = '落单';
+                app.OrderType = '钀藉崟';
                 //mainView.down('titlebar').setTitle(app.CurRoom.RoomName + ' ' + app.OrderType);
                 app.util.CustomerProxy.getSysParm('txtPlaceName', function (pname) {
-                   mainView.down('titlebar').setTitle(pname + ' ' + app.CurRoom.RoomName + ' ' + '下单');
+                   mainView.down('titlebar').setTitle(pname + ' ' + app.CurRoom.RoomName + ' ' + '涓嬪崟');
                 });
                 Ext.Viewport.add(mainView);
                 Ext.Viewport.setMasked(false);

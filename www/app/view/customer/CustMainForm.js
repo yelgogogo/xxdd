@@ -9,7 +9,7 @@ Ext.define('app.view.customer.CustMainForm', {
             docked: 'bottom',
             hidden: false
         },
-        defaultBackButtonText: '·µ»Ø',
+        defaultBackButtonText: 'è¿”å›',
         autoDestroy: false,
 
         items: [
@@ -46,18 +46,18 @@ Ext.define('app.view.customer.CustMainForm', {
     initialize: function () {
         this.callParent();
         var me = this;
-        me.CreateMyButton('queryButton', 'Ïû·Ñ²éÑ¯', 'right', false);
-        me.CreateMyButton('orderButton', 'ÏÂµ¥', 'right', false);
+        me.CreateMyButton('queryButton', 'æ¶ˆè´¹æŸ¥è¯¢', 'right', false);
+        me.CreateMyButton('orderButton', 'ä¸‹å•', 'right', false);
 
 //        Ext.Array.each(userStore.rights, function (rights) {
-//            if (rights == "Âäµ¥") {
-//                me.CreateMyButton('orderButton', 'Âäµ¥', 'right', true);
-//                //me.CreateMyButton('orderMemButton', '»áÔ±µãµ¥', 'right', true);
+//            if (rights == "è½å•") {
+//                me.CreateMyButton('orderButton', 'è½å•', 'right', true);
+//                //me.CreateMyButton('orderMemButton', 'ä¼šå‘˜ç‚¹å•', 'right', true);
 //            }
-//            if (rights == "¾­Àí²éÑ¯")
-//                me.CreateMyButton('mngButton', '¾­Àí²éÑ¯', 'left', false);
-//            if (rights == "ÔùËÍ")
-//                me.CreateMyButton('presentButton', 'ÔùËÍ', 'right', true);               
+//            if (rights == "ç»ç†æŸ¥è¯¢")
+//                me.CreateMyButton('mngButton', 'ç»ç†æŸ¥è¯¢', 'left', false);
+//            if (rights == "èµ é€")
+//                me.CreateMyButton('presentButton', 'èµ é€', 'right', true);               
 //        });
     }
 });

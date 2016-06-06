@@ -1,35 +1,35 @@
 /*
-*list tplÄ£°æ¼ÓÈë°´Å¥¼à¿Ø
+*list tplæ¨¡ç‰ˆåŠ å…¥æŒ‰é’®ç›‘æ§
 *<div class="x-button-normal x-button x-iconalign-center x-layout-box-item x-stretched btn"><span class="x-button-icon x-shown lower" fire="showWeibo"></span></div>
-*fire="showWeibo" ×÷ÓÃÊÇ¼¤»îÖ¸¶¨ÊÂ¼ş
-*ÓĞÁ½¸ö²ÎÊıcmp:ÊÓÍ¼±¾ÉíÒÔ¼°doit
-*Ö»ÒªÊÇÒÔÉÏ¸ñÊ½µÄÄ£°å¶¼¿ÉÒÔ±»¼à¿Øµ½
-*ÆäÖĞbtn¡¢lowerÎª×Ô¶¨ÒåÑùÊ½£¬ÆäËû¶¼ÊÇst×Ô´øÑùÊ½
+*fire="showWeibo" ä½œç”¨æ˜¯æ¿€æ´»æŒ‡å®šäº‹ä»¶
+*æœ‰ä¸¤ä¸ªå‚æ•°cmp:è§†å›¾æœ¬èº«ä»¥åŠdoit
+*åªè¦æ˜¯ä»¥ä¸Šæ ¼å¼çš„æ¨¡æ¿éƒ½å¯ä»¥è¢«ç›‘æ§åˆ°
+*å…¶ä¸­btnã€lowerä¸ºè‡ªå®šä¹‰æ ·å¼ï¼Œå…¶ä»–éƒ½æ˜¯stè‡ªå¸¦æ ·å¼
 */
 Ext.define('app.view.order.ListTpl', {
     alias: 'plugin.ListTpl',
     xtype: 'listTpl',
     config: {
         list: null,
-        //°´ÏÂÊ±Ìí¼Ócss
+        //æŒ‰ä¸‹æ—¶æ·»åŠ css
         pressedCls: 'pressing',
-        //¼à¿Ø¶ÔÏóÑ¡ÔñÆ÷
+        //ç›‘æ§å¯¹è±¡é€‰æ‹©å™¨
         delegate: '.mydiv', //div.mydiv
-        //ÊÇ·ñ¼àÌıinput¿Ø¼ş
+        //æ˜¯å¦ç›‘å¬inputæ§ä»¶
         isInput: false
     },
     constructor: function (config) {
         this.initConfig(config);
         this.callParent([config]);
     },
-    //³õÊ¼»¯
+    //åˆå§‹åŒ–
     init: function (list) {
         this.setList(list);
     },
-    //¸üĞÂÅäÖÃ
+    //æ›´æ–°é…ç½®
     updateList: function (newList, oldList) {
         if (newList) {
-            //Îª×Ô¶¨Òå°´Å¥×¢²áµã»÷ÊÂ¼ş
+            //ä¸ºè‡ªå®šä¹‰æŒ‰é’®æ³¨å†Œç‚¹å‡»äº‹ä»¶
             newList.container.element.on({
                 tap: 'onTap',
                 touchstart: 'onPress',
@@ -38,7 +38,7 @@ Ext.define('app.view.order.ListTpl', {
                 scope: this
             });
             if (this.getIsInput()) {
-                //Îª×Ô¶¨Òå°´Å¥×¢²áµã»÷ÊÂ¼ş
+                //ä¸ºè‡ªå®šä¹‰æŒ‰é’®æ³¨å†Œç‚¹å‡»äº‹ä»¶
                 newList.container.element.on({
                     blur: 'onBlur',
                     delegate: 'input[type="text"]',
@@ -47,7 +47,7 @@ Ext.define('app.view.order.ListTpl', {
             }
         }
     },
-    //Ö´ĞĞ¶¯×÷
+    //æ‰§è¡ŒåŠ¨ä½œ
     onTap: function (e) {
         var me = this.getList(),
         item = Ext.getCmp(Ext.get(e.getTarget()).up('.x-list-item').id),
@@ -58,17 +58,17 @@ Ext.define('app.view.order.ListTpl', {
         action = 'do' + fire;
         me.fireAction(fire, [me, record, item, index, el], action);
     },
-    //°´Å¥°´ÏÂÊ±£¬Ìí¼Ócss
+    //æŒ‰é’®æŒ‰ä¸‹æ—¶ï¼Œæ·»åŠ css
     onPress: function (e, node) {
         var el = e.getTarget(this.getDelegate(), null, true);
         el.addCls(this.getPressedCls());
     },
-    //°´Å¥ËÉ¿ªÊ±£¬ÒÆ³ıcss
+    //æŒ‰é’®æ¾å¼€æ—¶ï¼Œç§»é™¤css
     onRelease: function (e, node) {
         var el = e.getTarget(this.getDelegate(), null, true);
         el.removeCls(this.getPressedCls());
     },
-    //½¹µãÀë¿ªÊ±£¬½«ÖµÌî³äµ½storeÖĞ
+    //ç„¦ç‚¹ç¦»å¼€æ—¶ï¼Œå°†å€¼å¡«å……åˆ°storeä¸­
     onBlur: function (e) {
         var me = this.getList(),
         item = Ext.getCmp(Ext.get(e.getTarget()).up('.x-list-item').id),

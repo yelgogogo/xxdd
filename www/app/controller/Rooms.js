@@ -42,8 +42,8 @@ Ext.define('app.controller.Rooms', {
     onBalance: function () {
         var roomStore = Ext.getStore('Rooms');
         roomStore.each(function (item, index, length) {
-            if (item.data.RoomStateName != "¿Õ·¿" && item.data.RoomStateName != "»µ·¿") {
-                Ext.Msg.alert("·¿Ì¨Î´Çå¿Õ£¬ÇëË¢ĞÂºó¼ì²é!");
+            if (item.data.RoomStateName != "ç©ºæˆ¿" && item.data.RoomStateName != "åæˆ¿") {
+                Ext.Msg.alert("æˆ¿å°æœªæ¸…ç©ºï¼Œè¯·åˆ·æ–°åæ£€æŸ¥!");
                 return;
             }
         });

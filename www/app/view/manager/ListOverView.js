@@ -21,17 +21,17 @@ Ext.define('app.view.manager.ListOverView', {
                         {
                             docked: 'top',
                             readOnly: true,
-                            label: 'ÀÛ¼Æ¿ª·¿',
+                            label: 'ç´¯è®¡å¼€æˆ¿',
                             name: 'RoomOpenTotal'
                         },
                         {
                             readOnly: true,
-                            label: 'µ±Ç°¿ª·¿',
+                            label: 'å½“å‰å¼€æˆ¿',
                             name: 'RoomOpen'
                         },
                         {
                             readOnly: true,
-                            label: '½áÕË·¿',
+                            label: 'ç»“è´¦æˆ¿',
                             name: 'RoomPosed'
                         }
                     ]
@@ -49,17 +49,17 @@ Ext.define('app.view.manager.ListOverView', {
                         {
                             docked: 'top',
                             readOnly: true,
-                            label: 'ÀÛ¼Æ¿ªÌ¨',
+                            label: 'ç´¯è®¡å¼€å°',
                             name: 'HallOpenTotal'
                         },
                         {
                             readOnly: true,
-                            label: 'µ±Ç°¿ªÌ¨',
+                            label: 'å½“å‰å¼€å°',
                             name: 'HallOpen'
                         },
                         {
                             readOnly: true,
-                            label: '½áÕËÌ¨',
+                            label: 'ç»“è´¦å°',
                             name: 'HallPosed'
                         }
                     ]
@@ -77,29 +77,29 @@ Ext.define('app.view.manager.ListOverView', {
                         {
                             docked: 'top',
                             readOnly: true,
-                            label: 'ÒÑÊÕ¿î',
+                            label: 'å·²æ”¶æ¬¾',
                             name: 'PosedAmount'
                         },
                         {
                             readOnly: true,
-                            label: '´óÌüÊÕ¿î',
+                            label: 'å¤§å…æ”¶æ¬¾',
                             name: 'PosedHallAmount'
                         },
                         {
                             readOnly: true,
-                            label: '°ü·¿ÊÕ¿î',
+                            label: 'åŒ…æˆ¿æ”¶æ¬¾',
                             name: 'PosedRoomAmount'
                         },
                         {
                             docked: 'bottom',
                             readOnly: true,
-                            label: 'Ô¤¼Æ×ÜÊÕÈë',
+                            label: 'é¢„è®¡æ€»æ”¶å…¥',
                             name: 'PosFinallyAmount'
                         },
                         {
                             docked: 'bottom',
                             readOnly: true,
-                            label: 'Ô¤¼ÆÎ´ÊÕ¿î',
+                            label: 'é¢„è®¡æœªæ”¶æ¬¾',
                             name: 'PosingAmount'
                         }
                     ]
@@ -117,17 +117,17 @@ Ext.define('app.view.manager.ListOverView', {
                         {
                             docked: 'top',
                             readOnly: true,
-                            label: 'ÔùËÍºÏ¼Æ',
+                            label: 'èµ é€åˆè®¡',
                             name: 'PresentAmount'
                         },
                         {
                             readOnly: true,
-                            label: 'Ô±¹¤ÔùËÍ',
+                            label: 'å‘˜å·¥èµ é€',
                             name: 'PresentAmountEmp'
                         },
                         {
                             readOnly: true,
-                            label: '¹«Ë¾ÀıËÍ',
+                            label: 'å…¬å¸ä¾‹é€',
                             name: 'PresentAmountCompany'
                         }
                     ]

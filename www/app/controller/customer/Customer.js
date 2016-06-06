@@ -82,7 +82,7 @@ Ext.define('app.controller.customer.Customer', {
             return goods.get('GoodsCount') > 0;
         });
         if (idx < 0) {
-            Ext.Msg.alert("Ã»ÓÐµãÈ¡²ËÆ·!");
+            Ext.Msg.alert("æ²¡æœ‰ç‚¹å–èœå“!");
             return;
         }
         goodsStore.clearFilter(true);
@@ -91,20 +91,20 @@ Ext.define('app.controller.customer.Customer', {
         });
 
         if (app.IsPresent)
-            this.getOrderingsButton().setText('È·ÈÏÔùËÍ');
+            this.getOrderingsButton().setText('ç¡®è®¤èµ é€');
         else
-            this.getOrderingsButton().setText('È·ÈÏÏÂµ¥');
+            this.getOrderingsButton().setText('ç¡®è®¤ä¸‹å•');
         this.getCustmainform().push(this.orderingslist);
     },
-    //Âäµ¥
+    //è½å•
     onLuodan: function () {
-        app.OrderType = 'Âäµ¥';
+        app.OrderType = 'è½å•';
         var frmMain = this.getCustmainform();
         var curView = frmMain.getActiveItem();
         if (curView.xtype == 'ordereds') {
             Ext.Viewport.setMasked({ xtype: 'loadmask' });
             app.util.Proxy.loadOrderGoods(app.CurRoom.ID, function () {
-                //µã»÷·¿Ì¨ºó£¬ÏÈÔØÈë·¿Ì¨Ïû·ÑÐÅÏ¢»òÕßÔØÈë²ËÆ·ÐÅÏ¢ 
+                //ç‚¹å‡»æˆ¿å°åŽï¼Œå…ˆè½½å…¥æˆ¿å°æ¶ˆè´¹ä¿¡æ¯æˆ–è€…è½½å…¥èœå“ä¿¡æ¯ 
                 if (!this.goodstypelist) {
                     this.goodstypelist = Ext.widget('goodstypelist');
                 }
@@ -116,7 +116,7 @@ Ext.define('app.controller.customer.Customer', {
         else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods')
             this.selectOrders();
     },
-    //Ïû·Ñ²éÑ¯
+    //æ¶ˆè´¹æŸ¥è¯¢
     onQuery: function () {
         var frmMain = this.getCustmainform();
         var curView = frmMain.getActiveItem();
@@ -126,10 +126,10 @@ Ext.define('app.controller.customer.Customer', {
     loadRoomOrder: function (roomID) {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var frmMain = this.getCustmainform();
-        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' Ïû·Ñ²éÑ¯');
+        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' æ¶ˆè´¹æŸ¥è¯¢');
         this.hideOrderButton();
         this.hideQueryButton();
-        //µã»÷·¿Ì¨ºó£¬ÏÈÔØÈë·¿Ì¨Ïû·ÑÐÅÏ¢
+        //ç‚¹å‡»æˆ¿å°åŽï¼Œå…ˆè½½å…¥æˆ¿å°æ¶ˆè´¹ä¿¡æ¯
         app.util.CustomerProxy.loadOrder(roomID, function () {
             if (!this.orderedlist) {
                 this.orderedlist = Ext.widget('orderedslist');
@@ -138,7 +138,7 @@ Ext.define('app.controller.customer.Customer', {
             Ext.Viewport.setMasked(false);
         });
     },
-    //È·ÈÏÏÂµ¥
+    //ç¡®è®¤ä¸‹å•
     onOkOrder: function () {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var goodsStore = Ext.getStore('Goods');

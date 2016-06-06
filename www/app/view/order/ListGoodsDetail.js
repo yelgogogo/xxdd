@@ -56,7 +56,7 @@ Ext.define('app.view.order.ListGoodsDetail', {
                             grpCount += detail.get('GoodsDetailCount');
                     });
                     if (grpCount >= record.data.GroupCount) {
-                        Ext.Msg.alert(record.data.GroupName + 'ÊıÁ¿×î¶à' + grpCount);
+                        Ext.Msg.alert(record.data.GroupName + 'æ•°é‡æœ€å¤š' + grpCount);
                         return;
                     }
                 }
@@ -67,8 +67,8 @@ Ext.define('app.view.order.ListGoodsDetail', {
                 if (goods) {
                     goods.data.GoodsDetails[index] = data;
                 }
-                //1.²»ÄÜÊ¹ÓÃitem.setRecord(record);´Ë·½·¨ÎŞ·¨¸üĞÂÊÓÍ¼
-                //2.²»ÄÜÊ¹ÓÃrecord.set({taste:taste});²é¿´Ô´Âë»á·¢ÏÖ´Ë·½·¨»áË¢ĞÂÕû¸öÊÓÍ¼£¬Ğ§ÂÊ¼«Æäµ×ÏÂ¡£
+                //1.ä¸èƒ½ä½¿ç”¨item.setRecord(record);æ­¤æ–¹æ³•æ— æ³•æ›´æ–°è§†å›¾
+                //2.ä¸èƒ½ä½¿ç”¨record.set({taste:taste});æŸ¥çœ‹æºç ä¼šå‘ç°æ­¤æ–¹æ³•ä¼šåˆ·æ–°æ•´ä¸ªè§†å›¾ï¼Œæ•ˆç‡æå…¶åº•ä¸‹ã€‚
 
                 if (value == -1 && GoodsDetailCount == 0)
                     btn.hide();

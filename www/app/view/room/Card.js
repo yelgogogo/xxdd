@@ -9,7 +9,7 @@ Ext.define('app.view.room.Card', {
             docked: 'bottom',
             hidden: false
         },
-        defaultBackButtonText: '·µ»Ø',
+        defaultBackButtonText: 'è¿”å›',
         autoDestroy: false,
 
         items: [
@@ -49,49 +49,49 @@ Ext.define('app.view.room.Card', {
         var me = this;
         var orderadd = false;
         var queryadd = false;
-        me.CreateMyButton('refreshButton', 'Ë¢ĞÂ', 'right', false);
+        me.CreateMyButton('refreshButton', 'åˆ·æ–°', 'right', false);
         Ext.Array.each(userStore.rights, function (rights) {
-//            if (rights == "Âäµ¥") {
-//                me.CreateMyButton('orderButton', 'Âäµ¥', 'right', true);
-//                //me.CreateMyButton('orderMemButton', '»áÔ±µãµ¥', 'right', true);
+//            if (rights == "è½å•") {
+//                me.CreateMyButton('orderButton', 'è½å•', 'right', true);
+//                //me.CreateMyButton('orderMemButton', 'ä¼šå‘˜ç‚¹å•', 'right', true);
 //            }
-//            if (rights == "¾­Àí²éÑ¯")
-//                me.CreateMyButton('mngButton', '¾­Àí²éÑ¯', 'left', false);
-//            if (rights == "¾­Àí²éÑ¯")
-//                me.CreateMyButton('mngButton', '¾­Àí²éÑ¯', 'left', false);
-//            if (rights == "ÔùËÍ")
-//                me.CreateMyButton('presentButton', 'ÔùËÍ', 'right', true);    
+//            if (rights == "ç»ç†æŸ¥è¯¢")
+//                me.CreateMyButton('mngButton', 'ç»ç†æŸ¥è¯¢', 'left', false);
+//            if (rights == "ç»ç†æŸ¥è¯¢")
+//                me.CreateMyButton('mngButton', 'ç»ç†æŸ¥è¯¢', 'left', false);
+//            if (rights == "èµ é€")
+//                me.CreateMyButton('presentButton', 'èµ é€', 'right', true);    
         	
             switch (rights)
             {
-            case "Âäµ¥":{
-               me.CreateMyButton('qrCodeButton', 'Ì¨Âë', 'left', true);
-               me.CreateMyButton('closeButton', '¹ØÌ¨', 'right', true);
-               //me.CreateMyButton('queryButton', 'Ïû·Ñ', 'right', true);
+            case "è½å•":{
+               me.CreateMyButton('qrCodeButton', 'å°ç ', 'left', true);
+               me.CreateMyButton('closeButton', 'å…³å°', 'right', true);
+               //me.CreateMyButton('queryButton', 'æ¶ˆè´¹', 'right', true);
                queryadd = true;
-               me.CreateMyButton('customerButton', '×ÔÑ¡', 'left', true);         
+               me.CreateMyButton('customerButton', 'è‡ªé€‰', 'left', true);         
                orderadd = true;
-               //me.CreateMyButton('orderButton', 'Âäµ¥', 'right', true);
+               //me.CreateMyButton('orderButton', 'è½å•', 'right', true);
                };
                break;
-            case "¾­Àí²éÑ¯":{
-               me.CreateMyButton('mngButton', '¾­Àí²éÑ¯', 'left', false);
-               me.CreateMyButton('cancelButton', '³·µ¥', 'right', true);
+            case "ç»ç†æŸ¥è¯¢":{
+               me.CreateMyButton('mngButton', 'ç»ç†æŸ¥è¯¢', 'left', false);
+               me.CreateMyButton('cancelButton', 'æ’¤å•', 'right', true);
                };
                break;
-            case "ÊÕÒø":{
-               me.CreateMyButton('hisqueryButton', 'ÀúÊ·', 'right', true);
-               //me.CreateMyButton('orderButton', 'Âäµ¥', 'right', true);
-               me.CreateMyButton('posButton', 'Âòµ¥', 'right', true);
-			   me.CreateMyButton('doBalanceButton', 'ÓªÒµ½áÊø', 'left', false);
+            case "æ”¶é“¶":{
+               me.CreateMyButton('hisqueryButton', 'å†å²', 'right', true);
+               //me.CreateMyButton('orderButton', 'è½å•', 'right', true);
+               me.CreateMyButton('posButton', 'ä¹°å•', 'right', true);
+			   me.CreateMyButton('doBalanceButton', 'è¥ä¸šç»“æŸ', 'left', false);
                };
                break;
             };
 
         });
         if (queryadd = true)
-        	me.CreateMyButton('queryButton', 'Ïû·Ñ', 'right', true);
+        	me.CreateMyButton('queryButton', 'æ¶ˆè´¹', 'right', true);
         if (orderadd = true)
-        	me.CreateMyButton('orderButton', 'Âäµ¥', 'right', true);
+        	me.CreateMyButton('orderButton', 'è½å•', 'right', true);
     }
 });

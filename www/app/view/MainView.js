@@ -19,22 +19,22 @@ Ext.define('app.view.MainView', {
 //        },
         items: [
                 {
-                    //title: '·¿Ì¨',
+                    //title: 'æˆ¿å°',
                     //iconCls: 'home',
                     xtype: 'roomContainer'
                 }
 //                ,
 //                {
 //                    iconCls: 'user',
-//                    title: 'ÆäËü',
+//                    title: 'å…¶å®ƒ',
 
 //                    xtype: 'button',
-//                    text: 'È·¶¨ÍË³öÂğ?',
+//                    text: 'ç¡®å®šé€€å‡ºå—?',
 //                    handler: function () {
 //                        //Ext.ComponentQuery.query('#loginForm')[0].show();
-//                        //Ïú»Ù mainview
+//                        //é”€æ¯ mainview
 //                        //this.getParent().destroy();
-//                        //Çå³ı±¾µØµÇÂ¼ÓÃ»§»º´æ
+//                        //æ¸…é™¤æœ¬åœ°ç™»å½•ç”¨æˆ·ç¼“å­˜
 //                        Ext.getStore('User').removeAll();
 //                        Ext.getStore('User').sync();
 

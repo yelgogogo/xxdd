@@ -16,37 +16,37 @@ Ext.define('app.view.LoginForm', {
         //layout: { type: 'hbox', align: 'center' },
         items: [
             {
-					xtype: 'toolbar',  //Ê¹ÓÃÆÕÍ¨µÄContainerÈİÆ÷¼´¿É
-					height: 68,  //¸ß¶ÈÒª¸úÍ¼Æ¬³ß´çÏàÊÊÓ¦£¬ÓÉÓÚÎÒÔÚÏÂÃæhtml´úÂëÖĞ¸øÍ¼Æ¬¼ÓÁË16pxµÄmargin-top£¬ËùÒÔContainer¸ß¶ÈÉèÖÃ³ÉÍ¼Æ¬¸ß¶È+16£¬·ÀÖ¹Í¼Æ¬ÏÔÊ¾²»ÍêÕû
-					//width: 96,  //Í¼Æ¬µÄ¿í¶È
+					xtype: 'toolbar',  //ä½¿ç”¨æ™®é€šçš„Containerå®¹å™¨å³å¯
+					height: 68,  //é«˜åº¦è¦è·Ÿå›¾ç‰‡å°ºå¯¸ç›¸é€‚åº”ï¼Œç”±äºæˆ‘åœ¨ä¸‹é¢htmlä»£ç ä¸­ç»™å›¾ç‰‡åŠ äº†16pxçš„margin-topï¼Œæ‰€ä»¥Containeré«˜åº¦è®¾ç½®æˆå›¾ç‰‡é«˜åº¦+16ï¼Œé˜²æ­¢å›¾ç‰‡æ˜¾ç¤ºä¸å®Œæ•´
+					//width: 96,  //å›¾ç‰‡çš„å®½åº¦
                     ui: 'light',
-                    title: "ĞÇĞÇµãµ¥"  //¹¤¾ßÀ¸µÄ±êÌâ
-					//html: '<img src="../dxmobile/app/view/room.png" style="margin-top: 16px;" />'  //Ö±½ÓÉè¶¨html´úÂëÀ´ÏÔÊ¾Í¼Æ¬£¬×¢ÒâÓĞ16ÏñËØµÄ¶¥²¿margin
+                    title: "æ˜Ÿæ˜Ÿç‚¹å•"  //å·¥å…·æ çš„æ ‡é¢˜
+					//html: '<img src="../dxmobile/app/view/room.png" style="margin-top: 16px;" />'  //ç›´æ¥è®¾å®šhtmlä»£ç æ¥æ˜¾ç¤ºå›¾ç‰‡ï¼Œæ³¨æ„æœ‰16åƒç´ çš„é¡¶éƒ¨margin
 	        },
     		{
     		    xtype: 'fieldset',
-    		    margin: '20 0 30 0',  //Ê¹ÓÃmarginµ÷ÕûÓëÉÏÃæÔªËØºÍÏÂÃæÔªËØÖ®¼äµÄ¿ÕÏ¶
+    		    margin: '20 0 30 0',  //ä½¿ç”¨marginè°ƒæ•´ä¸ä¸Šé¢å…ƒç´ å’Œä¸‹é¢å…ƒç´ ä¹‹é—´çš„ç©ºéš™
                 items: [
                     {
                         xtype: 'textfield',
                         name: 'userno',
-                        //label: '¹¤ºÅ',
+                        //label: 'å·¥å·',
                         required: true,
-                        placeHolder: 'ÄúµÄ¹¤ºÅ',
+                        placeHolder: 'æ‚¨çš„å·¥å·',
                         itemId: 'usernameText'
                     },
                     {
                         xtype: 'passwordfield',
                         name: 'password',
-                        //label: 'ÃÜÂë',
+                        //label: 'å¯†ç ',
                         required: true,
-                        placeHolder: 'ÄúµÄÃÜÂë',
+                        placeHolder: 'æ‚¨çš„å¯†ç ',
                         itemId: 'passwordText'
                     },
                     {
                         xtype: 'togglefield',
                         name: 'isremember',
-                        label:'¼Ç×¡ÃÜÂë'
+                        label:'è®°ä½å¯†ç '
                     }
                 ]
             },
@@ -54,16 +54,16 @@ Ext.define('app.view.LoginForm', {
                 xtype: 'button',
                 itemId: 'loginButton',
                 ui: 'confirm',
-                text: 'µÇÂ¼'
+                text: 'ç™»å½•'
             }
         ],
         dockedItems: [
             {
-	            id: 'dxTitle',  //¸øËûÒ»¸öID
-	            xtype: 'toolbar',  //xtypeÀàĞÍÊÇtoolbar£¬ÍêÕûµÄxtypeÃ¶¾Ù¼ûÕâÀïhttp://docs.sencha.com/touch/1-1/#!/api/Ext.Component
-	            ui: 'light',  //light±íÊ¾Ç³É«µÄ±³¾°Í¼°¸
-	            dock: 'top',  //¹¤¾ßÀ¸·ÅÖÃÔÚ×î¶¥²¿
-	            title: "ĞÇĞÇµãµ¥"  //¹¤¾ßÀ¸µÄ±êÌâ
+	            id: 'dxTitle',  //ç»™ä»–ä¸€ä¸ªID
+	            xtype: 'toolbar',  //xtypeç±»å‹æ˜¯toolbarï¼Œå®Œæ•´çš„xtypeæšä¸¾è§è¿™é‡Œhttp://docs.sencha.com/touch/1-1/#!/api/Ext.Component
+	            ui: 'light',  //lightè¡¨ç¤ºæµ…è‰²çš„èƒŒæ™¯å›¾æ¡ˆ
+	            dock: 'top',  //å·¥å…·æ æ”¾ç½®åœ¨æœ€é¡¶éƒ¨
+	            title: "æ˜Ÿæ˜Ÿç‚¹å•"  //å·¥å…·æ çš„æ ‡é¢˜
             }
 		],
         listeners:[

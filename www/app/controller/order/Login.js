@@ -25,7 +25,7 @@ Ext.define('app.controller.order.Login', {
 
             if (data) {
                 result = eval('(' + data + ')');
-                //本地登录用户缓存
+                //鏈湴鐧诲綍鐢ㄦ埛缂撳瓨
                 var userStore = Ext.getStore('User').load();
                 userStore.removeAll();
 
@@ -53,10 +53,10 @@ Ext.define('app.controller.order.Login', {
 
             }
             else
-                Ext.Msg.alert("用户名或密码错误!");
+                Ext.Msg.alert("鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒!");
         };
         var failureCallback = function (resp, ops) {
-            Ext.Msg.alert("登录失败!", resp.responseText);
+            Ext.Msg.alert("鐧诲綍澶辫触!", resp.responseText);
         };
 
         //TODO: Login using server-side authentication service        

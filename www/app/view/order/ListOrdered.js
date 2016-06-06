@@ -1,8 +1,8 @@
-Ext.define('app.view.order.Listordered', {
+Ext.define('app.view.order.ListOrdered', {
     extend: 'Ext.List',
-    alias: 'widget.orderedlist',
+    alias: 'widget.orderedgoodslist',
 
-    xtype: 'ordered',
+    xtype: 'orderedgoods',
 
     requires: ['app.view.order.ListTpl'],
 
@@ -38,7 +38,7 @@ Ext.define('app.view.order.Listordered', {
                 itemId: 'txtSubTotal',
                 readOnly: true,
                 docked: 'bottom',
-                label: 'ºÏ¼Æ:'
+                label: 'åˆè®¡:'
             },
             {
                 xtype: 'button',
@@ -46,7 +46,7 @@ Ext.define('app.view.order.Listordered', {
                 scrollDock: 'bottom',
                 docked: 'bottom',
                 ui:'confirm',
-                text: 'È·ÈÏ'
+                text: 'ç¡®è®¤'
             }
         ],
 
@@ -69,8 +69,8 @@ Ext.define('app.view.order.Listordered', {
 
                 data.GoodsCount = GoodsCount;
                 item.setData(data);
-                //1.²»ÄÜÊ¹ÓÃitem.setRecord(record);´Ë·½·¨ÎŞ·¨¸üĞÂÊÓÍ¼
-                //2.²»ÄÜÊ¹ÓÃrecord.set({taste:taste});²é¿´Ô´Âë»á·¢ÏÖ´Ë·½·¨»áË¢ĞÂÕû¸öÊÓÍ¼£¬Ğ§ÂÊ¼«Æäµ×ÏÂ¡£
+                //1.ä¸èƒ½ä½¿ç”¨item.setRecord(record);æ­¤æ–¹æ³•æ— æ³•æ›´æ–°è§†å›¾
+                //2.ä¸èƒ½ä½¿ç”¨record.set({taste:taste});æŸ¥çœ‹æºç ä¼šå‘ç°æ­¤æ–¹æ³•ä¼šåˆ·æ–°æ•´ä¸ªè§†å›¾ï¼Œæ•ˆç‡æå…¶åº•ä¸‹ã€‚
 
                 if (value == -1 && GoodsCount == 0)
                     btn.hide();

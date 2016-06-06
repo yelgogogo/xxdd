@@ -16,7 +16,7 @@ Ext.define('app.view.order.ListGoods', {
         cls: 'list',
         itemHeight: 32,
         //useSimpleItems: false,listTpl
-        //´Ë´¦×Ô¼º¶¨ÒåºÃÍ¼Æ¬µÄ ³¤¿íwidth="81px" height="50px"
+        //æ­¤å¤„è‡ªå·±å®šä¹‰å¥½å›¾ç‰‡çš„ é•¿å®½width="81px" height="50px"
         itemTpl: new Ext.XTemplate(
         '<div class="bh">',
             '<div class="bone bh">',
@@ -35,7 +35,7 @@ Ext.define('app.view.order.ListGoods', {
                 '<span class="x-button-icon x-shown add"></span></div>',
             '</div>',
          '</div>'
-        //'<div>±¸×¢£º<input type="text" name="description" value="description"/></div>'
+        //'<div>å¤‡æ³¨ï¼š<input type="text" name="description" value="description"/></div>'
          ),
         selectedCls: 'x-item-pressed',
         pressedCls: '',
@@ -51,7 +51,7 @@ Ext.define('app.view.order.ListGoods', {
                         modal: true,
                         hideOnMaskTap: true,
                         hidden: true,
-                        //´Ë´¦×Ô¼º¶¨ÒåºÃ·ÅÖÃÔ­Í¼Í¼Æ¬µÄ panel³¤¿íwidth="260px" height="400px"
+                        //æ­¤å¤„è‡ªå·±å®šä¹‰å¥½æ”¾ç½®åŸå›¾å›¾ç‰‡çš„ panelé•¿å®½width="260px" height="400px"
                         //width: Ext.os.deviceType == 'Phone' ? 260 : 400,
                         //height: Ext.os.deviceType == 'Phone' ? '70%' : 400,
                         cls: 'goodsbigimg',
@@ -80,8 +80,8 @@ Ext.define('app.view.order.ListGoods', {
 
                 data.GoodsCount = GoodsCount;
                 item.setData(data);
-                //1.²»ÄÜÊ¹ÓÃitem.setRecord(record);´Ë·½·¨ÎŞ·¨¸üĞÂÊÓÍ¼
-                //2.²»ÄÜÊ¹ÓÃrecord.set({taste:taste});²é¿´Ô´Âë»á·¢ÏÖ´Ë·½·¨»áË¢ĞÂÕû¸öÊÓÍ¼£¬Ğ§ÂÊ¼«Æäµ×ÏÂ¡£
+                //1.ä¸èƒ½ä½¿ç”¨item.setRecord(record);æ­¤æ–¹æ³•æ— æ³•æ›´æ–°è§†å›¾
+                //2.ä¸èƒ½ä½¿ç”¨record.set({taste:taste});æŸ¥çœ‹æºç ä¼šå‘ç°æ­¤æ–¹æ³•ä¼šåˆ·æ–°æ•´ä¸ªè§†å›¾ï¼Œæ•ˆç‡æå…¶åº•ä¸‹ã€‚
 
                 if (value == -1 && GoodsCount == 0)
                     btn.hide();

@@ -1,12 +1,12 @@
 Ext.application({
-    //命名工程
+    //鍛藉悕宸ョ▼
     name: "app",
 
     requires: ['app.util.Proxy'],
 
-    //指明模型，User代表model/User.js
+    //鎸囨槑妯″瀷锛孶ser浠ｈ〃model/User.js
     models: ["User", "Room", "GoodsType", "Good", 'GoodsDetail', 'Order', 'OverView'],
-    //指明控制器，controller/Login.js
+    //鎸囨槑鎺у埗鍣紝controller/Login.js
     controllers: [
     "mng.MngLogin",
     'mng.MngView',
@@ -22,8 +22,8 @@ Ext.application({
      'Orderings',
      'Orders'
     ],
-    //指明视图,view/Login.js,TopToolBar.js;Form.js;BottomToolBar.js
-    //都是被Login.js包含的，所以这里只要指明Login.js
+    //鎸囨槑瑙嗗浘,view/Login.js,TopToolBar.js;Form.js;BottomToolBar.js
+    //閮芥槸琚獿ogin.js鍖呭惈鐨勶紝鎵�浠ヨ繖閲屽彧瑕佹寚鏄嶭ogin.js
     views: [
     "LoginForm",
     "MainView",

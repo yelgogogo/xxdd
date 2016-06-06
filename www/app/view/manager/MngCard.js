@@ -8,14 +8,14 @@ Ext.define('app.view.manager.MngCard', {
             ui: 'dark',
             docked: 'bottom'
         },
-        defaultBackButtonText: '·µ»Ø',
+        defaultBackButtonText: 'è¿”å›',
         autoDestroy: false,
 
         items: [
             {
                 xtype: 'titlebar',
                 docked: 'top',
-                title: 'ÊµÊ±ÓªÒµ',
+                title: 'å®æ—¶è¥ä¸š',
                 hidden: false
             },
             {
@@ -31,7 +31,7 @@ Ext.define('app.view.manager.MngCard', {
         me.getNavigationBar().add({
             xtype: 'button',
             id: 'queryButton',
-            text: 'Ïû·Ñ²éÑ¯',
+            text: 'æ¶ˆè´¹æŸ¥è¯¢',
             align: 'right',
             hidden: true,
             hideAnimation: Ext.os.is.Android ? false : {
@@ -46,26 +46,26 @@ Ext.define('app.view.manager.MngCard', {
         me.getNavigationBar().add({
                     xtype: 'button',
                     id: 'refreshButton',
-                    text: 'Ë¢ĞÂ',
+                    text: 'åˆ·æ–°',
                     align: 'right',
                     hidden: false
                 });
         me.getNavigationBar().add({
                     xtype: 'button',
                     id: 'goroomButton',
-                    text: '·¿Ì¨',
+                    text: 'æˆ¿å°',
                     align: 'left',
                     hidden: false
                 });
 //        me.getNavigationBar().add({
 //                    xtype: 'button',
 //                    id: 'overViewButton',
-//                    text: 'ÓªÒµ×ÜÀÀ',
+//                    text: 'è¥ä¸šæ€»è§ˆ',
 //                    align: 'left',
 //                    hidden: true
 //                });
         Ext.Array.each(userStore.rights, function (rights) {
-            if (rights == "Âäµ¥")
+            if (rights == "è½å•")
                 me.getNavigationBar().add({
                     xtype: 'button',
                     id: 'orderButton',
@@ -81,7 +81,7 @@ Ext.define('app.view.manager.MngCard', {
                         duration: 200
                     }
                 });
-            if (rights == "ÔùËÍ")
+            if (rights == "èµ é€")
                 me.getNavigationBar().add({
                     xtype: 'button',
                     id: 'presentButton',

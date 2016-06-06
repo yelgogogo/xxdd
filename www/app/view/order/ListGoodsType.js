@@ -11,7 +11,7 @@ Ext.define('app.view.order.ListGoodsType', {
         store: 'GoodsTypes',
         scrollable: 'vertical',
         inline: true,
-        emptyText: 'ÎŞÊı¾İÏÔÊ¾.',
+        emptyText: 'æ— æ•°æ®æ˜¾ç¤º.',
         //cls: 'dataview-inline',
         itemCls: "dataviw-valign-top",
 

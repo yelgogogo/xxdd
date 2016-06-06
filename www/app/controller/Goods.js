@@ -84,7 +84,7 @@ Ext.define('app.controller.Goods', {
             return goods.get('GoodsCount') > 0;
         });
         if (idx < 0) {
-            Ext.Msg.alert("Ã»ÓÐµãÈ¡²ËÆ·!");
+            Ext.Msg.alert("æ²¡æœ‰ç‚¹å–èœå“!");
             return;
         }
         goodsStore.clearFilter(true);
@@ -93,12 +93,12 @@ Ext.define('app.controller.Goods', {
         });
 
         if (app.IsPresent)
-            this.getOrderingsButton().setText('È·ÈÏÔùËÍ');
+            this.getOrderingsButton().setText('ç¡®è®¤èµ é€');
         else
-            this.getOrderingsButton().setText('È·ÈÏÂäµ¥');
+            this.getOrderingsButton().setText('ç¡®è®¤è½å•');
         this.getRoomContainer().push(this.orderingslist);
     },
-    //Âäµ¥
+    //è½å•
     onLuodan: function () {
         app.IsPresent = false;
         var roomCard = this.getRoomContainer();
@@ -106,7 +106,7 @@ Ext.define('app.controller.Goods', {
         if (curView.xtype == 'ordereds') {
             Ext.Viewport.setMasked({ xtype: 'loadmask' });
             app.util.Proxy.loadOrderGoods(app.CurRoom.ID, function () {
-                //µã»÷·¿Ì¨ºó£¬ÏÈÔØÈë·¿Ì¨Ïû·ÑÐÅÏ¢»òÕßÔØÈë²ËÆ·ÐÅÏ¢ 
+                //ç‚¹å‡»æˆ¿å°åŽï¼Œå…ˆè½½å…¥æˆ¿å°æ¶ˆè´¹ä¿¡æ¯æˆ–è€…è½½å…¥èœå“ä¿¡æ¯ 
                 if (!this.goodstypelist) {
                     this.goodstypelist = Ext.widget('goodstypelist');
                 }                
@@ -118,7 +118,7 @@ Ext.define('app.controller.Goods', {
         else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods')
             this.selectOrders();
     },
-    //ÔùËÍ
+    //èµ é€
     onZengsong: function (isPresent) {
         app.IsPresent = true;
         var roomCard = this.getRoomContainer();
@@ -126,7 +126,7 @@ Ext.define('app.controller.Goods', {
         if (curView.xtype == 'ordereds') {
             Ext.Viewport.setMasked({ xtype: 'loadmask' });
             app.util.Proxy.loadPresentGoods(app.CurRoom.ID, function () {
-                //µã»÷·¿Ì¨ºó£¬ÏÈÔØÈë·¿Ì¨Ïû·ÑÐÅÏ¢»òÕßÔØÈë²ËÆ·ÐÅÏ¢ 
+                //ç‚¹å‡»æˆ¿å°åŽï¼Œå…ˆè½½å…¥æˆ¿å°æ¶ˆè´¹ä¿¡æ¯æˆ–è€…è½½å…¥èœå“ä¿¡æ¯ 
                 if (!this.goodstypelist) {
                     this.goodstypelist = Ext.widget('goodstypelist');
                 }
@@ -137,7 +137,7 @@ Ext.define('app.controller.Goods', {
         else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods')
             this.selectOrders();
     },
-    //Ïû·Ñ²éÑ¯
+    //æ¶ˆè´¹æŸ¥è¯¢
     onQuery: function () {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         if (!this.orderedlist) {
@@ -150,7 +150,7 @@ Ext.define('app.controller.Goods', {
             this.getRoomContainer().pop(2);
         Ext.Viewport.setMasked(false);
     },
-    //È·ÈÏÏÂµ¥
+    //ç¡®è®¤ä¸‹å•
     onOkOrder: function () {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var goodsStore = Ext.getStore('Goods');
@@ -189,9 +189,9 @@ Ext.define('app.controller.Goods', {
                 return;
             }
             if (app.IsPresent)
-                Ext.Msg.alert("ÔùËÍ³É¹¦!");
+                Ext.Msg.alert("èµ é€æˆåŠŸ!");
             else
-                Ext.Msg.alert("Âäµ¥³É¹¦!");
+                Ext.Msg.alert("è½å•æˆåŠŸ!");
 
             var goodsStore = Ext.getStore('Goods');
             goodsStore.each(function (record) {
@@ -205,12 +205,12 @@ Ext.define('app.controller.Goods', {
         };
         var failureCallback = function (resp, ops) {
             Ext.Viewport.setMasked(false);
-            Ext.Msg.alert("Âäµ¥Ê§°Ü!", resp.responseText);
+            Ext.Msg.alert("è½å•å¤±è´¥!", resp.responseText);
         };
         Ext.Ajax.request({
             method: 'POST',
             url: '../WebServiceEx.asmx/JSON_Add_Orders',
-            async: true, //Òì²½Ö´ÐÐ
+            async: true, //å¼‚æ­¥æ‰§è¡Œ
             params: dataToBeSentToServer,
             jsonData: {
                 submitMobile: dataToBeSentToServer
@@ -224,8 +224,8 @@ Ext.define('app.controller.Goods', {
         switch (viewType) {
             case "goods":
             case "goodstypes":
-                if (app.CurRoom.RoomStateName == "¿ª·¿"
-                || app.CurRoom.RoomStateName == "Ïû·Ñ") {
+                if (app.CurRoom.RoomStateName == "å¼€æˆ¿"
+                || app.CurRoom.RoomStateName == "æ¶ˆè´¹") {
                     this.showOrderButton();
                     this.showPresentButton();
                     //this.showQueryButton();
@@ -236,8 +236,8 @@ Ext.define('app.controller.Goods', {
                 }
                 break;
             case "ordereds":
-                if (app.CurRoom.RoomStateName == "¿ª·¿"
-                || app.CurRoom.RoomStateName == "Ïû·Ñ") {
+                if (app.CurRoom.RoomStateName == "å¼€æˆ¿"
+                || app.CurRoom.RoomStateName == "æ¶ˆè´¹") {
                     this.showOrderButton();
                     this.showPresentButton();
                     this.hideQueryButton();

@@ -12,12 +12,12 @@ Ext.define('app.view.order.ListOrders', {
         selectedCls: '',
         pressedCls: '',
         //useSimpleItems: false,listTpl
-        //<a href="http://cli.im/api/qrcode">201505150002</a> ¶şÎ¬Âë
+        //<a href="http://cli.im/api/qrcode">201505150002</a> äºŒç»´ç 
         itemTpl: [
             '<div class="bh" style = "background-color:{BackColor};color: {ForeColor}">',
             '<div class="bone" style = "width:25%">{GoodsTypeName}</div>',
             '<div class="bone" style = "width:48%">{GoodsName}</div>',
-          //  '<div class="bone" style = "width:15%">{GoodsTypeName}<br />×´Ì¬:{Status}</div>',
+          //  '<div class="bone" style = "width:15%">{GoodsTypeName}<br />çŠ¶æ€:{Status}</div>',
             '<div class="bone" style = "width:12%">{GoodsCount}{Unit}</div>',
             '<div class="bone" style = "width:15%;text-align:right;padding-right:10px">{SubTotal}</div>',
          // '<div class="bone" style = "width:30%;text-align:right;">{PresentUser}<br />{OrderTime}</div>',
@@ -39,18 +39,18 @@ Ext.define('app.view.order.ListOrders', {
                         {
                             docked: 'top',
                             readOnly: true,
-                            label: '¶©·¿ÈË',
+                            label: 'è®¢æˆ¿äºº',
                             itemId: 'txtReserver'
                         },
                         {
                             readOnly: true,
-                            label: 'Ïû·ÑºÏ¼Æ',
+                            label: 'æ¶ˆè´¹åˆè®¡',
                             itemId: 'txtConsumed',
                             value: '0'
                         },
                         {
                             readOnly: true,
-                            label: 'ÔùËÍºÏ¼Æ',
+                            label: 'èµ é€åˆè®¡',
                             itemId: 'txtPresented',
                             value: '0'
                         }
@@ -60,7 +60,7 @@ Ext.define('app.view.order.ListOrders', {
 //                height: 20,
 //                minheight:20,
 //                xtype: 'textfield',
-//                label: 'Ïû·ÑºÏ¼Æ:',
+//                label: 'æ¶ˆè´¹åˆè®¡:',
 //                itemId: 'txtConsumed',
 //                docked: 'top',
 //                readOnly : true,
@@ -68,7 +68,7 @@ Ext.define('app.view.order.ListOrders', {
 //            },
 //            {
 //                xtype: 'textfield',
-//                label: 'ÔùËÍºÏ¼Æ:',
+//                label: 'èµ é€åˆè®¡:',
 //                itemId: 'txtPresented',
 //                docked: 'top',
 //                readOnly: true,
@@ -78,9 +78,9 @@ Ext.define('app.view.order.ListOrders', {
 //            {
 //                docked: 'top',
 //                html: ['<div class="bh">',
-//                '<div class="bone" style = "width:50%"><div>²ËÆ·</div><div>¼Û¸ñ/µ¥Î»</div></div>',
-//                '<div class="bone" style = "width:30%">ÊıÁ¿|Ğ¡¼Æ</div>',
-//                '<div class="bone" style = "width:20%">Âäµ¥ÈË</div>',
+//                '<div class="bone" style = "width:50%"><div>èœå“</div><div>ä»·æ ¼/å•ä½</div></div>',
+//                '<div class="bone" style = "width:30%">æ•°é‡|å°è®¡</div>',
+//                '<div class="bone" style = "width:20%">è½å•äºº</div>',
 //                '</div>',
 //                '</div>'].join("")
 //            }

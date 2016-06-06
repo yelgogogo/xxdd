@@ -25,12 +25,12 @@ Ext.define('app.controller.mng.MngLogin', {
 
             if (data) {
                 result = eval('(' + data + ')');
-                if (!Ext.Array.contains(result.rights, "¾­Àí²éÑ¯")) {
-                    Ext.Msg.alert("ÄúÃ»ÓĞÈ¨ÏŞµÇÂ¼¾­ÀíÄ£¿é!");
+                if (!Ext.Array.contains(result.rights, "ç»ç†æŸ¥è¯¢")) {
+                    Ext.Msg.alert("æ‚¨æ²¡æœ‰æƒé™ç™»å½•ç»ç†æ¨¡å—!");
                     return;
                 }
-                app.CurModel = '¾­Àí';
-                //±¾µØµÇÂ¼ÓÃ»§»º´æ
+                app.CurModel = 'ç»ç†';
+                //æœ¬åœ°ç™»å½•ç”¨æˆ·ç¼“å­˜
                 var userStore = Ext.getStore('User').load();
                 userStore.removeAll();
 
@@ -55,10 +55,10 @@ Ext.define('app.controller.mng.MngLogin', {
                 //Ext.Viewport.setMasked(false);
             }
             else
-                Ext.Msg.alert("ÓÃ»§Ãû»òÃÜÂë´íÎó!");
+                Ext.Msg.alert("ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯!");
         };
         var failureCallback = function (resp, ops) {
-            Ext.Msg.alert("µÇÂ¼Ê§°Ü!", resp.responseText);
+            Ext.Msg.alert("ç™»å½•å¤±è´¥!", resp.responseText);
         };
 
         //TODO: Login using server-side authentication service        

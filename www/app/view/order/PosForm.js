@@ -18,30 +18,30 @@ Ext.define('app.view.order.PosForm', {
             
     		{
     		    xtype: 'fieldset',
-    		    margin: '20 0 30 0',  //Ê¹ÓÃmarginµ÷ÕûÓëÉÏÃæÔªËØºÍÏÂÃæÔªËØÖ®¼äµÄ¿ÕÏ¶
+    		    margin: '20 0 30 0',  //ä½¿ç”¨marginè°ƒæ•´ä¸ä¸Šé¢å…ƒç´ å’Œä¸‹é¢å…ƒç´ ä¹‹é—´çš„ç©ºéš™
                 items: [
                     {
                         xtype: 'textfield',
                         itemId: 'txtTotalMoney',
-                        label: 'Ó¦ÊÕ½ğ¶î',
+                        label: 'åº”æ”¶é‡‘é¢',
                         readOnly: true
                     },
                     {
                         xtype: 'textfield',
                         itemId: 'txtTruePayMoney',
-                        label: 'ÊµÊÕ½ğ¶î',
+                        label: 'å®æ”¶é‡‘é¢',
                         required: true
                     },
                     {
                         xtype: 'selectfield',
                         itemId: 'txtPayMode',
-                        label: '¸¶¿î·½Ê½',
+                        label: 'ä»˜æ¬¾æ–¹å¼',
                         options: [
-                                { text: 'ÏÖ½ğ', value: 'ÏÖ½ğ' },
-                                { text: '»áÔ±¿¨', value: '»áÔ±¿¨' },
-                                { text: 'ĞÅÓÃ¿¨', value: 'ĞÅÓÃ¿¨' },
-                                { text: 'Ö§¸¶±¦', value: 'Ö§¸¶±¦' },
-                                { text: 'Î¢ĞÅ', value: 'Î¢ĞÅ' }
+                                { text: 'ç°é‡‘', value: 'ç°é‡‘' },
+                                { text: 'ä¼šå‘˜å¡', value: 'ä¼šå‘˜å¡' },
+                                { text: 'ä¿¡ç”¨å¡', value: 'ä¿¡ç”¨å¡' },
+                                { text: 'æ”¯ä»˜å®', value: 'æ”¯ä»˜å®' },
+                                { text: 'å¾®ä¿¡', value: 'å¾®ä¿¡' }
                             ]
                     }
                 ]
@@ -51,7 +51,7 @@ Ext.define('app.view.order.PosForm', {
                 itemId: 'posOkButton',
                 scrollDock: 'bottom',
                 ui:'confirm',
-                text: 'È·ÈÏÂòµ¥'
+                text: 'ç¡®è®¤ä¹°å•'
             },
             {
                 xtype: 'button',
@@ -59,16 +59,16 @@ Ext.define('app.view.order.PosForm', {
                 itemId: 'closeButton2',
                 docked: 'bottom',
                 ui: 'confirm',
-                text: '¹ØÌ¨'
+                text: 'å…³å°'
             }
         ],
         dockedItems: [
             {
-	            id: 'dxTitle',  //¸øËûÒ»¸öID
-	            xtype: 'toolbar',  //xtypeÀàĞÍÊÇtoolbar£¬ÍêÕûµÄxtypeÃ¶¾Ù¼ûÕâÀïhttp://docs.sencha.com/touch/1-1/#!/api/Ext.Component
-	            ui: 'light',  //light±íÊ¾Ç³É«µÄ±³¾°Í¼°¸
-	            dock: 'top',  //¹¤¾ßÀ¸·ÅÖÃÔÚ×î¶¥²¿
-	            title: "ĞÇĞÇµãµ¥"  //¹¤¾ßÀ¸µÄ±êÌâ
+	            id: 'dxTitle',  //ç»™ä»–ä¸€ä¸ªID
+	            xtype: 'toolbar',  //xtypeç±»å‹æ˜¯toolbarï¼Œå®Œæ•´çš„xtypeæšä¸¾è§è¿™é‡Œhttp://docs.sencha.com/touch/1-1/#!/api/Ext.Component
+	            ui: 'light',  //lightè¡¨ç¤ºæµ…è‰²çš„èƒŒæ™¯å›¾æ¡ˆ
+	            dock: 'top',  //å·¥å…·æ æ”¾ç½®åœ¨æœ€é¡¶éƒ¨
+	            title: "æ˜Ÿæ˜Ÿç‚¹å•"  //å·¥å…·æ çš„æ ‡é¢˜
             }
 		]
     }

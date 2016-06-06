@@ -111,13 +111,13 @@ Ext.define('app.controller.mng.MngView', {
         this.hideGoOverButton();
     },
     onRoomTap: function (dataView, index, dataItem, dataItemModel, e, eOpts) {
-        if (dataItemModel.data.RoomStateName == "¿Õ·¿"
-        || dataItemModel.data.RoomStateName == "»µ·¿"
-        || dataItemModel.data.RoomStateName == "¶©·¿"
-        || dataItemModel.data.RoomStateName == "´øÎ»") {
+        if (dataItemModel.data.RoomStateName == "ç©ºæˆ¿"
+        || dataItemModel.data.RoomStateName == "åæˆ¿"
+        || dataItemModel.data.RoomStateName == "è®¢æˆ¿"
+        || dataItemModel.data.RoomStateName == "å¸¦ä½") {
             return;
         }
-        //»ñÈ¡·¿Ì¨ID
+        //è·å–æˆ¿å°ID
         var roomID = dataItemModel.data.ID;
         app.CurRoom = dataItemModel.data;
         var frmMain = this.getMngContainer();
@@ -126,7 +126,7 @@ Ext.define('app.controller.mng.MngView', {
         //        }
 
         this.loadRoomOrder(app.CurRoom.ID);
-        if (app.CurRoom.RoomStateName == "´òµ¥" || app.CurRoom.RoomStateName == "ÊÕÒø") {
+        if (app.CurRoom.RoomStateName == "æ‰“å•" || app.CurRoom.RoomStateName == "æ”¶é“¶") {
             this.hideOrderButton();
             this.hidePresentButton();
             this.hideQueryButton();
@@ -150,11 +150,11 @@ Ext.define('app.controller.mng.MngView', {
     loadRoomOrder: function (roomID) {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var frmMain = this.getMngContainer();
-        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' Ïû·Ñ²éÑ¯');
+        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' æ¶ˆè´¹æŸ¥è¯¢');
         this.showOrderButton();
         this.showPresentButton();
         this.hideQueryButton();
-        //µã»÷·¿Ì¨ºó£¬ÏÈÔØÈë·¿Ì¨Ïû·ÑĞÅÏ¢
+        //ç‚¹å‡»æˆ¿å°åï¼Œå…ˆè½½å…¥æˆ¿å°æ¶ˆè´¹ä¿¡æ¯
         app.util.Proxy.loadOrder(roomID, function () {
             if (!this.orderedlist) {
                 this.orderedlist = Ext.widget('orderedslist');
@@ -166,12 +166,12 @@ Ext.define('app.controller.mng.MngView', {
     loadPresentGoods: function (roomID) {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var frmMain = this.getMngContainer();
-        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' ÔùËÍ');
+        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' èµ é€');
         this.hideOrderButton();
         this.showPresentButton();
         this.hideQueryButton();
         app.util.Proxy.loadPresentGoods(roomID, function () {
-            //µã»÷·¿Ì¨ºó£¬ÏÈÔØÈëµãµ¥²ËÆ·ĞÅÏ¢ 
+            //ç‚¹å‡»æˆ¿å°åï¼Œå…ˆè½½å…¥ç‚¹å•èœå“ä¿¡æ¯ 
             if (!this.goodstypelist) {
                 this.goodstypelist = Ext.widget('goodstypelist');
                 //roomDetail.add(this.goodstypelist);
@@ -183,12 +183,12 @@ Ext.define('app.controller.mng.MngView', {
     loadOrderGoods: function (roomID) {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var frmMain = this.getMngContainer();
-        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' Âäµ¥');
+        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' è½å•');
         this.showOrderButton();
         this.hidePresentButton();
         this.hideQueryButton();
         app.util.Proxy.loadOrderGoods(roomID, function () {
-            //µã»÷·¿Ì¨ºó£¬ÏÈÔØÈëÔùËÍ²ËÆ·ĞÅÏ¢ 
+            //ç‚¹å‡»æˆ¿å°åï¼Œå…ˆè½½å…¥èµ é€èœå“ä¿¡æ¯ 
             if (!this.goodstypelist) {
                 this.goodstypelist = Ext.widget('goodstypelist');
                 //roomDetail.add(this.goodstypelist);
@@ -235,7 +235,7 @@ Ext.define('app.controller.mng.MngView', {
             return goods.get('GoodsCount') > 0;
         });
         if (idx < 0) {
-            Ext.Msg.alert("Ã»ÓĞµãÈ¡²ËÆ·!");
+            Ext.Msg.alert("æ²¡æœ‰ç‚¹å–èœå“!");
             return;
         }
         this.hideOrderButton();
@@ -251,43 +251,43 @@ Ext.define('app.controller.mng.MngView', {
             //this.getRoomDetail().add(this.orderingslist);
         }
         frmMain.push(this.orderingslist);
-        if (app.OrderType == "ÔùËÍ")
-            this.getOrderingsButton().setText('È·ÈÏÔùËÍ');
+        if (app.OrderType == "èµ é€")
+            this.getOrderingsButton().setText('ç¡®è®¤èµ é€');
         else
-            this.getOrderingsButton().setText('È·ÈÏÂäµ¥');
+            this.getOrderingsButton().setText('ç¡®è®¤è½å•');
     },
-    //Âäµ¥
+    //è½å•
     onLuodan: function () {
         var frmMain = this.getMngContainer();
         var curView = frmMain.getActiveItem();
-        if (curView.xtype == 'ordereds' || app.OrderType != "Âäµ¥") {
-            app.OrderType = "Âäµ¥";
+        if (curView.xtype == 'ordereds' || app.OrderType != "è½å•") {
+            app.OrderType = "è½å•";
             //this.setOrderButton();
             this.loadOrderGoods(app.CurRoom.ID);
         }
         else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods')
             this.selectOrders();
     },
-    //ÔùËÍ
+    //èµ é€
     onZengsong: function (isPresent) {
         var frmMain = this.getMngContainer();
         var curView = frmMain.getActiveItem();
-        if (curView.xtype == 'ordereds' || app.OrderType != "ÔùËÍ") {
-            app.OrderType = "ÔùËÍ";
+        if (curView.xtype == 'ordereds' || app.OrderType != "èµ é€") {
+            app.OrderType = "èµ é€";
             //this.setOrderButton();
             this.loadPresentGoods(app.CurRoom.ID);
         }
         else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods')
             this.selectOrders();
     },
-    //Ïû·Ñ²éÑ¯
+    //æ¶ˆè´¹æŸ¥è¯¢
     onQuery: function () {
         var frmMain = this.getMngContainer();
         var curView = frmMain.getActiveItem();
         if (curView.xtype != 'ordereds')
             this.loadRoomOrder(app.CurRoom.ID);
     },
-    //È·ÈÏÏÂµ¥
+    //ç¡®è®¤ä¸‹å•
     onOkOrder: function () {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var goodsStore = Ext.getStore('Goods');
@@ -310,12 +310,12 @@ Ext.define('app.controller.mng.MngView', {
             return;
         }
         var subTotal = 0;
-        if (app.OrderType == "»áÔ±µãµ¥") {
+        if (app.OrderType == "ä¼šå‘˜ç‚¹å•") {
 //            Ext.Array.each(allData, function (records) {
 //                subTotal += records.Price * records.GoodsCount;
 //            });
 //            if (subTotal > app.CardCurrentMoney) {
-//                Ext.Msg.alert("¿¨ÄÚÓà¶î²»×ã(" + app.CardCurrentMoney + ")!");
+//                Ext.Msg.alert("å¡å†…ä½™é¢ä¸è¶³(" + app.CardCurrentMoney + ")!");
 //                Ext.Viewport.setMasked(false);
 //                return;
 //            }
@@ -324,7 +324,7 @@ Ext.define('app.controller.mng.MngView', {
             app.CardNo = "";
         var submitMobile = {};
         submitMobile.SubmitOrders = allData;
-        submitMobile.isPresent = app.OrderType == "ÔùËÍ" ? true : false;
+        submitMobile.isPresent = app.OrderType == "èµ é€" ? true : false;
         submitMobile.roomID = app.CurRoom.ID;
         submitMobile.userNo = Ext.getStore('User').load().data.items[0].data.userno;
         submitMobile.orderType = app.OrderType;
@@ -339,17 +339,17 @@ Ext.define('app.controller.mng.MngView', {
                 Ext.Msg.alert(msg);
                 return;
             }
-            Ext.Msg.alert(app.OrderType + "³É¹¦!");
+            Ext.Msg.alert(app.OrderType + "æˆåŠŸ!");
             roomCard.pop(roomCard.getInnerItems().length - 1);
         };
         var failureCallback = function (resp, ops) {
             Ext.Viewport.setMasked(false);
-            Ext.Msg.alert("Âäµ¥Ê§°Ü!", resp.responseText);
+            Ext.Msg.alert("è½å•å¤±è´¥!", resp.responseText);
         };
         Ext.Ajax.request({
             method: 'POST',
             url: '../WebServiceEx.asmx/JSON_Add_Orders',
-            async: true, //Òì²½Ö´ĞĞ
+            async: true, //å¼‚æ­¥æ‰§è¡Œ
             params: dataToBeSentToServer,
             jsonData: {
                 submitMobile: dataToBeSentToServer
@@ -458,11 +458,11 @@ Ext.define('app.controller.mng.MngView', {
 
         switch (viewType) {
             case "goods":
-                if (app.CurRoom.RoomStateName == "¿ª·¿"
-                || app.CurRoom.RoomStateName == "Ïû·Ñ") {
-                    if (app.OrderType == "ÔùËÍ")
+                if (app.CurRoom.RoomStateName == "å¼€æˆ¿"
+                || app.CurRoom.RoomStateName == "æ¶ˆè´¹") {
+                    if (app.OrderType == "èµ é€")
                         this.showPresentButton();
-                    else if (app.OrderType == "Âäµ¥")
+                    else if (app.OrderType == "è½å•")
                         this.showOrderButton();
                     //this.showQueryButton();
                 }
@@ -473,8 +473,8 @@ Ext.define('app.controller.mng.MngView', {
                 }
                 break;
             case "goodstypes":
-                if (app.CurRoom.RoomStateName == "¿ª·¿"
-                || app.CurRoom.RoomStateName == "Ïû·Ñ") {
+                if (app.CurRoom.RoomStateName == "å¼€æˆ¿"
+                || app.CurRoom.RoomStateName == "æ¶ˆè´¹") {
                     this.showPresentButton();
                     this.showOrderButton();
                     //this.hideQueryButton();
@@ -486,8 +486,8 @@ Ext.define('app.controller.mng.MngView', {
                 }
                 break;
             case "ordereds":
-                if (app.CurRoom.RoomStateName == "¿ª·¿"
-                || app.CurRoom.RoomStateName == "Ïû·Ñ") {
+                if (app.CurRoom.RoomStateName == "å¼€æˆ¿"
+                || app.CurRoom.RoomStateName == "æ¶ˆè´¹") {
                     this.showOrderButton();
                     this.showPresentButton();
                     this.hideQueryButton();

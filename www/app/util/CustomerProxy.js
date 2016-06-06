@@ -8,7 +8,7 @@ Ext.define('app.util.CustomerProxy', {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
             if (data.indexOf("{ Room:") == -1) {
-                Ext.Msg.alert('ÌáÊ¾', data, Ext.emptyFn);
+                Ext.Msg.alert('æç¤º', data, Ext.emptyFn);
                 return;
             }
             var Json_Room = eval('(' + data + ')');
@@ -16,7 +16,7 @@ Ext.define('app.util.CustomerProxy', {
             callback();
         };
         var failureCallback = function (resp, ops) {
-            Ext.Msg.alert("µØÖ·´íÎó!", resp.responseText);
+            Ext.Msg.alert("åœ°å€é”™è¯¯!", resp.responseText);
         };
         Ext.Ajax.request({
             url: '../WebServiceEx.asmx/JSON_ChkCustomerOp',
@@ -37,7 +37,7 @@ Ext.define('app.util.CustomerProxy', {
 );
         };
         var failureCallback = function (result) {
-            Ext.Msg.alert("¼ÓÔØÏµÍ³²ÎÊıÊ§°Ü!");
+            Ext.Msg.alert("åŠ è½½ç³»ç»Ÿå‚æ•°å¤±è´¥!");
         };
        Ext.Ajax.request({
           url: '../WebServiceEx.asmx/JSON_GetSysParam',
@@ -56,7 +56,7 @@ Ext.define('app.util.CustomerProxy', {
 );
         };
         var failureCallback = function (result) {
-            Ext.Msg.alert("¼ÓÔØÏµÍ³²ÎÊıÊ§°Ü!");
+            Ext.Msg.alert("åŠ è½½ç³»ç»Ÿå‚æ•°å¤±è´¥!");
         };
        Ext.Ajax.request({
           url: '../WebServiceEx.asmx/JSON_GetSysParam',
@@ -96,7 +96,7 @@ Ext.define('app.util.CustomerProxy', {
             callback();
         };
         var failureCallback = function (resp, ops) {
-            Ext.Msg.alert("¼ÓÔØ²ËÆ·Ê§°Ü!", resp.responseText);
+            Ext.Msg.alert("åŠ è½½èœå“å¤±è´¥!", resp.responseText);
         };
         Ext.Ajax.request({
             url: '../WebServiceEx.asmx/JSON_Get_RoomGoods',
@@ -137,7 +137,7 @@ Ext.define('app.util.CustomerProxy', {
             callback();
         };
         var failureCallback = function (resp, ops) {
-            Ext.Msg.alert("¼ÓÔØ²ËÆ·Ê§°Ü!", resp.responseText);
+            Ext.Msg.alert("åŠ è½½èœå“å¤±è´¥!", resp.responseText);
         };
         Ext.Ajax.request({
             url: '../WebServiceEx.asmx/JSON_Get_RoomMemberGoods',
@@ -157,7 +157,7 @@ Ext.define('app.util.CustomerProxy', {
 //    		return Orders.get('OpCode') == app.CurRoom.RoomOpCode
 //    	});
         var successCallback = function (resp, ops) {
-            var temp = Ext.create('app.model.Order', { 'GoodsName': '²ËÆ·','GoodsTypeName': '·ÖÀà', 'Price': '¼Û¸ñ', 'Unit': '', 'GoodsCount': 'ÊıÁ¿', 'SubTotal': 'Ğ¡¼Æ', 'PresentUser': 'Âäµ¥ÈË', 'OpCode':app.CurRoom.RoomOpCode });
+            var temp = Ext.create('app.model.Order', { 'GoodsName': 'èœå“','GoodsTypeName': 'åˆ†ç±»', 'Price': 'ä»·æ ¼', 'Unit': '', 'GoodsCount': 'æ•°é‡', 'SubTotal': 'å°è®¡', 'PresentUser': 'è½å•äºº', 'OpCode':app.CurRoom.RoomOpCode });
             orderStore.add(temp);
             var data = Ext.decode(resp.responseText).d;
             var Json_Order = eval('(' + data + ')');
@@ -165,14 +165,14 @@ Ext.define('app.util.CustomerProxy', {
                 orderModel = Ext.create('app.model.Order', order);
                 orderStore.add(orderModel);
             });
-            //var temp = Ext.create('app.model.Order', { 'GoodsName': '²ËÆ·','GoodsTypeName': '·ÖÀà', 'Price': '¼Û¸ñ', 'Unit': '', 'GoodsCount': 'ÊıÁ¿', 'SubTotal': 'Ğ¡¼Æ', 'PresentUser': 'Âäµ¥ÈË', 'OpCode':orderModel.data.OpCode });
+            //var temp = Ext.create('app.model.Order', { 'GoodsName': 'èœå“','GoodsTypeName': 'åˆ†ç±»', 'Price': 'ä»·æ ¼', 'Unit': '', 'GoodsCount': 'æ•°é‡', 'SubTotal': 'å°è®¡', 'PresentUser': 'è½å•äºº', 'OpCode':orderModel.data.OpCode });
             //orderStore.insert(0, temp);
-            //¸üĞÂ¸Ã·¿Ì¨µÄ¼ÇÂ¼
+            //æ›´æ–°è¯¥æˆ¿å°çš„è®°å½•
             app.CurRoom = Json_Order.Room[0];
             callback();
         };
         var failureCallback = function (resp, ops) {
-            Ext.Msg.alert("¼ÓÔØÒÑµãµ¥Ê§°Ü!", resp.responseText);
+            Ext.Msg.alert("åŠ è½½å·²ç‚¹å•å¤±è´¥!", resp.responseText);
         };
         Ext.Ajax.request({
             url: '../WebServiceEx.asmx/JSON_GetRoomOrderList',
@@ -192,17 +192,17 @@ Ext.define('app.util.CustomerProxy', {
                 Ext.Msg.alert(msg);
                 return
             }
-            Ext.Msg.alert(app.OrderType + "³É¹¦!");
+            Ext.Msg.alert(app.OrderType + "æˆåŠŸ!");
             callback();
         };
         var failureCallback = function (resp, ops) {
             Ext.Viewport.setMasked(false);
-            Ext.Msg.alert("µãµ¥Ê§°Ü!", resp.responseText);
+            Ext.Msg.alert("ç‚¹å•å¤±è´¥!", resp.responseText);
         };
         Ext.Ajax.request({
             method: 'POST',
             url: '../WebServiceEx.asmx/JSON_Add_CustomerOrders',
-            async: true, //Òì²½Ö´ĞĞ
+            async: true, //å¼‚æ­¥æ‰§è¡Œ
             params: submitMobile,
             jsonData: {
                 submitMobile: submitMobile
