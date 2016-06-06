@@ -161,6 +161,43 @@ loadOrderGoods: function (roomID, callback) {
         failure: failureCallback
     });
 },
+loadOrderedGoods: function (roomID, callback) {
+
+    var orderStore = Ext.getStore('Orders');
+    orderStore.removeAll();
+    orderStore.clearFilter(true);
+//    orderStore.filterBy(function (Orders) {
+//    	return Orders.get('OpCode') == app.CurRoom.RoomOpCode
+//    });
+    var successCallback = function (resp, ops) {
+
+        var data = Ext.decode(resp.responseText).d;
+        var Json_Order = eval('(' + data + ')');
+        Ext.Array.each(Json_Order.Orders, function (order) {
+            orderModel = Ext.create('app.model.Order', order);
+            orderStore.add(orderModel);
+        });
+
+
+        //更新该房台的记录
+        var roomStore = Ext.getStore('Rooms');
+        var record = roomStore.findRecord('ID', roomID);
+        record.setData(Json_Order.Room[0]);
+        app.CurRoom = record.data;
+        callback();
+    };
+    var failureCallback = function (resp, ops) {
+        Ext.Msg.alert("加载已点单失败!", resp.responseText);
+    };
+    Ext.Ajax.request({
+        url: '../WebServiceEx.asmx/JSON_GetRoomOrderList',
+        jsonData: {
+            roomID: roomID
+        },
+        success: successCallback,
+        failure: failureCallback
+    });
+},
 loadOrderMemGoods: function (roomID, callback) {
 
     var goodsStore = Ext.getStore('Goods'),

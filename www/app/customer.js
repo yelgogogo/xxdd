@@ -75,7 +75,7 @@ Ext.application({
                 app.OrderType = 'Âäµ¥';
                 //mainView.down('titlebar').setTitle(app.CurRoom.RoomName + ' ' + app.OrderType);
                 app.util.CustomerProxy.getSysParm('txtPlaceName', function (pname) {
-                   mainView.down('titlebar').setTitle(pname + ' ' + app.CurRoom.RoomName + ' ' + app.OrderType);
+                   mainView.down('titlebar').setTitle(pname + ' ' + app.CurRoom.RoomName + ' ' + 'ÏÂµ¥');
                 });
                 Ext.Viewport.add(mainView);
                 Ext.Viewport.setMasked(false);

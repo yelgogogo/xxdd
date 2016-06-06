@@ -93,7 +93,7 @@ Ext.define('app.controller.customer.Customer', {
         if (app.IsPresent)
             this.getOrderingsButton().setText('确认赠送');
         else
-            this.getOrderingsButton().setText('确认落单');
+            this.getOrderingsButton().setText('确认下单');
         this.getCustmainform().push(this.orderingslist);
     },
     //落单

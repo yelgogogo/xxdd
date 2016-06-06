@@ -28,6 +28,7 @@ Ext.define('app.controller.order.Order', {
             queryButton: '#queryButton',
             hisQueryButton: '#hisqueryButton',
             orderButton: '#orderButton',
+            cancelButton: '#cancelButton',
             mngButton: '#mngButton',
             orderMemButton: '#orderMemButton',
             presentButton: '#presentButton',
@@ -75,6 +76,9 @@ Ext.define('app.controller.order.Order', {
             },
             orderButton: {
                 tap: 'onLuodan'
+            },
+            cancelButton: {
+                tap: 'onCancel'
             },
             mngButton: {
                 tap: 'onJinglichaxun'
@@ -232,6 +236,21 @@ Ext.define('app.controller.order.Order', {
             Ext.Viewport.setMasked(false);
         });
     },
+    loadOrderedGoods: function (roomID) {
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        var frmMain = this.getRoomContainer();
+        frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' 撤单');
+        app.util.Proxy.loadOrderedGoods(roomID, function () {
+            //点击房台后，先载入房台消费信息
+            if (!this.orderedlist) {
+                this.orderedlist = Ext.widget('orderedlist');
+                //roomDetail.add(this.orderedlist);
+            }
+            frmMain.push(this.orderedlist);
+            //roomDetail.setActiveItem(this.orderedlist);
+            Ext.Viewport.setMasked(false);
+        });
+    },
     loadOrderMemGoods: function (roomID) {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var frmMain = this.getRoomContainer();
@@ -354,6 +373,23 @@ Ext.define('app.controller.order.Order', {
             this.selectOrders();
         }
     },
+    //撤单
+    onCancel: function () {
+        var frmMain = this.getRoomContainer();
+        var curView = frmMain.getActiveItem();
+        if (curView.xtype == 'ordereds' || app.OrderType != "落单") {
+            app.OrderType = "撤单";
+//            this.showOrderButton();
+//            this.showPresentButton();
+//            this.showOrderMemButton();
+//            this.showQueryButton();
+            this.loadOrderedGoods(app.CurRoom.ID);
+            
+        }
+        else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods') {
+            this.selectOrders();
+        }
+    },
     //会员点单
     onLuodanMem: function () {
         var frmMain = this.getRoomContainer();
@@ -426,8 +462,11 @@ Ext.define('app.controller.order.Order', {
         var curView = frmMain.getActiveItem();
         if (curView.xtype != 'ordereds') {
             this.hideCommandButton();
-            if (app.CurRoom.RoomStateName == "消费")
-                this.showPosButton();
+            if (app.CurRoom.RoomStateName == "消费"){
+            	this.showPosButton();
+            	this.showCancelButton();
+            };
+                
             if (app.CurRoom.RoomStateName == "开房" || app.CurRoom.RoomStateName == "收银")
                 this.showCloseButton();
             this.loadRoomOrder(app.CurRoom.ID);
@@ -650,6 +689,13 @@ Ext.define('app.controller.order.Order', {
         }
         orderButton.show();
     },
+    showCancelButton: function () {
+        var cancelButton = this.getCancelButton();
+        if (!cancelButton || !cancelButton.isHidden()) {
+            return;
+        }
+        cancelButton.show();
+    },
     showMngButton: function () {
         var mngButton = this.getMngButton();
         if (!mngButton || !mngButton.isHidden()) {
@@ -663,6 +709,13 @@ Ext.define('app.controller.order.Order', {
             return;
         }
         orderButton.hide();
+    },
+    hideCancelButton: function () {
+        var cancelButton = this.getCancelButton();
+        if (!cancelButton || !cancelButton.isHidden()) {
+            return;
+        }
+        cancelButton.hide();
     },
     hideMngButton: function () {
         var mngButton = this.getMngButton();
@@ -838,6 +891,7 @@ Ext.define('app.controller.order.Order', {
                     //                    this.showOrderMemButton();
                 }
                 this.showPosButton();
+                this.showCancelButton();
                 this.hideCloseButton();
                 break;
             default:
