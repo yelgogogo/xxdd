@@ -42,7 +42,7 @@ Ext.define('app.view.order.ListOrdered', {
             },
             {
                 xtype: 'button',
-                itemId: 'btnQueRen',
+                itemId: 'confirmCancel',
                 scrollDock: 'bottom',
                 docked: 'bottom',
                 ui:'confirm',
@@ -61,7 +61,7 @@ Ext.define('app.view.order.ListOrdered', {
             onNumClick: function (list, record, item, index, btn) {
                 console.log("onNumClick");
                 var value = btn.getAttribute("value"),
-                    GoodsCount = record.data.GoodsCount + Number(value),
+                    GoodsCount = Number(record.data.GoodsCount) + Number(value),
                     data = record.data;
                 if (GoodsCount < 0) {
                     GoodsCount = 0;

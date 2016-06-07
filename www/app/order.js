@@ -37,6 +37,7 @@ Ext.application({
     'order.ListGoodsType',
     'order.ListOrderings',
     'order.ListOrders',
+    'order.ListOrdered',
     'order.PosForm',
     'order.ListCustomerOrders',
     'manager.ListOverView',

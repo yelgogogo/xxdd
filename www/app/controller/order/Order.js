@@ -22,6 +22,7 @@ Ext.define('app.controller.order.Order', {
             txtConsumed: '#txtConsumed',
             txtPresented: '#txtPresented',
             orderingsButton: 'orderings button',
+            confirmCancel: '#confirmCancel',
             doBalanceButton: '#doBalanceButton',
             refreshButton: '#refreshButton',
             posButton: '#posButton',
@@ -48,7 +49,9 @@ Ext.define('app.controller.order.Order', {
                 activate: 'onRoomOrdersActivate'
             },
             orderedgoodslist: {
-                activate: 'onRoomOrdersActivate'
+                onPackGoodsClicked: 'onPackGoodsClicked'
+                // activate: 'onRoomOrdersActivate',
+                // activate: 'onOrderingActivate'
             },
             roomslist: {
                 itemtap: 'onRoomTap'
@@ -80,6 +83,9 @@ Ext.define('app.controller.order.Order', {
             },
             orderButton: {
                 tap: 'onLuodan'
+            },
+            confirmCancel: {
+                tap: 'onConfirmCancel'
             },
             cancelButton: {
                 tap: 'onCancel'
@@ -251,8 +257,10 @@ Ext.define('app.controller.order.Order', {
                 //roomDetail.add(this.orderedlist);
             }
             frmMain.push(this.orderedgoodslist);
+
             //roomDetail.setActiveItem(this.orderedlist);
             Ext.Viewport.setMasked(false);
+
         });
     },
     loadOrderMemGoods: function (roomID) {
@@ -361,6 +369,41 @@ Ext.define('app.controller.order.Order', {
         else
             this.getOrderingsButton().setText('确认落单');
     },
+    //已选单
+    selectOrdered: function () {
+        var orderStore = Ext.getStore('Orders');
+        // var idx = orderStore.findBy(function (orders) {
+        //     return orders.get('GoodsCount') > 0;
+        // });
+        // if (idx < 0) {
+        //     Ext.Msg.alert("没有点取菜品!");
+        //     return;
+        // }
+        this.hideOrderButton();
+        this.hidePresentButton();
+        this.hideOrderMemButton();
+        this.hideQueryButton();
+        this.hideHisQueryButton();
+        this.hideQrCodeButton();
+        this.hideCustomerButton();
+
+        orderStore.clearFilter(true);
+        orderStore.filterBy(function (Orders) {
+            return Orders.get('GoodsCount') > 0;
+        });
+
+        var frmMain = this.getRoomContainer();
+        if (!this.orderedgoodslist) {
+            this.orderedgoodslist = Ext.widget('orderedgoodslist');
+            //this.getRoomDetail().add(this.orderingslist);
+        }
+        frmMain.push(this.orderedgoodslist);
+        //this.getRoomDetail().setActiveItem(this.orderingslist);
+        if (app.OrderType == "赠送")
+            this.getConfirmCancel().setText('确认赠送');
+        else
+            this.getConfirmCancel().setText('确认撤单');
+    },
     //落单
     onLuodan: function () {
         var frmMain = this.getRoomContainer();
@@ -381,17 +424,18 @@ Ext.define('app.controller.order.Order', {
     onCancel: function () {
         var frmMain = this.getRoomContainer();
         var curView = frmMain.getActiveItem();
-        if (curView.xtype == 'ordereds' || app.OrderType != "撤单") {
+        if (curView.xtype == 'orderedgoods' || app.OrderType != "撤单") {
             app.OrderType = "撤单";
 //            this.showOrderButton();
 //            this.showPresentButton();
 //            this.showOrderMemButton();
 //            this.showQueryButton();
             this.loadOrderedGoods(app.CurRoom.ID);
+            this.selectOrdered();
             
         }
-        else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods') {
-            this.selectOrders();
+        else if (curView.xtype == 'ordereds' || curView.xtype == 'goods') {
+            this.selectOrdered();
         }
     },
     //会员点单
@@ -604,6 +648,10 @@ Ext.define('app.controller.order.Order', {
                  cB.show();
                  dataView.refresh();
              })
+    },
+    //确认撤单
+    onConfirmCancel: function () {
+        console.log("onNumClickssssss");
     },
     //确认下单
     onOkOrder: function () {
