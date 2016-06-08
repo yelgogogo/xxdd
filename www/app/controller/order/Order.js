@@ -119,6 +119,10 @@ Ext.define('app.controller.order.Order', {
             }
         }
     },
+        //确认撤单
+    onConfirmCancel: function () {
+        console.log("onNumClickssssss");
+    },
     onRoomTap: function (dataView, index, dataItem, dataItemModel, e, eOpts) {
         if (dataItemModel.data.RoomStateName == "坏房")
             return;
@@ -386,6 +390,8 @@ Ext.define('app.controller.order.Order', {
         this.hideHisQueryButton();
         this.hideQrCodeButton();
         this.hideCustomerButton();
+        this.hideCancelButton();
+        this.hidePosButton();
 
         orderStore.clearFilter(true);
         orderStore.filterBy(function (Orders) {
@@ -430,8 +436,8 @@ Ext.define('app.controller.order.Order', {
 //            this.showPresentButton();
 //            this.showOrderMemButton();
 //            this.showQueryButton();
-            this.loadOrderedGoods(app.CurRoom.ID);
-            this.selectOrdered();
+           // this.loadOrderedGoods(app.CurRoom.ID);
+             this.selectOrdered();
             
         }
         else if (curView.xtype == 'ordereds' || curView.xtype == 'goods') {
@@ -648,10 +654,6 @@ Ext.define('app.controller.order.Order', {
                  cB.show();
                  dataView.refresh();
              })
-    },
-    //确认撤单
-    onConfirmCancel: function () {
-        console.log("onNumClickssssss");
     },
     //确认下单
     onOkOrder: function () {
