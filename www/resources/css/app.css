@@ -721,6 +721,11 @@ h4{color:#999;margin-bottom:0.3em}
 {
 	text-align:right
 }
+.bluetoolbar
+{
+	background-color:Blue,
+	text-align:left;
+}
 /*点单列表里图片大小*/
 .goodsimg
 {

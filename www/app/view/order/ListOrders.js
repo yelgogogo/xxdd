@@ -37,7 +37,7 @@ Ext.define('app.view.order.ListOrders', {
                 layout: 'hbox',
                 items: [
                         {
-                            docked: 'top',
+                            docked: 'top', 
                             readOnly: true,
                             label: '订房人',
                             itemId: 'txtReserver'
@@ -53,9 +53,62 @@ Ext.define('app.view.order.ListOrders', {
                             label: '赠送合计',
                             itemId: 'txtPresented',
                             value: '0'
-                        }
+                        },
+                                            
                     ]
-            }
+            },
+                {
+                            docked: 'top',
+                            xtype: 'toolbar', 
+                            cls: 'bluetoolbar',
+                            readOnly: true,
+                            itemId: 'textGoodsTitle',
+                            value: '0',
+                            // style: 'background-color: #112D41;color: #112D41',
+                            items: [
+                            {
+                                xtype: 'button',
+                                readOnly: true,
+                                text: '分类',
+                                width: '23%',
+                                itemId: 'txtGoodsType'
+                            },
+                            {
+                                readOnly: true,
+                                xtype: 'button',
+                                text: '菜品',
+                                width: '45%',
+                                itemId: 'txtGoodsName',
+                                value: '0'
+                            },
+                            {
+                                readOnly: true,
+                                xtype: 'button',
+                                text: '数量',
+                                width: '13%',
+                                itemId: 'txtUnit',
+                                value: '0'
+                            },
+                            {
+                                readOnly: true,
+                                xtype: 'button',
+                                text: '小计',
+                                width: '15%',
+                                itemId: 'txtSubtotal',
+                                value: '0'
+                            },                     
+                        ]
+                    }
+                //         ,
+                // {
+                //             // docked: 'top',
+                //             xtype: 'titlebar',  
+                //             readOnly: true,
+                //             Width:'30%',
+                //             title: '菜单',
+                //             itemId: 'textgoods',
+                //             value: '0'
+                //         }
 //            {
 //                height: 20,
 //                minheight:20,

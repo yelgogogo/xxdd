@@ -49,6 +49,7 @@ Ext.define('app.view.room.Card', {
         var me = this;
         var orderadd = false;
         var queryadd = false;
+        var posadd = false;
         me.CreateMyButton('refreshButton', '刷新', 'right', false);
         Ext.Array.each(userStore.rights, function (rights) {
 //            if (rights == "落单") {
@@ -82,16 +83,18 @@ Ext.define('app.view.room.Card', {
             case "收银":{
                me.CreateMyButton('hisqueryButton', '历史', 'right', true);
                //me.CreateMyButton('orderButton', '落单', 'right', true);
-               me.CreateMyButton('posButton', '买单', 'right', true);
-			   me.CreateMyButton('doBalanceButton', '营业结束', 'left', false);
+               posadd = true;
+			         me.CreateMyButton('doBalanceButton', '营业结束', 'left', false);
                };
                break;
             };
 
         });
         if (queryadd = true)
-        	me.CreateMyButton('queryButton', '消费', 'right', true);
+          me.CreateMyButton('queryButton', '消费', 'right', true);
         if (orderadd = true)
         	me.CreateMyButton('orderButton', '落单', 'right', true);
+        if (posadd = true)
+          me.CreateMyButton('posButton', '买单', 'right', true);
     }
 });

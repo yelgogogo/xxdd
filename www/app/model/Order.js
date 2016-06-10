@@ -7,6 +7,7 @@ Ext.define('app.model.Order', {
 
     config: {
         fields: [
+
             { name: 'OpCode', type: 'string' },
             { name: 'OrderID', type: 'int' },
             { name: 'OrderDetailID', type: 'int' },
@@ -17,6 +18,7 @@ Ext.define('app.model.Order', {
             { name: 'ProduceSite', type: 'string' },
             { name: 'PackNo', type: 'int' },
             { name: 'GoodsTypeName', type: 'string' },
+            { name: 'GoodsID', type: 'int' },
             { name: 'GoodsName', type: 'string' },
             { name: 'Price', type: 'string' }, //{ name: 'Price', type: 'number' },
             { name: 'Unit', type: 'string' },

@@ -16,6 +16,8 @@ Ext.define('app.model.Good', {
             { name: 'GoodsCount', type: 'int', defaultValue: 0 },
             { name: 'IsPack', type: 'boolean' },
             { name: 'GoodsDetails', type: 'AUTO' },
+            { name: 'Mark', type: 'string' }
+
 
         ]
 //        ,

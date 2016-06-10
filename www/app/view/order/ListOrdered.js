@@ -59,23 +59,61 @@ Ext.define('app.view.order.ListOrdered', {
                     this.fireEvent("onPackGoodsClicked", list, record, item, index, btn);
             },
             onNumClick: function (list, record, item, index, btn) {
-                console.log("onNumClick");
+                // console.log("onNumClick");
                 var value = btn.getAttribute("value"),
                     GoodsCount = Number(record.data.GoodsCount) + Number(value),
                     data = record.data;
-                if (GoodsCount < 0) {
-                    GoodsCount = 0;
+                // var temp = data.GoodsCount;
+                var cancelstore = Ext.getStore('CancelOrders');
+                var cancelrec = cancelstore.findRecord('OrderDetailID', data.OrderDetailID);
+                if (record.data.GoodsCount == 0){
+                    return;
                 }
-
-                data.GoodsCount = GoodsCount;
+                if (cancelrec){
+                    cancelrec.data.GoodsCount=Number(cancelrec.data.GoodsCount)+Number(value);
+                }
+                else{
+                    // data.GoodsCount=Number(GoodsCount)+Number(value);
+                    var cursor=record.copy();
+                    //Ext.create('app.mode;l.Order',data);
+                    // var cursor= data;
+                    cursor.data.GoodsCount = -1;
+                    cancelstore.add(cursor);
+                    
+                };
+                data.GoodsCount =GoodsCount
+                // data.GoodsCount=temp-1;
+                // data.IsCanceled = 1;
+                // if (data.GoodsCount < 1) {
+                //     data.GoodsCount = 0;
+                // }
+                // else{
+                //     data.GoodsCount = Number(data.GoodsCount) + Number(value)
+                // }
+                // // }
+                // else{
+                //     data.GoodsCount = 0 - data.GoodsCount;
+                // }
+                // if (GoodsCount < 0) {
+                //     GoodsCount = 0;
+                // }
+                // if (data.GoodsCount > 0 ){
+                //     data.GoodsCount = Number(value);
+                // }
+                // else{
+                //     data.GoodsCount = Number(data.GoodsCount) + Number(value);
+                // };
                 item.setData(data);
+                // if (GoodsCount < 1){
+                //     btn.hide();
+                // }
                 //1.不能使用item.setRecord(record);此方法无法更新视图
                 //2.不能使用record.set({taste:taste});查看源码会发现此方法会刷新整个视图，效率极其底下。
 
-                if (value == -1 && GoodsCount == 0)
-                    btn.hide();
-                else if (value == 1 && GoodsCount > 0)
-                    btn.show();
+                // if (value == -1 && data.GoodsCount == 0)
+                //     btn.hide();
+                // else if (value == 1 && data.GoodsCount > 0)
+                //     btn.show();
             }
         }
     }

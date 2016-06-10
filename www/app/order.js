@@ -20,7 +20,8 @@ Ext.application({
      'Goods',
      'GoodsDetails',
      'Orderings',
-     'Orders'
+     'Orders',
+     'CancelOrders'
     ],
     //指明视图,view/Login.js,TopToolBar.js;Form.js;BottomToolBar.js
     //都是被Login.js包含的，所以这里只要指明Login.js

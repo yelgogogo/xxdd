@@ -17,6 +17,26 @@ Ext.define('app.util.Proxy', {
     //            }
     //        });
     //requires: ['Ext.data.proxy.JsonP'],
+    cancelorders: function (instr,callback) {
+        var successCallback = function (resp, ops) {
+            var data = Ext.decode(resp.responseText).d;
+            // var strvalue = Ext.decode(data);
+            Ext.Msg.alert("撤单成功!");
+            callback();
+        };
+        var failureCallback = function (result) {
+            Ext.Msg.alert("撤单失败!");
+        };
+       Ext.Ajax.request({
+          url: '../WebServiceEx.asmx/JSON_CancelOrders',
+          jsonData: {
+              cancelOrders : instr,
+              userNo:Ext.getStore('User').load().data.items[0].data.userno
+          },
+          success: successCallback,
+          failure: failureCallback
+       });     
+    },
     getEnStr: function (instr,callback) {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
@@ -161,43 +181,43 @@ loadOrderGoods: function (roomID, callback) {
         failure: failureCallback
     });
 },
-loadOrderedGoods: function (roomID, callback) {
+// loadOrderedGoods: function (roomID, callback) {
 
-    var orderStore = Ext.getStore('Orders');
-    orderStore.removeAll();
-    orderStore.clearFilter(true);
-//    orderStore.filterBy(function (Orders) {
-//    	return Orders.get('OpCode') == app.CurRoom.RoomOpCode
-//    });
-    var successCallback = function (resp, ops) {
+//     var orderStore = Ext.getStore('Orders');
+//     orderStore.removeAll();
+//     orderStore.clearFilter(true);
+// //    orderStore.filterBy(function (Orders) {
+// //    	return Orders.get('OpCode') == app.CurRoom.RoomOpCode
+// //    });
+//     var successCallback = function (resp, ops) {
 
-        var data = Ext.decode(resp.responseText).d;
-        var Json_Order = eval('(' + data + ')');
-        Ext.Array.each(Json_Order.Orders, function (order) {
-            orderModel = Ext.create('app.model.Order', order);
-            orderStore.add(orderModel);
-        });
+//         var data = Ext.decode(resp.responseText).d;
+//         var Json_Order = eval('(' + data + ')');
+//         Ext.Array.each(Json_Order.Orders, function (order) {
+//             orderModel = Ext.create('app.model.Order', order);
+//             orderStore.add(orderModel);
+//         });
 
 
-        //更新该房台的记录
-        var roomStore = Ext.getStore('Rooms');
-        var record = roomStore.findRecord('ID', roomID);
-        record.setData(Json_Order.Room[0]);
-        app.CurRoom = record.data;
-        callback();
-    };
-    var failureCallback = function (resp, ops) {
-        Ext.Msg.alert("加载已点单失败!", resp.responseText);
-    };
-    Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_GetRoomOrderList',
-        jsonData: {
-            roomID: roomID
-        },
-        success: successCallback,
-        failure: failureCallback
-    });
-},
+//         //更新该房台的记录
+//         var roomStore = Ext.getStore('Rooms');
+//         var record = roomStore.findRecord('ID', roomID);
+//         record.setData(Json_Order.Room[0]);
+//         app.CurRoom = record.data;
+//         callback();
+//     };
+//     var failureCallback = function (resp, ops) {
+//         Ext.Msg.alert("加载已点单失败!", resp.responseText);
+//     };
+//     Ext.Ajax.request({
+//         url: '../WebServiceEx.asmx/JSON_GetRoomOrderList',
+//         jsonData: {
+//             roomID: roomID
+//         },
+//         success: successCallback,
+//         failure: failureCallback
+//     });
+// },
 loadOrderMemGoods: function (roomID, callback) {
 
     var goodsStore = Ext.getStore('Goods'),
@@ -290,8 +310,8 @@ loadOrder: function (roomID, callback) {
 //    	return Orders.get('OpCode') == app.CurRoom.RoomOpCode
 //    });
     var successCallback = function (resp, ops) {
-        var temp = Ext.create('app.model.Order', { 'GoodsName': '菜品','GoodsTypeName': '分类', 'Price': '价格', 'Unit': '', 'GoodsCount': '数量', 'SubTotal': '小计', 'PresentUser': '落单人', 'OpCode':app.CurRoom.RoomOpCode });
-        orderStore.add(temp);
+        // var temp = Ext.create('app.model.Order', { 'GoodsName': '菜品','GoodsTypeName': '分类', 'Price': '价格', 'Unit': '', 'GoodsCount': '数量', 'SubTotal': '小计', 'PresentUser': '落单人', 'OpCode':app.CurRoom.RoomOpCode });
+        // orderStore.add(temp);
         var data = Ext.decode(resp.responseText).d;
         var Json_Order = eval('(' + data + ')');
         Ext.Array.each(Json_Order.Orders, function (order) {
@@ -351,8 +371,8 @@ loadHisOrder: function (roomID, callback) {
                title+='轮点菜===';
                temp=Ext.create('app.model.Order', { 'GoodsName': title,'OpCode':orderModel.data.OpCode});
                orderStore.add(temp);
-               temp= Ext.create('app.model.Order', { 'GoodsName': '菜品', 'GoodsTypeName': '分类','Price': '价格', 'Unit': '', 'GoodsCount': '数量', 'SubTotal': '小计', 'PresentUser': '落单人','OpCode':orderModel.data.OpCode });
-               orderStore.add(temp);
+               // temp= Ext.create('app.model.Order', { 'GoodsName': '菜品', 'GoodsTypeName': '分类','Price': '价格', 'Unit': '', 'GoodsCount': '数量', 'SubTotal': '小计', 'PresentUser': '落单人','OpCode':orderModel.data.OpCode });
+               // orderStore.add(temp);
             };
             
             orderStore.add(orderModel);
