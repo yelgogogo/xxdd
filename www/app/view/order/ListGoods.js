@@ -77,7 +77,7 @@ Ext.define('app.view.order.ListGoods', {
                 if (GoodsCount < 0) {
                     GoodsCount = 0;
                 }
-
+                data.Remarks = '';
                 data.GoodsCount = GoodsCount;
                 item.setData(data);
                 //1.不能使用item.setRecord(record);此方法无法更新视图

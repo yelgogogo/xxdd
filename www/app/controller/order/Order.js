@@ -6,6 +6,7 @@ Ext.define('app.controller.order.Order', {
             roomContainer: 'roomContainer',
             roomslist: 'rooms',
             orderedlist: 'ordereds',
+            orderinglist: 'orderings',
             orderedgoodslist: 'orderedgoods',
             goodslist: 'goods',
             goodstypelist: 'goodstypes',
@@ -22,6 +23,7 @@ Ext.define('app.controller.order.Order', {
             txtConsumed: '#txtConsumed',
             txtPresented: '#txtPresented',
             orderingsButton: 'orderings button',
+            markToggleButton: 'orderings #markToggle',
             confirmCancel: 'orderedgoods #confirmCancel',
             doBalanceButton: '#doBalanceButton',
             refreshButton: '#refreshButton',
@@ -42,6 +44,9 @@ Ext.define('app.controller.order.Order', {
             closeButton2: 'pos #closeButton2'
         },
         control: {
+            markToggleButton: {
+                change: 'onmarkToggle'
+            },
             roomContainer: {
                 pop: 'onMainPop'
             },
@@ -119,6 +124,19 @@ Ext.define('app.controller.order.Order', {
             }
         }
     },
+    //全部加辣
+    onmarkToggle: function (field, slider, thumb, newValue, oldValue) {
+        var goodsStore = Ext.getStore('Goods');
+
+        goodsStore.each(function (records) {
+            if (newValue == 1)
+                records.data.Remarks = '加辣';
+            else
+                records.data.Remarks = '';
+        });
+        var goodsview = this.getOrderinglist();
+        goodsview.refresh();
+    },
     //确认撤单
     onConfirmCancel: function () {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
@@ -135,6 +153,7 @@ Ext.define('app.controller.order.Order', {
             //     });
             // }
             delete records.data.id;
+            records.data.Remarks = '撤单';
             allData.push(records.data);
         });
         if (allData.length == 0) {
@@ -392,6 +411,7 @@ Ext.define('app.controller.order.Order', {
         }
         frmMain.push(this.orderingslist);
         //this.getRoomDetail().setActiveItem(this.orderingslist);
+        this.getMarkToggleButton();
         if (app.OrderType == "赠送")
             this.getOrderingsButton().setText('确认赠送');
         else
@@ -455,8 +475,12 @@ Ext.define('app.controller.order.Order', {
         frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' 撤单');
         var curView = frmMain.getActiveItem();
         var cancelStore = Ext.getStore('CancelOrders');
+        var orderStore = Ext.getStore('Orders');
         cancelStore.removeAll();
-
+        // orderStore.clearFilter(true);
+        // orderStore.filterBy(function (orders) {
+        //     return orders.get('GoodsCount') > 0;
+        // });
 
         this.hideOrderButton();
         this.hidePresentButton();

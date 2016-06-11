@@ -39,7 +39,7 @@ Ext.define('app.controller.order.Login', {
                 userStore.sync();
                 //Ext.Viewport.setMasked({ xtype: 'loadmask' });
                 Ext.Viewport.setMasked({ xtype: 'loadmask' });
-                app.util.Proxy.loadRoomsJsonP(function () {
+                app.util.Proxy.loadRooms(function () {
                     var mainView = Ext.create('app.view.room.Card');
                     Ext.Viewport.add(mainView);
                     loginView.reset();

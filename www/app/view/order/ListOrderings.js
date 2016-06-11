@@ -4,7 +4,13 @@ Ext.define('app.view.order.ListOrderings', {
 
     xtype: 'orderings',
 
-    requires: ['app.view.order.ListTpl'],
+    requires: ['app.view.order.ListTpl',
+    'Ext.field.Toggle',
+        'Ext.field.Text',
+        'Ext.field.Select',
+        'Ext.form.FieldSet',
+        'Ext.Toolbar',
+        'Ext.Button'],
 
     config: {
         store: 'Goods',
@@ -19,6 +25,13 @@ Ext.define('app.view.order.ListOrderings', {
         itemTpl: new Ext.XTemplate(
         '<div class="bh">',
             '<div class="mydiv bone" fire="onGoodsClick"><div>{GoodsName}</div><div>{Price}/{Unit}</div></div>',
+            '<div class="bv">',
+                '<div class="mydiv x-button" fire="onMarkClick" value="-1">',
+                '<span class="x-button-icon x-shown chili"></span></div>',
+            '</div>',
+            '<div class="bv" style="width:40px;text-align:center">',
+                '{Remarks}',
+            '</div>',
             '<div class="bv">',
                 '<div class="mydiv x-button" fire="onNumClick" value="-1">',
                 '<span class="x-button-icon x-shown lower"></span></div>',
@@ -47,12 +60,30 @@ Ext.define('app.view.order.ListOrderings', {
                 docked: 'bottom',
                 ui:'confirm',
                 text: '确认'
-            }
+            },
+            { 
+                        xtype: 'togglefield',
+                        // name : 'markToggle',
+                        // id : 'markToggle',
+                        itemId: 'markToggle',
+                        docked: 'bottom',
+                        label: '全部加辣'
+                    }
         ],
 
         selectedCls: 'x-item-pressed',
         pressedCls: '',
         listeners: {
+            onMarkClick: function (list, record, item, index, btn) {
+                console.log("onMarkClickClick"); 
+                data = record.data;
+                if (data.Remarks != '')
+                    data.Remarks = '';
+                else
+                    data.Remarks = '加辣';
+                item.setData(data);
+
+            },
             onGoodsClick: function (list, record, item, index, btn) {
                 data = record.data;
                 if (data.IsPack)
@@ -78,5 +109,6 @@ Ext.define('app.view.order.ListOrderings', {
                     btn.show();
             }
         }
+        
     }
 });

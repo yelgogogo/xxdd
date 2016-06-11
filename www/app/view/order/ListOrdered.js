@@ -66,7 +66,7 @@ Ext.define('app.view.order.ListOrdered', {
                 // var temp = data.GoodsCount;
                 var cancelstore = Ext.getStore('CancelOrders');
                 var cancelrec = cancelstore.findRecord('OrderDetailID', data.OrderDetailID);
-                if (record.data.GoodsCount == 0){
+                if (record.data.GoodsCount < 1){
                     return;
                 }
                 if (cancelrec){
@@ -82,27 +82,7 @@ Ext.define('app.view.order.ListOrdered', {
                     
                 };
                 data.GoodsCount =GoodsCount
-                // data.GoodsCount=temp-1;
-                // data.IsCanceled = 1;
-                // if (data.GoodsCount < 1) {
-                //     data.GoodsCount = 0;
-                // }
-                // else{
-                //     data.GoodsCount = Number(data.GoodsCount) + Number(value)
-                // }
-                // // }
-                // else{
-                //     data.GoodsCount = 0 - data.GoodsCount;
-                // }
-                // if (GoodsCount < 0) {
-                //     GoodsCount = 0;
-                // }
-                // if (data.GoodsCount > 0 ){
-                //     data.GoodsCount = Number(value);
-                // }
-                // else{
-                //     data.GoodsCount = Number(data.GoodsCount) + Number(value);
-                // };
+    
                 item.setData(data);
                 // if (GoodsCount < 1){
                 //     btn.hide();
