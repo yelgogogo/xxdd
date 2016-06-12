@@ -146,14 +146,8 @@ Ext.define('app.controller.order.Order', {
         //     return goods.get('GoodsCount') < 0;
         // });
         cancelStore.each(function (records) {
-            // if (records.data.GoodsDetails && records.data.GoodsDetails.length > 0) {
-            //     records.data.GoodsDetails = records.data.GoodsDetails.filter(function (goodsDetail) {
-            //         delete goodsDetail.id;
-            //         return goodsDetail.GoodsDetailCount > 0;
-            //     });
-            // }
             delete records.data.id;
-            records.data.Remarks = '撤单';
+            records.data.Remarks = '本单撤消';
             allData.push(records.data);
         });
         if (allData.length == 0) {
@@ -644,15 +638,17 @@ Ext.define('app.controller.order.Order', {
                 }
             });
         }
-//        app.util.Proxy.getEnStr(app.CurRoom.RoomOpCode + app.CurRoom.ID, function (enstr) {
-//            var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Op=" + escape(enstr);
-//        });
-        var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Op=" + app.CurRoom.RoomOpCode + app.CurRoom.ID;
+        var outstr;
+       app.util.Proxy.getEnStr(app.CurRoom.RoomOpCode + app.CurRoom.ID, function (enstr) {
+            var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Key=" + enstr;
+        // var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Op=" + app.CurRoom.RoomOpCode + app.CurRoom.ID;
         var url = "http://qr.topscan.com/api.php?&w=300&text=" + myUrl;
         console.log(url);
         //app.qrCode.setHtml('<img src="http://qr.topscan.com/api.php?text="' + window.location.href + app.CurRoom.RoomOpCode + '>');
         app.qrCode.setHtml('<h3 align="center">扫描二维码点单</h3><p style="text-align:center"><img align="center" src="' + url + '"/></p>');
-        app.qrCode.showBy(this.getQrCodeButton());
+        
+       });
+       app.qrCode.showBy(this.getQrCodeButton());
     },
     //顾客自选单
     onCustomerButton_Clicked: function () {

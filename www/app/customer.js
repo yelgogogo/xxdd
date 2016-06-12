@@ -58,17 +58,17 @@ Ext.application({
             }
         });
 
-        var reg = new RegExp("(^|&)" + "Op" + "=([^&]*)(&|$)", "i");
+        var reg = new RegExp("(^|&)" + "Key" + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
         if (r == null) {
             Ext.Msg.alert('提示', '地址错误!', Ext.emptyFn);
             return;
         }
-        var para = unescape(r[2]);
-//        app.util.Proxy.getUnStr(para, function (unstr) {
-//            para=unstr
-//        });
-        app.util.CustomerProxy.chkCustomerOp(para, function () {
+        var UnStr = unescape(r[2]);
+        // var para = UnStr;
+        app.util.CustomerProxy.getUnStr(UnStr, function (destr) {
+            var para = destr;
+            app.util.CustomerProxy.chkCustomerOp(para, function () {
             Ext.Viewport.setMasked({ xtype: 'loadmask' });
             app.util.CustomerProxy.loadCustomerGoods(app.CurRoom.ID, function () {
                 var mainView = Ext.create('app.view.customer.CustMainForm');
@@ -81,5 +81,7 @@ Ext.application({
                 Ext.Viewport.setMasked(false);
             });
         });
+        });
+
     }
 });

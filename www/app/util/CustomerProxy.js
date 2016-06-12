@@ -16,7 +16,7 @@ Ext.define('app.util.CustomerProxy', {
             callback();
         };
         var failureCallback = function (resp, ops) {
-            Ext.Msg.alert("地址错误!", resp.responseText);
+            Ext.Msg.alert("钥匙读取错误!", resp.responseText);
         };
         Ext.Ajax.request({
             url: '../WebServiceEx.asmx/JSON_ChkCustomerOp',
@@ -32,17 +32,16 @@ Ext.define('app.util.CustomerProxy', {
     getUnStr: function (instr,callback) {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
-            var strvalue = Ext.decode(data);
-            callback(strvalue[0].ParaValue
-);
+            // var strvalue = Ext.decode(data);
+            callback(data);
         };
         var failureCallback = function (result) {
-            Ext.Msg.alert("加载系统参数失败!");
+            Ext.Msg.alert("加载参数失败!");
         };
        Ext.Ajax.request({
-          url: '../WebServiceEx.asmx/JSON_GetSysParam',
+          url: '../WebServiceEx.asmx/JSON_Decrypt',
           jsonData: {
-              paraCode: instr
+              text: instr
           },
           success: successCallback,
           failure: failureCallback

@@ -77,7 +77,7 @@ Ext.define('app.view.order.ListOrders', {
                                 readOnly: true,
                                 xtype: 'button',
                                 text: '菜品',
-                                width: '45%',
+                                width: '43%',
                                 itemId: 'txtGoodsName',
                                 value: '0'
                             },
@@ -85,7 +85,7 @@ Ext.define('app.view.order.ListOrders', {
                                 readOnly: true,
                                 xtype: 'button',
                                 text: '数量',
-                                width: '13%',
+                                width: '14%',
                                 itemId: 'txtUnit',
                                 value: '0'
                             },

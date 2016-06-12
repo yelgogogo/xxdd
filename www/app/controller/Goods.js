@@ -191,7 +191,7 @@ Ext.define('app.controller.Goods', {
             if (app.IsPresent)
                 Ext.Msg.alert("赠送成功!");
             else
-                Ext.Msg.alert("落单成功!");
+                Ext.Msg.alert("点单成功!");
 
             var goodsStore = Ext.getStore('Goods');
             goodsStore.each(function (record) {
