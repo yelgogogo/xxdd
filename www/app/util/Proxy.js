@@ -95,32 +95,29 @@ Ext.define('app.util.Proxy', {
           failure: failureCallback
        });     
     },
-    getOpenid: function (appid,appsecret,code,callback) {
-        var exurl ='https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+appsecret+'&code='+code+'&grant_type=authorization_code'
+    getOpenid: function (code,callback) {
+        // var exurl ='https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+appsecret+'&code='+code+'&grant_type=authorization_code'
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
-            // var Pname = Ext.decode(data);
             var Json_Room = eval('(' + data + ')');
-            app.CurRoom = Json_Room.openid[0];
-            callback(Json_Room.openid[0]);
+            console.log(data);
+            Ext.Msg.alert(Json_Room.errcode);
+            console.log(Json_Room.errcode);
+            // console.log(Json_Room.errcode[0]);
+            // Ext.Msg.alert(Json_Room.errcode[0]);
+            // callback('sss');
         };
         var failureCallback = function (result) {
-            Ext.Msg.alert("加载系统参数失败!");
+            Ext.Msg.alert("微信认证失败!");
         };
-        window.location.href = exurl;
-        Ext.Msg.alert("opendi!");
-       // Ext.Ajax.request({
-       //    url: exurl,
-       //    jsonData: {
-       //        // access_token: sysparm,
-       //        // expires_in:,
-       //        // refresh_token:,
-       //        // openid: ,
-
-       //    },
-       //    success: successCallback,
-       //    failure: failureCallback
-       // });     
+       Ext.Ajax.request({
+          url: '../WebServiceEx.asmx/JSON_GetWeChatOpenID',
+          jsonData: {
+              code: code,
+          },
+          success: successCallback,
+          failure: failureCallback
+       });     
     },
     loadRoomsJsonP: function (callback) {
 

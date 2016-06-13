@@ -82,10 +82,10 @@ Ext.application({
         Ext.Msg.alert("opendi1!");
         var code = unescape(r[2]);
         if (r != null) {
-            var appid='wx9f51df2624282eb1',
-                appsecret='0f60883c96bd8cc7dec06b3c601f233e';
-                Ext.Msg.alert("opendi2!");
-            app.util.Proxy.getOpenid(appid,appsecret,code, function (openid) {
+            // var appid='wx9f51df2624282eb1',
+            //     appsecret='0f60883c96bd8cc7dec06b3c601f233e';
+            //     Ext.Msg.alert("opendi2!");
+            app.util.Proxy.getOpenid(code, function (openid) {
                 Ext.Msg.alert("opendi3!");
                 var Json_Room = eval('(' + data + ')');
                 app.CurRoom = Json_Room.Room[0];
