@@ -78,52 +78,18 @@ Ext.application({
 
         var reg = new RegExp("(^|&)" + "code" + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
-        console.log(r);
-        Ext.Msg.alert("opendi1!");
-        var code = unescape(r[2]);
+        console.log(r);        
         if (r != null) {
-            // var appid='wx9f51df2624282eb1',
-            //     appsecret='0f60883c96bd8cc7dec06b3c601f233e';
-            //     Ext.Msg.alert("opendi2!");
-            app.util.Proxy.getOpenid(code, function (openid) {
-                Ext.Msg.alert("opendi3!");
-                var Json_Room = eval('(' + data + ')');
-                app.CurRoom = Json_Room.Room[0];
-                switch (openid)
-                {
-                case "041E9sju11tVS60H3Nhu1XVtju1E9sjL":{
-                    console.log("here");
-                    var loginView = Ext.create('app.view.LoginForm');
-                    Ext.Viewport.add([loginView]);
-                    var userStore = Ext.getStore('User').load();
-                    userStore.removeAll();
+            var code = unescape(r[2]);
 
-                    var user = Ext.create("app.model.User");
-                    
-                    user.set("username", "管理员");
-                    user.set("password", "m");
-                    user.set("userno", "1");
-                    user.set("isremember", 0);
-                    user.set("rights", "收银,落单,经理查询".split(","));
-                    userStore.add(user);
-                    userStore.sync();
-                    //Ext.Viewport.setMasked({ xtype: 'loadmask' });
-                    Ext.Viewport.setMasked({ xtype: 'loadmask' });
-                    app.util.Proxy.loadRooms(function () {
-                        var mainView = Ext.create('app.view.room.Card');
-                        Ext.Viewport.add(mainView);
-                        loginView.reset();
-                        loginView.hide();
-                        mainView.show();
-                        Ext.Viewport.setMasked(false);
-                    });
-                   };
-                   break;
-                };
+            app.util.Proxy.getOpenid(code, function (openid) {    
+                app.openid = openid;
+                app.util.Proxy.chkOpenid(app.openid, function () { 
+
+                });
             });
         }
         else{
-            console.log("there");
             var loginView = Ext.create('app.view.LoginForm');
             
             app.util.Proxy.getSysParm('txtPlaceName', function (pname) {

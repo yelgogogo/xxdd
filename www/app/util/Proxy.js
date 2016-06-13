@@ -98,22 +98,85 @@ Ext.define('app.util.Proxy', {
     getOpenid: function (code,callback) {
         // var exurl ='https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+appsecret+'&code='+code+'&grant_type=authorization_code'
         var successCallback = function (resp, ops) {
-            var data = Ext.decode(resp.responseText).d;
-            var Json_Room = eval('(' + data + ')');
-            console.log(data);
-            Ext.Msg.alert(Json_Room.errcode);
-            console.log(Json_Room.errcode);
-            // console.log(Json_Room.errcode[0]);
-            // Ext.Msg.alert(Json_Room.errcode[0]);
-            // callback('sss');
+            var data = Ext.decode(resp.responseText).d; 
+            Json_WX=Ext.decode(data);
+            if (Json_WX.openid == null) {
+                Ext.Msg.alert('提示', data, Ext.emptyFn);
+                return;
+            };
+            console.log(Json_WX.openid);
+            callback(Json_WX.openid);
         };
         var failureCallback = function (result) {
-            Ext.Msg.alert("微信认证失败!");
+            Ext.Msg.alert("微信获取失败!");
         };
        Ext.Ajax.request({
           url: '../WebServiceEx.asmx/JSON_GetWeChatOpenID',
           jsonData: {
               code: code,
+          },
+          success: successCallback,
+          failure: failureCallback
+       });     
+    },
+    chkOpenid: function (openid,callback) {
+        // var exurl ='https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+appsecret+'&code='+code+'&grant_type=authorization_code'
+        thisobj=this;
+        
+        var successCallback = function (resp, ops) {
+            var data = Ext.decode(resp.responseText).d; 
+            
+                //本地登录用户缓存
+            if (data) {
+
+                var result=Ext.decode(data);
+                var userStore = Ext.getStore('User').load();
+                userStore.removeAll();
+
+                var user = Ext.create("app.model.User");
+                user.set("username", result.user);
+                user.set("password", result.password);
+                user.set("userno", result.userno);
+                user.set("isremember", 0);
+                user.set("rights", result.rights);
+                userStore.add(user);
+                userStore.sync();
+                // Ext.Msg.alert(Ext.getStore('User').load().data.items[0].data);
+                //Ext.Viewport.setMasked({ xtype: 'loadmask' });
+                Ext.Viewport.setMasked({ xtype: 'loadmask' });
+                thisobj.loadRooms(function () {
+                    var mainView = Ext.create('app.view.room.Card');
+                    Ext.Viewport.add(mainView);
+                    // loginView.reset();
+                    // loginView.hide();
+                    mainView.show();
+                    Ext.Viewport.setMasked(false);
+
+                });
+            }
+            else{
+                var loginView = Ext.create('app.view.LoginForm');
+                
+                thisobj.getSysParm('txtPlaceName', function (pname) {
+                    loginView.down('toolbar').setTitle(pname);
+                });
+                var userStore = Ext.getStore('User').load();
+                if (userStore.data.length > 0 && userStore.data.items[0].data.isremember == 1) {
+                    loginView.user = userStore.data.items[0].data;
+                    loginView.setValues(loginView.user);
+                }
+                Ext.Viewport.add([loginView]);
+            };
+            // else
+            //     Ext.Msg.alert("用户名或密码错误!");
+        };
+        var failureCallback = function (result) {
+            //Ext.Msg.alert("微信认证失败!");
+        };
+       Ext.Ajax.request({
+          url: '../WebServiceEx.asmx/JSON_CheckWeChatOpenID',
+          jsonData: {
+              openid: openid
           },
           success: successCallback,
           failure: failureCallback

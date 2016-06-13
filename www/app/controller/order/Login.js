@@ -13,7 +13,7 @@ Ext.define('app.controller.order.Login', {
         }
     },
 
-    onlogin: function (button, e, eOpts) {       
+    onlogin: function (button, e, eOpts) {    
         loginView = this.getLoginView(); // Login Form
         values = loginView.getValues();
         var UserNo = values.userno;
@@ -21,6 +21,7 @@ Ext.define('app.controller.order.Login', {
         var IsRemember = values.isremember;
 
         var successCallback = function (resp, ops) {
+            
             var data = Ext.util.JSON.decode(resp.responseText).d;
 
             if (data) {
@@ -46,6 +47,7 @@ Ext.define('app.controller.order.Login', {
                     loginView.hide();
                     mainView.show();
                     Ext.Viewport.setMasked(false);
+
                 });
 
                 //mainView.setActiveItem(1);
