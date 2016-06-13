@@ -9,10 +9,12 @@ Ext.define('app.util.CustomerProxy', {
             var data = Ext.decode(resp.responseText).d;
             if (data.indexOf("{ Room:") == -1) {
                 Ext.Msg.alert('提示', data, Ext.emptyFn);
+                app.CurRoom='';
                 return;
             }
             var Json_Room = eval('(' + data + ')');
             app.CurRoom = Json_Room.Room[0];
+            Ext.Viewport.setMasked(false);
             callback();
         };
         var failureCallback = function (resp, ops) {

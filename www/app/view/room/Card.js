@@ -68,6 +68,7 @@ Ext.define('app.view.room.Card', {
             case "落单":{
                me.CreateMyButton('qrCodeButton', '台码', 'left', true);
                me.CreateMyButton('closeButton', '关台', 'right', true);
+               me.CreateMyButton('clearCusOrderButton', '清空', 'right', true);
                //me.CreateMyButton('queryButton', '消费', 'right', true);
                queryadd = true;
                me.CreateMyButton('customerButton', '自选', 'left', true);         

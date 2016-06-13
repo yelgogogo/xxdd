@@ -28,6 +28,7 @@ Ext.define('app.controller.order.Order', {
             doBalanceButton: '#doBalanceButton',
             refreshButton: '#refreshButton',
             posButton: '#posButton',
+            clearCusOrderButton: '#clearCusOrderButton',
             closeButton: '#closeButton',
             queryButton: '#queryButton',
             hisQueryButton: '#hisqueryButton',
@@ -76,6 +77,9 @@ Ext.define('app.controller.order.Order', {
             },
             orderingsButton: {
                 tap: 'onOkOrder'
+            },
+            clearCusOrderButton: {
+                tap: 'onclearCusOrder'
             },
             //refreshButton: {
             //    tap: 'onRefresh'
@@ -136,6 +140,17 @@ Ext.define('app.controller.order.Order', {
         });
         var goodsview = this.getOrderinglist();
         goodsview.refresh();
+    },
+    //清空顾客自选单
+    onclearCusOrder: function () {
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        var roomCard = this.getRoomContainer();
+        var user = Ext.getStore('User').load().data.items[0].data;
+        app.util.Proxy.clearCusOrder(app.CurRoom.ID,app.CurRoom.RoomOpCode,user.userno,function () {
+                 //dataView.refresh();
+                 roomCard.pop(roomCard.getInnerItems().length - 1);
+                 Ext.Viewport.setMasked(false);
+        });
     },
     //确认撤单
     onConfirmCancel: function () {
@@ -653,6 +668,7 @@ Ext.define('app.controller.order.Order', {
     //顾客自选单
     onCustomerButton_Clicked: function () {
         var me = this;
+        this.showClearCusOrderButton();
         app.util.Proxy.loadCustomerOrder(app.CurRoom.ID, app.CurRoom.RoomOpCode,
              function () {
                  me.selectOrders();
@@ -921,6 +937,20 @@ Ext.define('app.controller.order.Order', {
         }
         posButton.hide();
     },
+    showClearCusOrderButton: function () {
+        var clearCusOrderButton = this.getClearCusOrderButton();
+        if (!clearCusOrderButton || !clearCusOrderButton.isHidden()) {
+            return;
+        }
+        clearCusOrderButton.show();
+    },
+    hideClearCusOrderButton: function () {
+        var clearCusOrderButton = this.getClearCusOrderButton();
+        if (!clearCusOrderButton || clearCusOrderButton.isHidden()) {
+            return;
+        }
+        clearCusOrderButton.hide();
+    },
     showQrCodeButton: function () {
         var qrCodeButton = this.getQrCodeButton();
         if (!qrCodeButton || !qrCodeButton.isHidden()) {
@@ -963,6 +993,7 @@ Ext.define('app.controller.order.Order', {
         this.hideQrCodeButton();
         this.hideCustomerButton();
         this.hideCancelButton();
+        this.hideClearCusOrderButton();
     },
     setButtonVisiable: function (viewType) {
         switch (viewType) {

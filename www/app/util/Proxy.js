@@ -37,6 +37,28 @@ Ext.define('app.util.Proxy', {
           failure: failureCallback
        });     
     },
+    clearCusOrder: function (roomid,op,user,callback) {
+        var successCallback = function (resp, ops) {
+            var data = Ext.decode(resp.responseText).d;
+            // var strvalue = Ext.decode(data);
+            Ext.Msg.alert("清空成功!");
+            callback();
+        };
+        var failureCallback = function (result) {
+            Ext.Msg.alert("清空失败!");
+        };
+        console.log(roomid+"A"+op+"B"+  user);
+       Ext.Ajax.request({
+          url: '../WebServiceEx.asmx/JSON_ClearRoomCustomerOrders',
+          jsonData: {
+                roomID:roomid,
+                opCode:op,
+                userNo:user
+          },
+          success: successCallback,
+          failure: failureCallback
+       });     
+    },
     getEnStr: function (instr,callback) {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
@@ -59,8 +81,7 @@ Ext.define('app.util.Proxy', {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
             var Pname = Ext.decode(data);
-            callback(Pname[0].ParaValue
-);
+            callback(Pname[0].ParaValue);
         };
         var failureCallback = function (result) {
             Ext.Msg.alert("加载系统参数失败!");
@@ -73,6 +94,33 @@ Ext.define('app.util.Proxy', {
           success: successCallback,
           failure: failureCallback
        });     
+    },
+    getOpenid: function (appid,appsecret,code,callback) {
+        var exurl ='https://api.weixin.qq.com/sns/oauth2/access_token?appid='+appid+'&secret='+appsecret+'&code='+code+'&grant_type=authorization_code'
+        var successCallback = function (resp, ops) {
+            var data = Ext.decode(resp.responseText).d;
+            // var Pname = Ext.decode(data);
+            var Json_Room = eval('(' + data + ')');
+            app.CurRoom = Json_Room.openid[0];
+            callback(Json_Room.openid[0]);
+        };
+        var failureCallback = function (result) {
+            Ext.Msg.alert("加载系统参数失败!");
+        };
+        window.location.href = exurl;
+        Ext.Msg.alert("opendi!");
+       // Ext.Ajax.request({
+       //    url: exurl,
+       //    jsonData: {
+       //        // access_token: sysparm,
+       //        // expires_in:,
+       //        // refresh_token:,
+       //        // openid: ,
+
+       //    },
+       //    success: successCallback,
+       //    failure: failureCallback
+       // });     
     },
     loadRoomsJsonP: function (callback) {
 

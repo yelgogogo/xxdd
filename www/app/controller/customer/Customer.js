@@ -117,11 +117,32 @@ Ext.define('app.controller.customer.Customer', {
             this.selectOrders();
     },
     //消费查询
-    onQuery: function () {
+    onQuery : function () {
+        // Ext.Viewport.setMasked({ xtype: 'loadmask' });
+
         var frmMain = this.getCustmainform();
         var curView = frmMain.getActiveItem();
-        if (curView.xtype != 'ordereds')
-            this.loadRoomOrder(app.CurRoom.ID);
+        var reg = new RegExp("(^|&)" + "Key" + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+
+        if (r == null) {
+            Ext.Msg.alert('提示', '地址错误!', Ext.emptyFn);
+            return;
+        }
+        var UnStr = unescape(r[2]);
+        var thisobj = this;
+        app.util.CustomerProxy.getUnStr(UnStr, function (destr) {
+            var para = destr;
+
+            app.util.CustomerProxy.chkCustomerOp(para, function () {
+            // 
+            // Ext.Viewport.setMasked(false);
+                if (curView.xtype != 'ordereds')
+                thisobj.loadRoomOrder(app.CurRoom.ID);
+            });
+        });
+        // if (curView.xtype != 'ordereds')
+        //     this.loadRoomOrder(app.CurRoom.ID);
     },
     loadRoomOrder: function (roomID) {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
