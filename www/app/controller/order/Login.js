@@ -18,6 +18,7 @@ Ext.define('app.controller.order.Login', {
         values = loginView.getValues();
         var UserNo = values.userno;
         var Pwd = values.password;
+        var openid = app.openid;
         var IsRemember = values.isremember;
 
         var successCallback = function (resp, ops) {
@@ -71,7 +72,8 @@ Ext.define('app.controller.order.Login', {
             params: values,
             jsonData: {
                 username: UserNo,
-                password: Pwd
+                password: Pwd,
+                wechatid: openid
             },
             success: successCallback,
             failure: failureCallback
