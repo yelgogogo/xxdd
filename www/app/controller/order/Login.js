@@ -18,7 +18,14 @@ Ext.define('app.controller.order.Login', {
         values = loginView.getValues();
         var UserNo = values.userno;
         var Pwd = values.password;
-        var openid = app.openid;
+        var openid;
+        if (app.openid){
+            openid = app.openid;
+            }
+        else{
+            openid = '';
+        };
+
         var IsRemember = values.isremember;
 
         var successCallback = function (resp, ops) {

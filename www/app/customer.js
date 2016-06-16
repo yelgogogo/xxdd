@@ -72,7 +72,7 @@ Ext.application({
             Ext.Viewport.setMasked({ xtype: 'loadmask' });
             app.util.CustomerProxy.loadCustomerGoods(app.CurRoom.ID, function () {
                 var mainView = Ext.create('app.view.customer.CustMainForm');
-                app.OrderType = '落单';
+                app.OrderType = '下单';
                 //mainView.down('titlebar').setTitle(app.CurRoom.RoomName + ' ' + app.OrderType);
                 app.util.CustomerProxy.getSysParm('txtPlaceName', function (pname) {
                    mainView.down('titlebar').setTitle(pname + ' ' + app.CurRoom.RoomName + ' ' + '下单');

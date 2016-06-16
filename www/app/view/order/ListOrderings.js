@@ -46,29 +46,46 @@ Ext.define('app.view.order.ListOrderings', {
          '</div>'
          ),
         items: [
-            {
-                xtype: 'textfield',
-                itemId: 'txtSubTotal',
-                readOnly: true,
-                docked: 'bottom',
-                label: '合计:'
-            },
+
             {
                 xtype: 'button',
                 itemId: 'btnQueRen',
                 scrollDock: 'bottom',
+
                 docked: 'bottom',
                 ui:'confirm',
                 text: '确认'
             },
-            { 
+            {
+                xtype: 'fieldset',
+                docked: 'bottom',
+                defaults: {                    
+                    xtype: 'textfield',
+                    labelWidth: '50%',
+                    inputCls: 'dxtextright',
+                    flex: 1
+                },
+                layout: 'hbox',
+                items: [
+                    {   
                         xtype: 'togglefield',
+                        width: '50%' ,
                         // name : 'markToggle',
                         // id : 'markToggle',
                         itemId: 'markToggle',
-                        docked: 'bottom',
+                         docked: 'right',
                         label: '全部加辣'
-                    }
+                    },
+                    {
+                        xtype: 'textfield',
+                        itemId: 'txtSubTotal',
+                        readOnly: true,
+                        width: '50%' ,
+                        // docked: 'bottom',
+                        label: '合计:'
+                   },
+               ]
+            }
         ],
 
         selectedCls: 'x-item-pressed',

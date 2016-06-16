@@ -633,6 +633,7 @@ Ext.define('app.controller.order.Order', {
     //生成房台点单二维码
     onQrCodeButton_Clicked: function () {
         //console.log("onGoodsImgClick" + btn);
+        var thisobj=this;
         if (!app.qrCode) {
             app.qrCode = Ext.create('Ext.form.Panel', {
                 itemID: 'goodsImgOverlay',
@@ -642,7 +643,7 @@ Ext.define('app.controller.order.Order', {
                 modal: true,
                 hideOnMaskTap: true,
                 hidden: true,
-                width: 400,
+                width: 300,
                 height: 400,
                 contentEl: '',
                 styleHtmlContent: true,
@@ -653,17 +654,20 @@ Ext.define('app.controller.order.Order', {
                 }
             });
         }
-        var outstr;
+
        app.util.Proxy.getEnStr(app.CurRoom.RoomOpCode + app.CurRoom.ID, function (enstr) {
-            var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Key=" + enstr;
+        var myUrl = Ext.global.window.location.href.replace(/order\.html.*$/g,'customer.html') + "?Key=" + enstr;
+        // window.location=myUrl;
+        // var myUrl = "?Key=" + enstr;
         // var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Op=" + app.CurRoom.RoomOpCode + app.CurRoom.ID;
-        var url = "http://qr.topscan.com/api.php?&w=300&text=" + myUrl;
+        var url = "http://qr.topscan.com/api.php?&w=260&text=" + myUrl;
         console.log(url);
+        // Ext.Msg.show({"msg":myUrl});
         //app.qrCode.setHtml('<img src="http://qr.topscan.com/api.php?text="' + window.location.href + app.CurRoom.RoomOpCode + '>');
         app.qrCode.setHtml('<h3 align="center">扫描二维码点单</h3><p style="text-align:center"><img align="center" src="' + url + '"/></p>');
-        
+        app.qrCode.showBy(thisobj.getQrCodeButton());
        });
-       app.qrCode.showBy(this.getQrCodeButton());
+       
     },
     //顾客自选单
     onCustomerButton_Clicked: function () {

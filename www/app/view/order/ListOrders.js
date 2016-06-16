@@ -15,10 +15,10 @@ Ext.define('app.view.order.ListOrders', {
         //<a href="http://cli.im/api/qrcode">201505150002</a> 二维码
         itemTpl: [
             '<div class="bh" style = "background-color:{BackColor};color: {ForeColor}">',
-            '<div class="bone" style = "width:25%">{GoodsTypeName}</div>',
-            '<div class="bone" style = "width:48%">{GoodsName}</div>',
+            '<div class="bone" style = "width:20%">{GoodsTypeName}</div>',
+            '<div class="bone" style = "width:47%">{GoodsName}</div>',
           //  '<div class="bone" style = "width:15%">{GoodsTypeName}<br />状态:{Status}</div>',
-            '<div class="bone" style = "width:12%">{GoodsCount}{Unit}</div>',
+            '<div class="bone" style = "width:14%">{GoodsCount}{Unit}</div>',
             '<div class="bone" style = "width:15%;text-align:right;padding-right:10px">{SubTotal}</div>',
          // '<div class="bone" style = "width:30%;text-align:right;">{PresentUser}<br />{OrderTime}</div>',
             '</div>',
@@ -70,7 +70,7 @@ Ext.define('app.view.order.ListOrders', {
                                 xtype: 'button',
                                 readOnly: true,
                                 text: '分类',
-                                width: '23%',
+                                width: '20%',
                                 itemId: 'txtGoodsType'
                             },
                             {
@@ -85,7 +85,7 @@ Ext.define('app.view.order.ListOrders', {
                                 readOnly: true,
                                 xtype: 'button',
                                 text: '数量',
-                                width: '14%',
+                                width: '15%',
                                 itemId: 'txtUnit',
                                 value: '0'
                             },
