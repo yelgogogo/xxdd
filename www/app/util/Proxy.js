@@ -525,6 +525,10 @@ loadHisOrder: function (roomID, callback) {
 loadCustomerOrder: function (roomID, opCode, callback) {
 
     var goodsStore = Ext.getStore('Goods');
+    goodsStore.clearFilter(true);
+    goodsStore.each(function (item, index, length) {
+            item.data.GoodsCount = 0;
+        });
 
     var successCallback = function (resp, ops) {
         var data = Ext.decode(resp.responseText).d;
@@ -537,6 +541,8 @@ loadCustomerOrder: function (roomID, opCode, callback) {
                     Ext.Array.each(goods.data.GoodsDetails, function (gdetail) {
                         if (gdetail.ID == detail.ID)
                             gdetail.GoodsDetailCount = detail.GoodsDetailCount;
+                        else
+                            gdetail.GoodsDetailCount = 0;
                     });
                 });
             }
