@@ -532,6 +532,10 @@ loadCustomerOrder: function (roomID, opCode, callback) {
 
     var successCallback = function (resp, ops) {
         var data = Ext.decode(resp.responseText).d;
+        if(!data){ 
+            Ext.Msg.alert("无客人自选单信息!");
+            return;
+        };
         var Json_CustomerOrder = Ext.decode(data);
         Ext.Array.each(Json_CustomerOrder, function (main) {
             var goods = goodsStore.findRecord('ID', main.ID);

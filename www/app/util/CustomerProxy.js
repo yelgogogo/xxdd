@@ -8,7 +8,7 @@ Ext.define('app.util.CustomerProxy', {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
             if (data.indexOf("{ Room:") == -1) {
-                Ext.Msg.alert('提示', data, Ext.emptyFn);
+                Ext.Msg.alert('返回提示', data, Ext.emptyFn);
                 app.CurRoom='';
                 return;
             }
@@ -162,10 +162,13 @@ Ext.define('app.util.CustomerProxy', {
             orderStore.add(temp);
             var data = Ext.decode(resp.responseText).d;
             var Json_Order = eval('(' + data + ')');
+            roomcount = 0;
             Ext.Array.each(Json_Order.Orders, function (order) {
                 orderModel = Ext.create('app.model.Order', order);
+                roomcount += order.SubTotal;
                 orderStore.add(orderModel);
             });
+            
             //var temp = Ext.create('app.model.Order', { 'GoodsName': '菜品','GoodsTypeName': '分类', 'Price': '价格', 'Unit': '', 'GoodsCount': '数量', 'SubTotal': '小计', 'PresentUser': '落单人', 'OpCode':orderModel.data.OpCode });
             //orderStore.insert(0, temp);
             //更新该房台的记录

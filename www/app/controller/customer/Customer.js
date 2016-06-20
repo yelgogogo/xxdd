@@ -9,7 +9,7 @@ Ext.define('app.controller.customer.Customer', {
             goodstypelist: 'goodstypes',
             orderingslist: 'orderings',
             orderedlist: 'ordereds',
-
+            txtConsumed: '#txtConsumed',
             orderingsButton: 'orderings button',
             queryButton: '#queryButton',
             orderButton: '#orderButton'
@@ -21,6 +21,9 @@ Ext.define('app.controller.customer.Customer', {
             },
             goodslist: {
                 onPackGoodsClicked: 'onPackGoodsClicked'
+            },
+            orderedlist: {
+                activate: 'onRoomOrdersActivate'
             },
             goodstypelist: {
                 initialize: 'initGoodsType',
@@ -48,6 +51,12 @@ Ext.define('app.controller.customer.Customer', {
 
     },
     initOrderings: function (dataView, eOpts) {
+    },
+    onRoomOrdersActivate: function () {
+        // var room = app.CurRoom;
+        // this.getTxtReserver().setValue(room.ReservationEmpName + '(' + room.ReservationDateTime + ')');
+        this.getTxtConsumed().setValue(roomcount);
+        // this.getTxtPresented().setValue(room.PresentAmount);
     },
     onGoodsTypeTap: function (dataView, index, dataItem, dataItemModel, e, eOpts) {
         //console.log('onGoodsTypeTap' + dataItemModel);        
@@ -98,23 +107,38 @@ Ext.define('app.controller.customer.Customer', {
     },
     //落单
     onLuodan: function () {
-        app.OrderType = '落单';
-        var frmMain = this.getCustmainform();
-        var curView = frmMain.getActiveItem();
-        if (curView.xtype == 'ordereds') {
-            Ext.Viewport.setMasked({ xtype: 'loadmask' });
-            app.util.Proxy.loadOrderGoods(app.CurRoom.ID, function () {
-                //点击房台后，先载入房台消费信息或者载入菜品信息 
-                if (!this.goodstypelist) {
-                    this.goodstypelist = Ext.widget('goodstypelist');
-                }
-                frmMain.push(this.goodstypelist);
-                //frmMain.applyActiveItem(this.goodstypelist, curView);                
-                Ext.Viewport.setMasked(false);
-            });
+        var reg = new RegExp("(^|&)" + "Key" + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+
+        if (r == null) {
+            Ext.Msg.alert('检查提示', '地址错误!', Ext.emptyFn);
+            return;
         }
-        else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods')
-            this.selectOrders();
+        var UnStr = unescape(r[2]);
+        var thisobj = this;
+        app.util.CustomerProxy.getUnStr(UnStr, function (destr) {
+            var para = destr;
+
+            app.util.CustomerProxy.chkCustomerOp(para, function () {
+                app.OrderType = '落单';
+                var frmMain = thisobj.getCustmainform();
+                var curView = frmMain.getActiveItem();
+                if (curView.xtype == 'ordereds') {
+                    Ext.Viewport.setMasked({ xtype: 'loadmask' });
+                    app.util.Proxy.loadOrderGoods(app.CurRoom.ID, function () {
+                        //点击房台后，先载入房台消费信息或者载入菜品信息 
+                        if (!this.goodstypelist) {
+                            this.goodstypelist = Ext.widget('goodstypelist');
+                        }
+                        frmMain.push(this.goodstypelist);
+                        //frmMain.applyActiveItem(this.goodstypelist, curView);                
+                        Ext.Viewport.setMasked(false);
+                    });
+                }
+                else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods')
+                    thisobj.selectOrders();
+            });
+        });
     },
     //消费查询
     onQuery : function () {
@@ -126,7 +150,7 @@ Ext.define('app.controller.customer.Customer', {
         var r = window.location.search.substr(1).match(reg);
 
         if (r == null) {
-            Ext.Msg.alert('提示', '地址错误!', Ext.emptyFn);
+            Ext.Msg.alert('检查提示', '地址错误!', Ext.emptyFn);
             return;
         }
         var UnStr = unescape(r[2]);
@@ -158,6 +182,7 @@ Ext.define('app.controller.customer.Customer', {
             frmMain.push(this.orderedlist);
             Ext.Viewport.setMasked(false);
         });
+
     },
     //确认下单
     onOkOrder: function () {
@@ -206,7 +231,7 @@ Ext.define('app.controller.customer.Customer', {
                 frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' ' + app.OrderType);
                 break;
             case "ordereds":
-                this.showOrderButton();
+                this.hideOrderButton();
                 this.hideQueryButton();
                 break;
             default:
