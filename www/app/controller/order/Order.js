@@ -250,6 +250,12 @@ Ext.define('app.controller.order.Order', {
         this.getTxtConsumed().setValue(room.ConsumeAmount);
         this.getTxtPresented().setValue(room.PresentAmount);
     },
+    onRoomHisOrdersActivate: function () {
+        // var room = app.CurRoom;
+        // this.getTxtReserver().setValue(room.ReservationEmpName + '(' + room.ReservationDateTime + ')');
+        this.getTxtConsumed().setValue(app.roomhisconsumed);
+        // this.getTxtPresented().setValue(room.PresentAmount);
+    },
     loadRoomOrder: function (roomID) {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var frmMain = this.getRoomContainer();
@@ -720,6 +726,25 @@ Ext.define('app.controller.order.Order', {
         var pB = this.getPosOkButton();
         var cB = this.getCloseButton2();
         var dataView = this.getRoomslist();
+        var strrights = '经理查询';
+        var templateid = 'J2Y3L14ThLGBnniv1DxDG-5X6DGYRbU8gsSsYEBt2OQ';
+        var url = '';
+        var Sysdate = new Date();  
+        var Curdate = Ext.Date.format(Sysdate, 'Y-m-d H:i:s'); 
+        var first = { value: app.CurRoom.RoomName+'已结账完成', color: '#173177' },
+            tName = { value: this.getTxtTotalMoney().getValue()+'元, 支付方式为:' + this.getTxtPayMode().getValue(), color: '#173177' },
+            storeName = { value: app.CurPlace, color: '#173177' },
+            gTime = { value: Curdate, color: '#173177' },
+            remark = { value: '星星点单消息推送', color: '#173177' };
+
+        var weChatData =
+            {
+                first: first,
+                tName: tName,
+                storeName: storeName,
+                gTime: gTime,
+                remark: remark
+            };
         app.util.Proxy.posRoom(app.CurRoom.ID,
         this.getTxtTotalMoney().getValue(),
         this.getTxtTruePayMoney().getValue(),
@@ -730,6 +755,7 @@ Ext.define('app.controller.order.Order', {
                  pB.hide();
                  cB.show();
                  dataView.refresh();
+                 app.util.Proxy.sendMsg(strrights,templateid,url,weChatData,function () {})
              })
     },
     //确认下单

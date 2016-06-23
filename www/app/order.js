@@ -76,6 +76,10 @@ Ext.application({
             }
         });
 
+        app.util.Proxy.getSysParm('txtPlaceName', function (pname) {
+            app.CurPlace = pname;
+        });
+
         var reg = new RegExp("(^|&)" + "code" + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
         console.log(r);        
@@ -93,7 +97,8 @@ Ext.application({
             var loginView = Ext.create('app.view.LoginForm');
             
             app.util.Proxy.getSysParm('txtPlaceName', function (pname) {
-                loginView.down('toolbar').setTitle(pname);
+                app.CurPlace = pname;
+                loginView.down('toolbar').setTitle(app.CurPlace);
             });
             var userStore = Ext.getStore('User').load();
             if (userStore.data.length > 0 && userStore.data.items[0].data.isremember == 1) {

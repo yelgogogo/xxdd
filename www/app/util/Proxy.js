@@ -17,6 +17,28 @@ Ext.define('app.util.Proxy', {
     //            }
     //        });
     //requires: ['Ext.data.proxy.JsonP'],
+    sendMsg: function (strrights,templateid,url,weChatData,callback) {
+        var successCallback = function (resp, ops) {
+            var data = Ext.decode(resp.responseText).d;
+            // var strvalue = Ext.decode(data);
+            // Ext.Msg.alert("撤单成功!");
+            callback();
+        };
+        var failureCallback = function (result) {
+            Ext.Msg.alert("消息发送失败!");
+        };
+       Ext.Ajax.request({
+          url: '../WebServiceEx.asmx/JSON_SendWeChatTemplateMessageToRights',
+          jsonData: {
+                strrights: strrights,
+                templateID: templateid,
+                url: url,
+                sendData: Ext.encode(weChatData)
+          },
+          success: successCallback,
+          failure: failureCallback
+       });     
+    },
     cancelorders: function (instr,callback) {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
@@ -495,8 +517,9 @@ loadHisOrder: function (roomID, callback) {
                orderStore.add(temp);
 //           };
         };
-        temp=Ext.create('app.model.Order', { 'Unit': '总计','SubTotal': sum});
-        orderStore.add(temp);
+        app.roomhisconsumed = sum;
+        // temp=Ext.create('app.model.Order', { 'Unit': '总计','SubTotal': sum});
+        // orderStore.add(temp);
       //  orderStore.clearFilter(true);
       //  orderStore.filterBy(function (Orders) {
       //      return Orders.get('OpCode') != app.CurRoom.RoomOpCode

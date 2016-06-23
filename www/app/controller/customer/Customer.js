@@ -120,7 +120,7 @@ Ext.define('app.controller.customer.Customer', {
             var para = destr;
 
             app.util.CustomerProxy.chkCustomerOp(para, function () {
-                app.OrderType = '落单';
+                app.OrderType = '下单';
                 var frmMain = thisobj.getCustmainform();
                 var curView = frmMain.getActiveItem();
                 if (curView.xtype == 'ordereds') {
