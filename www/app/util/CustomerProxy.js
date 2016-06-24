@@ -21,7 +21,7 @@ Ext.define('app.util.CustomerProxy', {
             Ext.Msg.alert("钥匙读取错误!", resp.responseText);
         };
         Ext.Ajax.request({
-            url: '../WebServiceEx.asmx/JSON_ChkCustomerOp',
+            url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_ChkCustomerOp',
             jsonData: {
                 opCode: opCode,
                 roomID: roomID
@@ -41,7 +41,7 @@ Ext.define('app.util.CustomerProxy', {
             Ext.Msg.alert("加载参数失败!");
         };
        Ext.Ajax.request({
-          url: '../WebServiceEx.asmx/JSON_Decrypt',
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Decrypt',
           jsonData: {
               text: instr
           },
@@ -60,7 +60,7 @@ Ext.define('app.util.CustomerProxy', {
             Ext.Msg.alert("加载系统参数失败!");
         };
        Ext.Ajax.request({
-          url: '../WebServiceEx.asmx/JSON_GetSysParam',
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_GetSysParam',
           jsonData: {
               paraCode: sysparm
           },
@@ -100,7 +100,7 @@ Ext.define('app.util.CustomerProxy', {
             Ext.Msg.alert("加载菜品失败!", resp.responseText);
         };
         Ext.Ajax.request({
-            url: '../WebServiceEx.asmx/JSON_Get_RoomGoods',
+            url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Get_RoomGoods',
             jsonData: {
                 roomID: roomID
             },
@@ -141,7 +141,7 @@ Ext.define('app.util.CustomerProxy', {
             Ext.Msg.alert("加载菜品失败!", resp.responseText);
         };
         Ext.Ajax.request({
-            url: '../WebServiceEx.asmx/JSON_Get_RoomMemberGoods',
+            url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Get_RoomMemberGoods',
             jsonData: {
                 roomID: roomID
             },
@@ -179,7 +179,7 @@ Ext.define('app.util.CustomerProxy', {
             Ext.Msg.alert("加载已点单失败!", resp.responseText);
         };
         Ext.Ajax.request({
-            url: '../WebServiceEx.asmx/JSON_GetRoomOrderList',
+            url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_GetRoomOrderList',
             jsonData: {
                 roomID: roomID
             },
@@ -205,7 +205,7 @@ Ext.define('app.util.CustomerProxy', {
         };
         Ext.Ajax.request({
             method: 'POST',
-            url: '../WebServiceEx.asmx/JSON_Add_CustomerOrders',
+            url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Add_CustomerOrders',
             async: true, //异步执行
             params: submitMobile,
             jsonData: {

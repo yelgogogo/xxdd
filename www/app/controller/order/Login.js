@@ -71,7 +71,7 @@ Ext.define('app.controller.order.Login', {
 
         //TODO: Login using server-side authentication service        
         Ext.Ajax.request({
-            url: '../WebServiceEx.asmx/JSON_CheckPassword',
+            url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_CheckPassword',
             //            headers: {
             //                'Content-Type': 'application/json;utf-8'
             //            },

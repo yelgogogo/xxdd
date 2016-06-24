@@ -46,6 +46,7 @@ Ext.application({
     ],
 
     launch: function () {
+        app.pgmid='';
         Ext.override(Ext.util.SizeMonitor, {
             constructor: function (config) {
                 var namespace = Ext.util.sizemonitor;

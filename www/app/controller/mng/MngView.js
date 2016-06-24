@@ -348,7 +348,7 @@ Ext.define('app.controller.mng.MngView', {
         };
         Ext.Ajax.request({
             method: 'POST',
-            url: '../WebServiceEx.asmx/JSON_Add_Orders',
+            url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Add_Orders',
             async: true, //异步执行
             params: dataToBeSentToServer,
             jsonData: {

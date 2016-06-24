@@ -555,7 +555,7 @@ Ext.define('app.controller.order.Order', {
                 };
                 Ext.Ajax.request({
                     method: 'POST',
-                    url: '../WebServiceEx.asmx/JSON_CheckMemberCard',
+                    url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_CheckMemberCard',
                     async: true, //异步执行
                     //params: text,
                     jsonData: {

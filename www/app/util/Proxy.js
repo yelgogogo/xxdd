@@ -3,7 +3,7 @@ Ext.define('app.util.Proxy', {
     singleton: true,
     //1.webservice 默认支持post 所以需要webconfig里添加支持 get post，Jsonp默认是get 发送，params传参
     //     Ext.data.JsonP.request({
-    //            url: '../WebServiceEx.asmx/TestJsonp',
+    //            url: '../'+app.pgmid+'WebServiceEx.asmx/TestJsonp',
     //            callbackKey: 'callback',
     //            params: {
     //                v1: 'abc'
@@ -28,7 +28,7 @@ Ext.define('app.util.Proxy', {
             Ext.Msg.alert("消息发送失败!");
         };
        Ext.Ajax.request({
-          url: '../WebServiceEx.asmx/JSON_SendWeChatTemplateMessageToRights',
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_SendWeChatTemplateMessageToRights',
           jsonData: {
                 strrights: strrights,
                 templateID: templateid,
@@ -50,7 +50,7 @@ Ext.define('app.util.Proxy', {
             Ext.Msg.alert("撤单失败!");
         };
        Ext.Ajax.request({
-          url: '../WebServiceEx.asmx/JSON_CancelOrders',
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_CancelOrders',
           jsonData: {
               cancelOrders : instr,
               userNo:Ext.getStore('User').load().data.items[0].data.userno
@@ -71,7 +71,7 @@ Ext.define('app.util.Proxy', {
         };
         console.log(roomid+"A"+op+"B"+  user);
        Ext.Ajax.request({
-          url: '../WebServiceEx.asmx/JSON_ClearRoomCustomerOrders',
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_ClearRoomCustomerOrders',
           jsonData: {
                 roomID:roomid,
                 opCode:op,
@@ -91,7 +91,7 @@ Ext.define('app.util.Proxy', {
             Ext.Msg.alert("加载参数失败!");
         };
        Ext.Ajax.request({
-          url: '../WebServiceEx.asmx/JSON_Encrypt',
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Encrypt',
           jsonData: {
               text: instr
           },
@@ -109,7 +109,7 @@ Ext.define('app.util.Proxy', {
             Ext.Msg.alert("加载系统参数失败!");
         };
        Ext.Ajax.request({
-          url: '../WebServiceEx.asmx/JSON_GetSysParam',
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_GetSysParam',
           jsonData: {
               paraCode: sysparm
           },
@@ -133,7 +133,7 @@ Ext.define('app.util.Proxy', {
             Ext.Msg.alert("微信获取失败!");
         };
        Ext.Ajax.request({
-          url: '../WebServiceEx.asmx/JSON_GetWeChatOpenID',
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_GetWeChatOpenID',
           jsonData: {
               code: code,
           },
@@ -196,7 +196,7 @@ Ext.define('app.util.Proxy', {
             //Ext.Msg.alert("微信认证失败!");
         };
        Ext.Ajax.request({
-          url: '../WebServiceEx.asmx/JSON_CheckWeChatOpenID',
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_CheckWeChatOpenID',
           jsonData: {
               openid: openid
           },
@@ -228,7 +228,7 @@ Ext.define('app.util.Proxy', {
             Ext.Msg.alert("加载房台失败!");
         };
         Ext.data.JsonP.request({
-            url: '../WebServiceEx.asmx/JSONP_Get_Room',
+            url: '../'+app.pgmid+'WebServiceEx.asmx/JSONP_Get_Room',
             callbackKey: 'callback',
             success: successCallback,
             failure: failureCallback
@@ -261,7 +261,7 @@ Ext.define('app.util.Proxy', {
             Ext.Msg.alert("加载房台失败!", resp.responseText);
         };
         Ext.Ajax.request({
-            url: '../WebServiceEx.asmx/JSON_Get_Room',
+            url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Get_Room',
             jsonData: {
             //RoomAreaId: '1'
         },
@@ -302,7 +302,7 @@ loadOrderGoods: function (roomID, callback) {
         Ext.Msg.alert("加载菜品失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_Get_RoomGoods',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Get_RoomGoods',
         jsonData: {
             roomID: roomID
         },
@@ -339,7 +339,7 @@ loadOrderGoods: function (roomID, callback) {
 //         Ext.Msg.alert("加载已点单失败!", resp.responseText);
 //     };
 //     Ext.Ajax.request({
-//         url: '../WebServiceEx.asmx/JSON_GetRoomOrderList',
+//         url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_GetRoomOrderList',
 //         jsonData: {
 //             roomID: roomID
 //         },
@@ -380,7 +380,7 @@ loadOrderMemGoods: function (roomID, callback) {
         Ext.Msg.alert("加载菜品失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_Get_RoomMemberGoods',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Get_RoomMemberGoods',
         jsonData: {
             roomID: roomID
         },
@@ -421,7 +421,7 @@ loadPresentGoods: function (roomID, callback) {
         Ext.Msg.alert("加载菜品失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_Get_PresentGoods',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Get_PresentGoods',
         jsonData: {
             roomID: roomID,
             PresentUserNO: Ext.getStore('User').load().data.items[0].data.userno
@@ -460,7 +460,7 @@ loadOrder: function (roomID, callback) {
         Ext.Msg.alert("加载已点单失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_GetRoomOrderList',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_GetRoomOrderList',
         jsonData: {
             roomID: roomID
         },
@@ -537,7 +537,7 @@ loadHisOrder: function (roomID, callback) {
         Ext.Msg.alert("加载已点单失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_GetRoomHisOrderList',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_GetRoomHisOrderList',
         jsonData: {
             roomID: roomID
         },
@@ -584,7 +584,7 @@ loadCustomerOrder: function (roomID, opCode, callback) {
         Ext.Msg.alert("加载已点单失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_GetRoomCustomerOrderList',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_GetRoomCustomerOrderList',
         jsonData: {
             roomID: roomID,
             opCode: opCode
@@ -611,7 +611,7 @@ loadOverView: function (callback) {
         Ext.Msg.alert("加载实时营业总览失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_GetManagerOverView',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_GetManagerOverView',
         jsonData: {
     },
     success: successCallback,
@@ -640,7 +640,7 @@ openRoom: function (roomID, callback) {
         Ext.Msg.alert("开台失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_OpenRoom',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_OpenRoom',
         jsonData: {
             roomID: roomID,
             userNo: Ext.getStore('User').load().data.items[0].data.userno
@@ -674,7 +674,7 @@ orderRoom: function (submitMobile, callback) {
     };
     Ext.Ajax.request({
         method: 'POST',
-        url: '../WebServiceEx.asmx/JSON_Add_Orders',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_Add_Orders',
         async: true, //异步执行
         params: submitMobile,
         jsonData: {
@@ -706,7 +706,7 @@ posRoom: function (roomID, totalMoney, trueMoney, payMode, callback) {
         Ext.Msg.alert("买单失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_PosRoom',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_PosRoom',
         jsonData: {
             roomID: roomID,
             totalMoney: totalMoney,
@@ -740,7 +740,7 @@ closeRoom: function (roomID, callback) {
         Ext.Msg.alert("关台失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_CloseRoom',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_CloseRoom',
         jsonData: {
             roomID: roomID,
             userNo: Ext.getStore('User').load().data.items[0].data.userno
@@ -766,7 +766,7 @@ doBalance: function (callback) {
         Ext.Msg.alert("营业结束失败!", resp.responseText);
     };
     Ext.Ajax.request({
-        url: '../WebServiceEx.asmx/JSON_BoBalance',
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_BoBalance',
         jsonData: {
             userNo: Ext.getStore('User').load().data.items[0].data.userno
         },
