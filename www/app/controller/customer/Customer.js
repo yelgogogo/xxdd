@@ -12,9 +12,13 @@ Ext.define('app.controller.customer.Customer', {
             txtConsumed: '#txtConsumed',
             orderingsButton: 'orderings button',
             queryButton: '#queryButton',
+            markToggleButton: 'orderings #markToggle',
             orderButton: '#orderButton'
         },
         control: {
+            markToggleButton: {
+                change: 'onmarkToggle'
+            },
             custmainform: {
                 push: 'onMainPush',
                 pop: 'onMainPop'
@@ -51,6 +55,19 @@ Ext.define('app.controller.customer.Customer', {
 
     },
     initOrderings: function (dataView, eOpts) {
+    },
+    //全部加辣
+    onmarkToggle: function (field, slider, thumb, newValue, oldValue) {
+        var goodsStore = Ext.getStore('Goods');
+
+        goodsStore.each(function (records) {
+            if (newValue == 1)
+                records.data.Remarks = '加辣';
+            else
+                records.data.Remarks = '';
+        });
+        var goodsview = this.getOrderingslist();
+        goodsview.refresh();
     },
     onRoomOrdersActivate: function () {
         // var room = app.CurRoom;
@@ -189,6 +206,7 @@ Ext.define('app.controller.customer.Customer', {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var goodsStore = Ext.getStore('Goods');
         var allData = [];
+        var msgtxt = '';
         goodsStore.filterBy(function (goods) {
             return goods.get('GoodsCount') > 0;
         });
@@ -199,6 +217,7 @@ Ext.define('app.controller.customer.Customer', {
                     return goodsDetail.GoodsDetailCount > 0;
                 });
             }
+            msgtxt += records.data.GoodsName + ' ' + records.data.GoodsCount + records.data.Unit + records.data.Remarks +';'
             delete records.data.id;
             allData.push(records.data);
         });
@@ -206,6 +225,25 @@ Ext.define('app.controller.customer.Customer', {
             Ext.Viewport.setMasked(false);
             return;
         }
+        var strrights = '落单';
+        var templateid = 'tc6Ayn7IGJk5BtQzi94BniwSqHMb3ErgG7rZwpL1eoA';
+        var url = '';
+        var Sysdate = new Date();  
+        var Curdate = Ext.Date.format(Sysdate, 'Y-m-d H:i:s'); 
+        var first = { value: app.CurPlace + ' 客户在线点单提醒', color: '#173177' },
+            keyword1 = { value: app.CurRoom.RoomName, color: '#173177' },
+            keyword2 = { value: Curdate, color: '#173177' },
+            keyword3 = { value: msgtxt, color: '#173177' },
+            remark = { value: '星星点单消息推送', color: '#173177' };
+
+        var weChatData =
+            {
+                first: first,
+                keyword1: keyword1,
+                keyword2: keyword2,
+                keyword3: keyword3,
+                remark: remark
+            };
         var submitMobile = {};
         submitMobile.SubmitOrders = allData;
         submitMobile.orderType = app.OrderType;
@@ -218,6 +256,7 @@ Ext.define('app.controller.customer.Customer', {
         app.util.CustomerProxy.orderRoom(dataToBeSentToServer, function () {
             frmMain.pop(frmMain.getInnerItems().length - 1);
             app.util.CustomerProxy.loadCustomerGoods(app.CurRoom.ID, function () { });
+            app.util.CustomerProxy.sendMsg(strrights,templateid,url,weChatData,function () {})
         });
     },
     setButtonVisiable: function (viewType) {

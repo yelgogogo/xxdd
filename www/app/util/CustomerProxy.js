@@ -1,6 +1,28 @@
 Ext.define('app.util.CustomerProxy', {
 
     singleton: true,
+    sendMsg: function (strrights,templateid,url,weChatData,callback) {
+        var successCallback = function (resp, ops) {
+            var data = Ext.decode(resp.responseText).d;
+            // var strvalue = Ext.decode(data);
+            // Ext.Msg.alert("撤单成功!");
+            callback();
+        };
+        var failureCallback = function (result) {
+            Ext.Msg.alert("消息发送失败!");
+        };
+       Ext.Ajax.request({
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_SendWeChatTemplateMessageToRights',
+          jsonData: {
+                strrights: strrights,
+                templateID: templateid,
+                url: url,
+                sendData: Ext.encode(weChatData)
+          },
+          success: successCallback,
+          failure: failureCallback
+       });     
+    },
     chkCustomerOp: function (Op, callback) {
         var opCode = Op.substr(0, 12);
         var roomID = Op.substring(12, 20);

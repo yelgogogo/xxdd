@@ -6,7 +6,7 @@ Ext.define('app.controller.order.Order', {
             roomContainer: 'roomContainer',
             roomslist: 'rooms',
             orderedlist: 'ordereds',
-            orderinglist: 'orderings',
+            orderingslist: 'orderings',
             orderedgoodslist: 'orderedgoods',
             goodslist: 'goods',
             goodstypelist: 'goodstypes',
@@ -138,7 +138,7 @@ Ext.define('app.controller.order.Order', {
             else
                 records.data.Remarks = '';
         });
-        var goodsview = this.getOrderinglist();
+        var goodsview = this.getOrderingslist();
         goodsview.refresh();
     },
     //清空顾客自选单
@@ -755,7 +755,7 @@ Ext.define('app.controller.order.Order', {
                  pB.hide();
                  cB.show();
                  dataView.refresh();
-                 app.util.Proxy.sendMsg(strrights,templateid,url,weChatData,function () {})
+                 app.util.Proxy.sendMsg(strrights,templateid,url,weChatData,function () {});
              })
     },
     //确认下单
@@ -1052,6 +1052,7 @@ Ext.define('app.controller.order.Order', {
                     this.showCustomerButton();
                 }
                 this.hidePosButton();
+                this.hideCancelButton();
                 this.hideCloseButton();
                 var frmMain = this.getRoomContainer();
                 frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + app.OrderType);

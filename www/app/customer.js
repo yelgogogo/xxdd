@@ -23,11 +23,11 @@ Ext.application({
     'order.ListGoodsType',
     'order.ListOrderings',
     'order.ListOrders',
-
     'customer.CustMainForm'
     ],
 
     launch: function () {
+        app.pgmid='';
         Ext.override(Ext.util.SizeMonitor, {
             constructor: function (config) {
                 var namespace = Ext.util.sizemonitor;
@@ -75,7 +75,8 @@ Ext.application({
                 app.OrderType = '下单';
                 //mainView.down('titlebar').setTitle(app.CurRoom.RoomName + ' ' + app.OrderType);
                 app.util.CustomerProxy.getSysParm('txtPlaceName', function (pname) {
-                   mainView.down('titlebar').setTitle(pname + ' ' + app.CurRoom.RoomName + ' ' + '下单');
+                    app.CurPlace = pname;
+                    mainView.down('titlebar').setTitle(pname + ' ' + app.CurRoom.RoomName + ' ' + '下单');
                 });
                 Ext.Viewport.add(mainView);
                 Ext.Viewport.setMasked(false);

@@ -563,6 +563,7 @@ loadCustomerOrder: function (roomID, opCode, callback) {
         Ext.Array.each(Json_CustomerOrder, function (main) {
             var goods = goodsStore.findRecord('ID', main.ID);
             goods.data.GoodsCount = main.GoodsCount;
+            goods.data.Remarks = main.Remarks;
             if (main.GoodsDetails) {
                 Ext.Array.each(main.GoodsDetails, function (detail) {
                     Ext.Array.each(goods.data.GoodsDetails, function (gdetail) {
