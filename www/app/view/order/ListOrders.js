@@ -53,7 +53,8 @@ Ext.define('app.view.order.ListOrders', {
                             label: '赠送合计',
                             itemId: 'txtPresented',
                             value: '0'
-                        },
+                        }
+
                                             
                     ]
             },

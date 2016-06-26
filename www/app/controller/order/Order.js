@@ -24,6 +24,7 @@ Ext.define('app.controller.order.Order', {
             txtPresented: '#txtPresented',
             orderingsButton: 'orderings button',
             markToggleButton: 'orderings #markToggle',
+            markToggle2Button: 'orderings #markToggle2',
             confirmCancel: 'orderedgoods #confirmCancel',
             doBalanceButton: '#doBalanceButton',
             refreshButton: '#refreshButton',
@@ -39,6 +40,7 @@ Ext.define('app.controller.order.Order', {
             presentButton: '#presentButton',
             qrCodeButton: '#qrCodeButton',
             customerButton: '#customerButton',
+            exchangeButton: '#exchangeButton',
 
             posButton: '#posButton',
             posOkButton: 'pos #posOkButton',
@@ -48,8 +50,12 @@ Ext.define('app.controller.order.Order', {
             markToggleButton: {
                 change: 'onmarkToggle'
             },
+            markToggle2Button: {
+                change: 'onmarkToggle2'
+            },
             roomContainer: {
-                pop: 'onMainPop'
+                pop: 'onMainPop',
+                push: 'onMainPush'
             },
             orderedlist: {
                 activate: 'onRoomOrdersActivate'
@@ -92,6 +98,9 @@ Ext.define('app.controller.order.Order', {
             },
             orderButton: {
                 tap: 'onLuodan'
+            },
+            exchangeButton: {
+                tap: 'onExchange'
             },
             confirmCancel: {
                 tap: 'onConfirmCancel'
@@ -141,6 +150,18 @@ Ext.define('app.controller.order.Order', {
         var goodsview = this.getOrderingslist();
         goodsview.refresh();
     },
+    onmarkToggle2: function (field, slider, thumb, newValue, oldValue) {
+        var goodsStore = Ext.getStore('Goods');
+
+        goodsStore.each(function (records) {
+            if (newValue == 1)
+                records.data.Remarks = '微辣';
+            else
+                records.data.Remarks = '';
+        });
+        var goodsview = this.getOrderingslist();
+        goodsview.refresh();
+    },
     //清空顾客自选单
     onclearCusOrder: function () {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
@@ -150,6 +171,59 @@ Ext.define('app.controller.order.Order', {
                  //dataView.refresh();
                  roomCard.pop(roomCard.getInnerItems().length - 1);
                  Ext.Viewport.setMasked(false);
+        });
+    },
+    //转台选择
+    onExchange: function () {
+        var opt=[];
+        var roomstore = Ext.getStore('Rooms');
+        roomstore.each(function(room){
+            if(room.data.RoomStateName == '空房'){
+                var x=room.data.RoomName;
+                // opt.push( Ext.encode({text: room.data.RoomName, value: room.data.ID} ) );
+                opt.push( {text: room.data.RoomName, value: room.data.ID} );
+            }
+        });
+        var exchangeNo = Ext.getCmp('txtExchangeNo')
+        if (!exchangeNo){
+            var select = Ext.create('Ext.field.Select',{
+                xtype: 'selectfield',
+                itemId: 'txtExchangeNo',
+                label: '转到台号',
+                docked: 'bottom',
+                id: 'txtExchangeNo'
+            });
+            this.getOrderedlist().add(select);
+            select.setOptions(opt);
+            var dataView = this.getOrderedlist();
+            dataView.refresh();
+        }else{
+            exchangeNo.setOptions(opt);
+            var newroomid=exchangeNo.getValue();
+            this.onDoExchange(newroomid);
+        // var select = Ext.create('Ext.field.Select',{
+        //                 xtype: 'selectfield',
+        //                 itemId: 'txtExchangeNo',
+        //                 label: '转到台号',
+        //                 docked: 'bottom'
+        //             });
+        
+        // var dataView = this.getOrderedlist();
+        // dataView.refresh();
+
+        }
+
+    },
+    //确认转台
+    onDoExchange: function (newroomid) {
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        var roomCard = this.getRoomContainer();
+        var dataView = this.getRoomslist();
+        var user = Ext.getStore('User').load().data.items[0].data;
+        app.util.Proxy.exchange(app.CurRoom.ID,newroomid,user.userno,function () {
+             dataView.refresh();
+             roomCard.pop(roomCard.getInnerItems().length - 1);
+             Ext.Viewport.setMasked(false);
         });
     },
     //确认撤单
@@ -427,6 +501,7 @@ Ext.define('app.controller.order.Order', {
         frmMain.push(this.orderingslist);
         //this.getRoomDetail().setActiveItem(this.orderingslist);
         this.getMarkToggleButton();
+        this.getMarkToggle2Button();
         if (app.OrderType == "赠送")
             this.getOrderingsButton().setText('确认赠送');
         else
@@ -662,16 +737,16 @@ Ext.define('app.controller.order.Order', {
         }
 
        app.util.Proxy.getEnStr(app.CurRoom.RoomOpCode + app.CurRoom.ID, function (enstr) {
-        var myUrl = Ext.global.window.location.href.replace(/order\.html.*$/g,'customer.html') + "?Key=" + enstr;
-        // window.location=myUrl;
-        // var myUrl = "?Key=" + enstr;
-        // var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Op=" + app.CurRoom.RoomOpCode + app.CurRoom.ID;
-        var url = "http://qr.topscan.com/api.php?&w=260&text=" + myUrl;
-        console.log(url);
-        // Ext.Msg.show({"msg":myUrl});
-        //app.qrCode.setHtml('<img src="http://qr.topscan.com/api.php?text="' + window.location.href + app.CurRoom.RoomOpCode + '>');
-        app.qrCode.setHtml('<h3 align="center">扫描二维码点单</h3><p style="text-align:center"><img align="center" src="' + url + '"/></p>');
-        app.qrCode.showBy(thisobj.getQrCodeButton());
+            var myUrl = Ext.global.window.location.href.replace(/order\.html.*$/g,'customer.html') + "?Key=" + enstr;
+            // window.location=myUrl;
+            // var myUrl = "?Key=" + enstr;
+            // var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Op=" + app.CurRoom.RoomOpCode + app.CurRoom.ID;
+            var url = "http://qr.topscan.com/api.php?&w=260&text=" + myUrl;
+            console.log(url);
+            // Ext.Msg.show({"msg":myUrl});
+            //app.qrCode.setHtml('<img src="http://qr.topscan.com/api.php?text="' + window.location.href + app.CurRoom.RoomOpCode + '>');
+            app.qrCode.setHtml('<h3 align="center">扫描二维码点单</h3><p style="text-align:center"><img align="center" src="' + url + '"/></p>');
+            app.qrCode.showBy(thisobj.getQrCodeButton());
        });
        
     },
@@ -824,6 +899,20 @@ Ext.define('app.controller.order.Order', {
             return;
         }
         refreshButton.hide();
+    },
+    showExchangeButton: function () {
+        var exchangeButton = this.getExchangeButton();
+        if (!exchangeButton || !exchangeButton.isHidden()) {
+            return;
+        }
+        exchangeButton.show();
+    },
+    hideExchangeButton: function () {
+        var exchangeButton = this.getExchangeButton();
+        if (!exchangeButton || exchangeButton.isHidden()) {
+            return;
+        }
+        exchangeButton.hide();
     },
     showDoBalanceButton: function () {
         var doBalanceButton = this.getDoBalanceButton();
@@ -1012,6 +1101,9 @@ Ext.define('app.controller.order.Order', {
     onMainPop: function (view, item) {
         this.setButtonVisiable(view._activeItem.xtype);
     },
+    onMainPush: function (view, item) {
+        this.setButtonVisiable(view._activeItem.xtype);
+    },
     hideCommandButton: function (view, item) {
         this.hidePosButton();
         this.hideCloseButton();
@@ -1024,6 +1116,7 @@ Ext.define('app.controller.order.Order', {
         this.hideCustomerButton();
         this.hideCancelButton();
         this.hideClearCusOrderButton();
+        this.hideExchangeButton();
     },
     setButtonVisiable: function (viewType) {
         switch (viewType) {
@@ -1064,9 +1157,11 @@ Ext.define('app.controller.order.Order', {
                     //                    this.showPresentButton();
                     //                    this.showOrderMemButton();
                 }
+                this.showCloseButton();
                 this.showPosButton();
                 this.showCancelButton();
-                this.hideCloseButton();
+                this.showExchangeButton();
+                
                 break;
             default:
                 this.hideCommandButton();

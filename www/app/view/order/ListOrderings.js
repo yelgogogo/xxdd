@@ -56,6 +56,45 @@ Ext.define('app.view.order.ListOrderings', {
                 ui:'confirm',
                 text: '确认'
             },
+            // {
+            //     xtype: 'fieldset',
+            //     docked: 'bottom',
+            //     defaults: {                    
+            //         xtype: 'textfield',
+            //         labelWidth: '50%',
+            //         inputCls: 'dxtextright',
+            //         flex: 1
+            //     },
+            //     layout: 'hbox',
+            //     items: [
+            //         {   
+            //             xtype: 'togglefield',
+            //             width: '50%' ,
+            //             // name : 'markToggle',
+            //             // id : 'markToggle',
+            //             itemId: 'markToggle',
+            //              docked: 'right',
+            //             label: '全部加辣'
+            //         },
+            //         {
+            //             xtype: 'textfield',
+            //             itemId: 'txtSubTotal',
+            //             readOnly: true,
+            //             width: '50%' ,
+            //             docked: 'left',
+            //             label: '合计:'
+            //        },
+            //        {   
+            //             xtype: 'togglefield',
+            //             width: '50%' ,
+            //             // name : 'markToggle',
+            //             // id : 'markToggle',
+            //             itemId: 'markToggle2',
+            //              docked: 'right',
+            //             label: '全部微辣'
+            //         },
+            //    ]
+            // },
             {
                 xtype: 'fieldset',
                 docked: 'bottom',
@@ -67,7 +106,16 @@ Ext.define('app.view.order.ListOrderings', {
                 },
                 layout: 'hbox',
                 items: [
-                    {   
+                    
+                    {
+                        xtype: 'textfield',
+                        itemId: 'txtSubTotal',
+                        readOnly: true,
+                        width: '50%' ,
+                        docked: 'top',
+                        label: '合计:'
+                   },
+                   {   
                         xtype: 'togglefield',
                         width: '50%' ,
                         // name : 'markToggle',
@@ -76,14 +124,15 @@ Ext.define('app.view.order.ListOrderings', {
                          docked: 'right',
                         label: '全部加辣'
                     },
-                    {
-                        xtype: 'textfield',
-                        itemId: 'txtSubTotal',
-                        readOnly: true,
+                   {   
+                        xtype: 'togglefield',
                         width: '50%' ,
-                        // docked: 'bottom',
-                        label: '合计:'
-                   },
+                        // name : 'markToggle',
+                        // id : 'markToggle',
+                        itemId: 'markToggle2',
+                         docked: 'left',
+                        label: '全部微辣'
+                    },
                ]
             }
         ],
@@ -94,12 +143,30 @@ Ext.define('app.view.order.ListOrderings', {
             onMarkClick: function (list, record, item, index, btn) {
                 console.log("onMarkClickClick"); 
                 data = record.data;
-                if (data.Remarks != '')
-                    data.Remarks = '';
-                else
-                    data.Remarks = '加辣';
+                // if (data.Remarks != '')
+                //     data.Remarks = '';
+                // elseif
+                //     data.Remarks = '加辣';
+                switch (data.Remarks)
+                {
+                case "":{
+                   data.Remarks = '微辣';
+                    };
+                   break;
+                case "微辣":{
+                   data.Remarks = '加辣';
+                   };
+                   break;
+                case "加辣":{
+                   data.Remarks = '';
+                   };
+                   break;
+                default:{
+                    data.Remarks = '微辣';
+                    };
+                    break; 
+                };
                 item.setData(data);
-
             },
             onGoodsClick: function (list, record, item, index, btn) {
                 data = record.data;

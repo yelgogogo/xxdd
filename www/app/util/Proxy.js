@@ -59,6 +59,44 @@ Ext.define('app.util.Proxy', {
           failure: failureCallback
        });     
     },
+    exchange: function (oldroomid,newroomid,userno,callback) {
+        var successCallback = function (resp, ops) {
+            var data = Ext.decode(resp.responseText).d;
+            // var strvalue = Ext.decode(data);
+            if (data.indexOf("Room") == -1) {
+                Ext.Msg.alert('提示', data, Ext.emptyFn);
+
+            }else{
+                var Json_Room = Ext.decode(data);
+                var roomStore = Ext.getStore('Rooms');
+                Ext.Array.each(Json_Room.Room, function (room) {
+                    var record = roomStore.findRecord('ID', room.ID);
+                    record.setData(room);
+                });
+                // //更新新旧房台的记录
+                // var roomStore = Ext.getStore('Rooms');
+                // Ext.Array.each Json_Order
+                // var record = roomStore.findRecord('ID', roomID);
+                // record.setData(Json_Order.Room[0]);
+                // app.CurRoom = record.data;
+                Ext.Msg.alert("转台成功!");
+            };
+            callback();
+        };
+        var failureCallback = function (result) {
+            Ext.Msg.alert("转台失败!");
+        };
+       Ext.Ajax.request({
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_ExchangeRoom',
+          jsonData: {
+                oldRoomID:oldroomid,
+                newRoomID:newroomid,
+                userNo:userno
+          },
+          success: successCallback,
+          failure: failureCallback
+       });     
+    },
     clearCusOrder: function (roomid,op,user,callback) {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
@@ -69,7 +107,6 @@ Ext.define('app.util.Proxy', {
         var failureCallback = function (result) {
             Ext.Msg.alert("清空失败!");
         };
-        console.log(roomid+"A"+op+"B"+  user);
        Ext.Ajax.request({
           url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_ClearRoomCustomerOrders',
           jsonData: {

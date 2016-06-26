@@ -20,7 +20,7 @@ Ext.define('app.view.order.ListGoods', {
         itemTpl: new Ext.XTemplate(
         '<div class="bh">',
             '<div class="bone bh">',
-                '<img class="mydiv goodsimg" src = "../resources/img/{GoodsName}.jpg" fire="onGoodsImgClick">',
+                '<img class="mydiv goodsimg" src = "../resources/img/{ID}.jpg" fire="onGoodsImgClick">',
                 '<div class="mydiv bone" fire="onGoodsClick"><div>{GoodsName}</div><div>{Price}/{Unit}</div></div>',
             '</div>',
             '<div class="bv">',

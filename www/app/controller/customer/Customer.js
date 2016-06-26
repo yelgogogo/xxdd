@@ -13,11 +13,16 @@ Ext.define('app.controller.customer.Customer', {
             orderingsButton: 'orderings button',
             queryButton: '#queryButton',
             markToggleButton: 'orderings #markToggle',
+            markToggle2Button: 'orderings #markToggle2',
+            txtSubTotal: '#txtSubTotal',
             orderButton: '#orderButton'
         },
         control: {
             markToggleButton: {
                 change: 'onmarkToggle'
+            },
+            markToggle2Button: {
+                change: 'onmarkToggle2'
             },
             custmainform: {
                 push: 'onMainPush',
@@ -35,7 +40,8 @@ Ext.define('app.controller.customer.Customer', {
             },
             orderingslist: {
                 initialize: 'initOrderings',
-                onPackGoodsClicked: 'onPackGoodsClicked'
+                onPackGoodsClicked: 'onPackGoodsClicked',
+                activate: 'onOrderingActivate'
             },
             orderingsButton: {
                 tap: 'onOkOrder'
@@ -56,6 +62,14 @@ Ext.define('app.controller.customer.Customer', {
     },
     initOrderings: function (dataView, eOpts) {
     },
+    onOrderingActivate: function () {
+        var goodsStore = Ext.getStore('Goods');
+        var sub = 0;
+        goodsStore.each(function (item, index, length) {
+            sub += item.data.Price * item.data.GoodsCount;
+        });
+        this.getTxtSubTotal().setValue(sub);
+    },
     //全部加辣
     onmarkToggle: function (field, slider, thumb, newValue, oldValue) {
         var goodsStore = Ext.getStore('Goods');
@@ -63,6 +77,19 @@ Ext.define('app.controller.customer.Customer', {
         goodsStore.each(function (records) {
             if (newValue == 1)
                 records.data.Remarks = '加辣';
+            else
+                records.data.Remarks = '';
+        });
+        var goodsview = this.getOrderingslist();
+        goodsview.refresh();
+    },
+    //全部微辣
+    onmarkToggle2: function (field, slider, thumb, newValue, oldValue) {
+        var goodsStore = Ext.getStore('Goods');
+
+        goodsStore.each(function (records) {
+            if (newValue == 1)
+                records.data.Remarks = '微辣';
             else
                 records.data.Remarks = '';
         });
