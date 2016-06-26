@@ -201,26 +201,18 @@ Ext.define('app.controller.order.Order', {
             exchangeNo.setOptions(opt);
             var newroomid=exchangeNo.getValue();
             this.onDoExchange(newroomid);
-        // var select = Ext.create('Ext.field.Select',{
-        //                 xtype: 'selectfield',
-        //                 itemId: 'txtExchangeNo',
-        //                 label: '转到台号',
-        //                 docked: 'bottom'
-        //             });
-        
-        // var dataView = this.getOrderedlist();
-        // dataView.refresh();
-
         }
 
     },
     //确认转台
     onDoExchange: function (newroomid) {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        var exchangeNo = Ext.getCmp('txtExchangeNo');
         var roomCard = this.getRoomContainer();
         var dataView = this.getRoomslist();
         var user = Ext.getStore('User').load().data.items[0].data;
         app.util.Proxy.exchange(app.CurRoom.ID,newroomid,user.userno,function () {
+            exchangeNo.destroy();
              dataView.refresh();
              roomCard.pop(roomCard.getInnerItems().length - 1);
              Ext.Viewport.setMasked(false);
@@ -747,6 +739,8 @@ Ext.define('app.controller.order.Order', {
             //app.qrCode.setHtml('<img src="http://qr.topscan.com/api.php?text="' + window.location.href + app.CurRoom.RoomOpCode + '>');
             app.qrCode.setHtml('<h3 align="center">扫描二维码点单</h3><p style="text-align:center"><img align="center" src="' + url + '"/></p>');
             app.qrCode.showBy(thisobj.getQrCodeButton());
+            var printstr = '<CB>'+app.CurPlace+'</CB><BR>' + '<CB>'+app.CurRoom.RoomName+'</CB><BR><QR>' +myUrl + '</QR><BR><C>微信扫码自助点单，赢取好礼</C><BR><C>星星点单</C>'
+            app.util.Proxy.printQrCode(printstr);
        });
        
     },

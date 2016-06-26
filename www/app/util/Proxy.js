@@ -39,6 +39,26 @@ Ext.define('app.util.Proxy', {
           failure: failureCallback
        });     
     },
+    printQrCode: function (printstr) {
+        var successCallback = function (resp, ops) {
+            var data = Ext.decode(resp.responseText).d;
+            // var strvalue = Ext.decode(data);
+            Ext.Msg.alert("打印成功!");
+        };
+        var failureCallback = function (result) {
+            Ext.Msg.alert("打印失败!");
+        };
+       Ext.Ajax.request({
+          url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_YunPrint',
+          jsonData: {
+              printStr : printstr,
+              roomID : app.CurRoom.ID,
+              userNo:Ext.getStore('User').load().data.items[0].data.userno
+          },
+          success: successCallback,
+          failure: failureCallback
+       });     
+    },
     cancelorders: function (instr,callback) {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
