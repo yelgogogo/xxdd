@@ -255,7 +255,7 @@ Ext.define('app.controller.customer.Customer', {
         var strrights = '落单';
         var strstate = app.CurRoom.ID;
         var templateid = 'tc6Ayn7IGJk5BtQzi94BniwSqHMb3ErgG7rZwpL1eoA';
-        var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9f51df2624282eb1&redirect_uri=http%3a%2f%2fstarstech.iego.cn%2fxxsk%2forder.html&response_type=code&scope=snsapi_base&state='+strstate+'#wechat_redirect';
+        var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9f51df2624282eb1&redirect_uri=http%3a%2f%2fstarstech.iego.cn%2f'+app.pgmid+'order.html&response_type=code&scope=snsapi_base&state='+strstate+'#wechat_redirect';
         var Sysdate = new Date();  
         var Curdate = Ext.Date.format(Sysdate, 'Y-m-d H:i:s'); 
         var first = { value: app.CurPlace + ' 客户在线点单提醒', color: '#173177' },

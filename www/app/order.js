@@ -83,7 +83,9 @@ Ext.application({
         });
 
         var reg = new RegExp("(^|&)" + "code" + "=([^&]*)(&|$)", "i");
+        var regstate = new RegExp("(^|&)" + "state" + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
+        var rstate = window.location.search.substr(1).match(regstate);
         console.log(r);        
         if (r != null) {
             var code = unescape(r[2]);
@@ -91,7 +93,10 @@ Ext.application({
             app.util.Proxy.getOpenid(code, function (openid) {    
                 app.openid = openid;
                 app.util.Proxy.chkOpenid(app.openid, function () { 
-
+                    if (rstate != null) {
+                        var statevalue = unescape(rstate[2]);
+                        Ext.Msg.alert(statevalue);
+                    };
                 });
             });
         }
