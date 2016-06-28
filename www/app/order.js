@@ -106,8 +106,8 @@ Ext.application({
             if (userStore.data.length > 0 && userStore.data.items[0].data.isremember == 1) {
                 loginView.user = userStore.data.items[0].data;
                 loginView.setValues(loginView.user);
-            }
-            Ext.Viewport.add([loginView])
+            };
+            Ext.Viewport.add([loginView]);
         };
         //Ext.Viewport.add({ xtype: 'loginform' }); //loginform  mainview test
         //Ext.Viewport.add({ xtype: 'mainview' });

@@ -150,6 +150,7 @@ Ext.define('app.controller.order.Order', {
         var goodsview = this.getOrderingslist();
         goodsview.refresh();
     },
+    //全部微辣
     onmarkToggle2: function (field, slider, thumb, newValue, oldValue) {
         var goodsStore = Ext.getStore('Goods');
 
