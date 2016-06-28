@@ -256,7 +256,9 @@ Ext.define('app.controller.order.Order', {
             Ext.Msg.confirm("开台", "确认要开台吗?",
                 function (btn) {
                     if (btn == 'yes')
-                        app.util.Proxy.openRoom(dataItemModel.data.ID, function () { dataView.refresh(); })
+                        app.util.Proxy.openRoom(dataItemModel.data.ID, function () { 
+                            app.util.Proxy.printQrCode(printstr);
+                        })
                 });
             return;
         }
@@ -739,7 +741,7 @@ Ext.define('app.controller.order.Order', {
             //app.qrCode.setHtml('<img src="http://qr.topscan.com/api.php?text="' + window.location.href + app.CurRoom.RoomOpCode + '>');
             app.qrCode.setHtml('<h3 align="center">扫描二维码点单</h3><p style="text-align:center"><img align="center" src="' + url + '"/></p>');
             app.qrCode.showBy(thisobj.getQrCodeButton());
-            var printstr = '<CB>'+app.CurPlace+'</CB><BR>' + '<CB>'+app.CurRoom.RoomName+'</CB><BR><QR>' +myUrl + '</QR><BR><C>微信扫码自助点单，赢取好礼</C><BR><C>星星点单</C>'
+            var printstr = '<C>'+app.CurPlace+'</C><BR>' + '<CB>'+app.CurRoom.RoomName+'</CB><BR><QR>' +myUrl + '</QR><BR><C>'+app.CurPlacemsg+'</C>'
             app.util.Proxy.printQrCode(printstr);
        });
        
@@ -747,9 +749,10 @@ Ext.define('app.controller.order.Order', {
     //顾客自选单
     onCustomerButton_Clicked: function () {
         var me = this;
-        this.showClearCusOrderButton();
+        // this.showClearCusOrderButton();
         app.util.Proxy.loadCustomerOrder(app.CurRoom.ID, app.CurRoom.RoomOpCode,
              function () {
+                me.showClearCusOrderButton();
                  me.selectOrders();
              })
     },
@@ -1141,6 +1144,7 @@ Ext.define('app.controller.order.Order', {
                 this.hidePosButton();
                 this.hideCancelButton();
                 this.hideCloseButton();
+                this.hideExchangeButton();
                 var frmMain = this.getRoomContainer();
                 frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + app.OrderType);
                 break;

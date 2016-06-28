@@ -618,7 +618,7 @@ loadCustomerOrder: function (roomID, opCode, callback) {
         };
         var Json_CustomerOrder = Ext.decode(data);
         Ext.Array.each(Json_CustomerOrder, function (main) {
-            var goods = goodsStore.findRecord('ID', main.ID);
+            var goods = goodsStore.findRecord('GoodsName', main.GoodsName);
             goods.data.GoodsCount = main.GoodsCount;
             goods.data.Remarks = main.Remarks;
             if (main.GoodsDetails) {

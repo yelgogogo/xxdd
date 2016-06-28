@@ -47,6 +47,7 @@ Ext.application({
 
     launch: function () {
         app.pgmid='';
+        app.CurPlacemsg='星星点单-微信扫码赢取好礼<BR>WIFI密码：81388123';
         Ext.override(Ext.util.SizeMonitor, {
             constructor: function (config) {
                 var namespace = Ext.util.sizemonitor;
