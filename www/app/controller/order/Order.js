@@ -165,13 +165,19 @@ Ext.define('app.controller.order.Order', {
     },
     //清空顾客自选单
     onclearCusOrder: function () {
-        Ext.Viewport.setMasked({ xtype: 'loadmask' });
-        var roomCard = this.getRoomContainer();
-        var user = Ext.getStore('User').load().data.items[0].data;
-        app.util.Proxy.clearCusOrder(app.CurRoom.ID,app.CurRoom.RoomOpCode,user.userno,function () {
-                 //dataView.refresh();
-                 roomCard.pop(roomCard.getInnerItems().length - 1);
-                 Ext.Viewport.setMasked(false);
+        me=this;
+        Ext.Msg.confirm("清空点单", "确认要清空所有点单吗?",
+            function (btn) {
+                if (btn == 'yes'){
+                    Ext.Viewport.setMasked({ xtype: 'loadmask' });
+                    var roomCard = me.getRoomContainer();
+                    var user = Ext.getStore('User').load().data.items[0].data;
+                    app.util.Proxy.clearCusOrder(app.CurRoom.ID,app.CurRoom.RoomOpCode,user.userno,function () {
+                         //dataView.refresh();
+                         roomCard.pop(roomCard.getInnerItems().length - 1);
+                         Ext.Viewport.setMasked(false);
+                    });
+                }
         });
     },
     //转台选择
@@ -258,7 +264,7 @@ Ext.define('app.controller.order.Order', {
                 function (btn) {
                     if (btn == 'yes')
                         app.util.Proxy.openRoom(dataItemModel.data.ID, function () { 
-                            app.util.Proxy.printQrCode(printstr);
+                            // app.util.Proxy.printQrCode(printstr);
                         })
                 });
             return;
@@ -1117,6 +1123,7 @@ Ext.define('app.controller.order.Order', {
         this.hideExchangeButton();
     },
     setButtonVisiable: function (viewType) {
+        this.hideCommandButton();
         switch (viewType) {
             case "goods":
                 if (app.CurRoom.RoomStateName == "开房"
@@ -1142,10 +1149,6 @@ Ext.define('app.controller.order.Order', {
                     this.showQrCodeButton();
                     this.showCustomerButton();
                 }
-                this.hidePosButton();
-                this.hideCancelButton();
-                this.hideCloseButton();
-                this.hideExchangeButton();
                 var frmMain = this.getRoomContainer();
                 frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + app.OrderType);
                 break;
@@ -1160,7 +1163,19 @@ Ext.define('app.controller.order.Order', {
                 this.showPosButton();
                 this.showCancelButton();
                 this.showExchangeButton();
-                
+                break;
+            case "orderings": //落单界面
+                if (app.CurRoom.RoomStateName == "开房"
+                || app.CurRoom.RoomStateName == "消费") {
+                    //                    this.showOrderButton();
+                    //                    this.showPresentButton();
+                    //                    this.showOrderMemButton();
+                }
+                this.showClearCusOrderButton();
+                // this.showCloseButton();
+                // this.showPosButton();
+                // this.showCancelButton();
+                // this.showExchangeButton();
                 break;
             default:
                 this.hideCommandButton();

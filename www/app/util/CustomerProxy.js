@@ -23,6 +23,55 @@ Ext.define('app.util.CustomerProxy', {
           failure: failureCallback
        });     
     },
+    loadCustomerOrder: function (roomID, opCode, callback) {
+
+    var goodsStore = Ext.getStore('Goods');
+    goodsStore.clearFilter(true);
+    goodsStore.each(function (item, index, length) {
+            item.data.GoodsCount = 0;
+        });
+
+    var successCallback = function (resp, ops) {
+        var data = Ext.decode(resp.responseText).d;
+        if(!data){ 
+            Ext.Msg.alert("无客人自选单信息!");
+            return;
+        };
+        var Json_CustomerOrder = Ext.decode(data);
+        Ext.Array.each(Json_CustomerOrder, function (main) {
+            var goods = goodsStore.findRecord('GoodsName', main.GoodsName);
+            goods.data.GoodsCount = main.GoodsCount;
+            goods.data.Remarks = main.Remarks;
+            if (main.GoodsDetails) {
+                Ext.Array.each(main.GoodsDetails, function (detail) {
+                    Ext.Array.each(goods.data.GoodsDetails, function (gdetail) {
+                        if (gdetail.ID == detail.ID)
+                            gdetail.GoodsDetailCount = detail.GoodsDetailCount;
+                        else
+                            gdetail.GoodsDetailCount = 0;
+                    });
+                });
+            }
+        });
+
+        //        if (goods) 
+        //            goods.data.GoodsDetails[index] = data;
+
+        callback();
+    };
+    var failureCallback = function (resp, ops) {
+        Ext.Msg.alert("加载已点单失败!", resp.responseText);
+    };
+    Ext.Ajax.request({
+        url: '../'+app.pgmid+'WebServiceEx.asmx/JSON_GetRoomCustomerOrderList',
+        jsonData: {
+            roomID: roomID,
+            opCode: opCode
+        },
+        success: successCallback,
+        failure: failureCallback
+    });
+    },
     chkCustomerOp: function (Op, callback) {
         var opCode = Op.substr(0, 12);
         var roomID = Op.substring(12, 20);

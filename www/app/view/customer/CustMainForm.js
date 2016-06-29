@@ -46,6 +46,7 @@ Ext.define('app.view.customer.CustMainForm', {
     initialize: function () {
         this.callParent();
         var me = this;
+        me.CreateMyButton('cusOrderButton', '订单修改', 'right', false);
         me.CreateMyButton('queryButton', '消费查询', 'right', false);
         me.CreateMyButton('orderButton', '下单', 'right', false);
 

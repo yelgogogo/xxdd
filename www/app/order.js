@@ -93,10 +93,9 @@ Ext.application({
             app.util.Proxy.getOpenid(code, function (openid) {    
                 app.openid = openid;
                 app.util.Proxy.chkOpenid(app.openid, function () { 
-                    if (rstate != null) {
-                        var statevalue = unescape(rstate[2]);
-                        Ext.Msg.alert(statevalue);
-                    };
+                    // if (rstate != null) {
+                    //     var statevalue = unescape(rstate[2]);
+                    // };
                 });
             });
         }

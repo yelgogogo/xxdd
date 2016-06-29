@@ -12,6 +12,7 @@ Ext.define('app.controller.customer.Customer', {
             txtConsumed: '#txtConsumed',
             orderingsButton: 'orderings button',
             queryButton: '#queryButton',
+            cusOrderButton: '#cusOrderButton',
             markToggleButton: 'orderings #markToggle',
             markToggle2Button: 'orderings #markToggle2',
             txtSubTotal: '#txtSubTotal',
@@ -48,6 +49,9 @@ Ext.define('app.controller.customer.Customer', {
             },
             queryButton: {
                 tap: 'onQuery'
+            },
+            cusOrderButton: {
+                tap: 'onCusOrder'
             },
             orderButton: {
                 tap: 'onLuodan'
@@ -179,8 +183,9 @@ Ext.define('app.controller.customer.Customer', {
                         Ext.Viewport.setMasked(false);
                     });
                 }
-                else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods')
+                else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods'){
                     thisobj.selectOrders();
+                };
             });
         });
     },
@@ -211,6 +216,16 @@ Ext.define('app.controller.customer.Customer', {
         });
         // if (curView.xtype != 'ordereds')
         //     this.loadRoomOrder(app.CurRoom.ID);
+    },
+    //顾客自选单查询
+    onCusOrder: function () {
+        var me = this;
+        // this.showClearCusOrderButton();
+        app.util.CustomerProxy.loadCustomerOrder(app.CurRoom.ID, app.CurRoom.RoomOpCode,
+             function () {
+                 me.selectOrders();
+                 me.getOrderingsButton().setText('确认修改');
+             })
     },
     loadRoomOrder: function (roomID) {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
@@ -255,7 +270,7 @@ Ext.define('app.controller.customer.Customer', {
         var strrights = '落单';
         var strstate = app.CurRoom.ID;
         var templateid = 'tc6Ayn7IGJk5BtQzi94BniwSqHMb3ErgG7rZwpL1eoA';
-        var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9f51df2624282eb1&redirect_uri=http%3a%2f%2fstarstech.iego.cn%2f'+app.pgmid+'order.html&response_type=code&scope=snsapi_base&state='+strstate+'#wechat_redirect';
+        var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9f51df2624282eb1&redirect_uri=http%3a%2f%2fstarstech.cc%2f'+app.pgmid+'order.html&response_type=code&scope=snsapi_base&state='+strstate+'#wechat_redirect';
         var Sysdate = new Date();  
         var Curdate = Ext.Date.format(Sysdate, 'Y-m-d H:i:s'); 
         var first = { value: app.CurPlace + ' 客户在线点单提醒', color: '#173177' },
@@ -288,22 +303,32 @@ Ext.define('app.controller.customer.Customer', {
         });
     },
     setButtonVisiable: function (viewType) {
-
+        this.hideOrderButton();
+        this.hideQueryButton();
+        this.hideCusOrderButton();
         switch (viewType) {
             case "goods":
+                this.showOrderButton();
+                break;
             case "goodstypes":
                 this.showOrderButton();
                 this.showQueryButton();
+                this.showCusOrderButton();
                 var frmMain = this.getCustmainform();
                 frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' ' + app.OrderType);
                 break;
             case "ordereds":
-                this.hideOrderButton();
-                this.hideQueryButton();
+                // this.hideOrderButton();
+                // this.hideQueryButton();
+
+                break;
+            case "orderings":
+                // this.hideOrderButton();
+                // this.hideQueryButton();
                 break;
             default:
-                this.hideOrderButton();
-                this.hideQueryButton();
+                // this.hideOrderButton();
+                // this.hideQueryButton();
                 break;
         }
     },
@@ -326,6 +351,20 @@ Ext.define('app.controller.customer.Customer', {
             return;
         }
         orderButton.hide();
+    },
+    showCusOrderButton: function () {
+        var cusOrderButton = this.getCusOrderButton();
+        if (!cusOrderButton || !cusOrderButton.isHidden()) {
+            return;
+        }
+        cusOrderButton.show();
+    },
+    hideCusOrderButton: function () {
+        var cusOrderButton = this.getCusOrderButton();
+        if (!cusOrderButton || cusOrderButton.isHidden()) {
+            return;
+        }
+        cusOrderButton.hide();
     },
     showQueryButton: function () {
         var queryButton = this.getQueryButton();
