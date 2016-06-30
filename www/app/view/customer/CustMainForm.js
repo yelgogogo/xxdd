@@ -49,6 +49,7 @@ Ext.define('app.view.customer.CustMainForm', {
         me.CreateMyButton('cusOrderButton', '订单修改', 'right', false);
         me.CreateMyButton('queryButton', '消费查询', 'right', false);
         me.CreateMyButton('orderButton', '下单', 'right', false);
+        me.CreateMyButton('cusPosButton', '微信支付', 'right', false);
 
 //        Ext.Array.each(userStore.rights, function (rights) {
 //            if (rights == "落单") {

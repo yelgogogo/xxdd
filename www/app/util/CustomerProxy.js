@@ -229,8 +229,6 @@ Ext.define('app.util.CustomerProxy', {
 //    		return Orders.get('OpCode') == app.CurRoom.RoomOpCode
 //    	});
         var successCallback = function (resp, ops) {
-            var temp = Ext.create('app.model.Order', { 'GoodsName': '菜品','GoodsTypeName': '分类', 'Price': '价格', 'Unit': '', 'GoodsCount': '数量', 'SubTotal': '小计', 'PresentUser': '落单人', 'OpCode':app.CurRoom.RoomOpCode });
-            orderStore.add(temp);
             var data = Ext.decode(resp.responseText).d;
             var Json_Order = eval('(' + data + ')');
             roomcount = 0;

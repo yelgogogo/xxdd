@@ -13,6 +13,7 @@ Ext.define('app.controller.customer.Customer', {
             orderingsButton: 'orderings button',
             queryButton: '#queryButton',
             cusOrderButton: '#cusOrderButton',
+            cusPosButton: '#cusPosButton',
             markToggleButton: 'orderings #markToggle',
             markToggle2Button: 'orderings #markToggle2',
             txtSubTotal: '#txtSubTotal',
@@ -37,6 +38,7 @@ Ext.define('app.controller.customer.Customer', {
             },
             goodstypelist: {
                 initialize: 'initGoodsType',
+                activate: 'onGoodsTypeActivate',
                 itemtap: 'onGoodsTypeTap'
             },
             orderingslist: {
@@ -46,6 +48,9 @@ Ext.define('app.controller.customer.Customer', {
             },
             orderingsButton: {
                 tap: 'onOkOrder'
+            },
+            cusPosButton: {
+                tap: 'onCusPos'
             },
             queryButton: {
                 tap: 'onQuery'
@@ -62,9 +67,11 @@ Ext.define('app.controller.customer.Customer', {
         }
     },
     initGoodsType: function (dataView, eOpts) {
-
     },
     initOrderings: function (dataView, eOpts) {
+    },
+    onGoodsTypeActivate: function () {
+        this.hideCusPosButton();
     },
     onOrderingActivate: function () {
         var goodsStore = Ext.getStore('Goods');
@@ -99,6 +106,32 @@ Ext.define('app.controller.customer.Customer', {
         });
         var goodsview = this.getOrderingslist();
         goodsview.refresh();
+    },
+    //支付宝支付
+    onCusPos: function () {
+        // if (!app.cusPosCode) {
+          var cusPosCode = Ext.create('Ext.form.Panel', {
+                itemID: 'cusPosImg',
+                xtype: 'panel',
+                left: 0,
+                top: 0,
+                modal: true,
+                hideOnMaskTap: true,
+                hidden: true,
+                width: 300,
+                height: 400,
+                contentEl: '',
+                styleHtmlContent: true,
+                scrollable: true,
+                showAnimation: Ext.os.is.Android ? false : {
+                    type: 'pop',
+                    duration: 200
+                }
+            });
+        // }
+        var imgurl = "../resources/img/"+app.pgmid+"cuspos.jpg"
+        cusPosCode.setHtml('<h3 align="center">长按识别二维码支付</h3><p style="text-align:center"><img align="center" src="' + imgurl + '"/></p>');
+        cusPosCode.showBy(this.getCusPosButton());
     },
     onRoomOrdersActivate: function () {
         // var room = app.CurRoom;
@@ -231,8 +264,8 @@ Ext.define('app.controller.customer.Customer', {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
         var frmMain = this.getCustmainform();
         frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' 消费查询');
-        this.hideOrderButton();
-        this.hideQueryButton();
+        // this.hideOrderButton();
+        // this.hideQueryButton();
         //点击房台后，先载入房台消费信息
         app.util.CustomerProxy.loadOrder(roomID, function () {
             if (!this.orderedlist) {
@@ -306,6 +339,7 @@ Ext.define('app.controller.customer.Customer', {
         this.hideOrderButton();
         this.hideQueryButton();
         this.hideCusOrderButton();
+        this.hideCusPosButton();
         switch (viewType) {
             case "goods":
                 this.showOrderButton();
@@ -318,6 +352,7 @@ Ext.define('app.controller.customer.Customer', {
                 frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' ' + app.OrderType);
                 break;
             case "ordereds":
+                this.showCusPosButton();
                 // this.hideOrderButton();
                 // this.hideQueryButton();
 
@@ -365,6 +400,20 @@ Ext.define('app.controller.customer.Customer', {
             return;
         }
         cusOrderButton.hide();
+    },
+    showCusPosButton: function () {
+        var cusPosButton = this.getCusPosButton();
+        if (!cusPosButton || !cusPosButton.isHidden()) {
+            return;
+        }
+        cusPosButton.show();
+    },
+    hideCusPosButton: function () {
+        var cusPosButton = this.getCusPosButton();
+        if (!cusPosButton || cusPosButton.isHidden()) {
+            return;
+        }
+        cusPosButton.hide();
     },
     showQueryButton: function () {
         var queryButton = this.getQueryButton();
