@@ -9,8 +9,8 @@ Ext.application({
     //指明控制器，controller/Login.js
     controllers: [
     "order.Login",
-    "order.Order",
-    "Rooms"
+    "order.Order"
+    // "Rooms"
      ],
     stores: [
      'User',

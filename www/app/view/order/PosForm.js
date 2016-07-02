@@ -38,10 +38,10 @@ Ext.define('app.view.order.PosForm', {
                         label: '付款方式',
                         options: [
                                 { text: '现金', value: '现金' },
-                                { text: '会员卡', value: '会员卡' },
-                                { text: '信用卡', value: '信用卡' },
+                                { text: '微信', value: '微信' },
                                 { text: '支付宝', value: '支付宝' },
-                                { text: '微信', value: '微信' }
+                                { text: '信用卡', value: '信用卡' },
+                                { text: '会员卡', value: '会员卡' }
                             ]
                     }
                 ]

@@ -3,6 +3,8 @@ Ext.define('app.controller.order.Order', {
 
     config: {
         refs: {
+            roomAreaPicker: 'rooms segmentedbutton',
+
             roomContainer: 'roomContainer',
             roomslist: 'rooms',
             orderedlist: 'ordereds',
@@ -41,12 +43,28 @@ Ext.define('app.controller.order.Order', {
             qrCodeButton: '#qrCodeButton',
             customerButton: '#customerButton',
             exchangeButton: '#exchangeButton',
-
-            posButton: '#posButton',
             posOkButton: 'pos #posOkButton',
             closeButton2: 'pos #closeButton2'
         },
         control: {
+            roomslist: {
+                initialize: 'initRoom',
+                activate: 'onRoomActivate',
+                itemtap: 'onRoomTap'
+            },
+            roomAreaPicker: {
+                toggle: 'onRoomAreaChange'
+            },
+            doBalanceButton: {
+                tap: 'onBalance'
+            },
+    //        mngButton: {
+    //            tap: 'onJinglichaxun'
+    //        },
+            refreshButton: {
+                tap: 'onRefresh'
+            },
+
             markToggleButton: {
                 change: 'onmarkToggle'
             },
@@ -65,9 +83,9 @@ Ext.define('app.controller.order.Order', {
                 // activate: 'onRoomOrdersActivate',
                 // activate: 'onOrderingActivate'
             },
-            roomslist: {
-                itemtap: 'onRoomTap'
-            },
+            // roomslist: {
+            //     itemtap: 'onRoomTap'
+            // },
             goodslist: {
                 onPackGoodsClicked: 'onPackGoodsClicked'
             },
@@ -280,42 +298,42 @@ Ext.define('app.controller.order.Order', {
         //        frmMain.push(this.roomDetail);
         frmMain.getNavigationBar().show();
         frmMain.down('titlebar').show();
-        this.hideRefreshButton();
-        this.hideDoBalanceButton();
-        this.hideMngButton();
+        // this.hideRefreshButton();
+        // this.hideDoBalanceButton();
+        // this.hideMngButton();
         if (app.CurRoom.RoomStateName == "打单" || app.CurRoom.RoomStateName == "收银") {
             this.loadRoomOrder(app.CurRoom.ID);
-            this.showCloseButton();
-            this.hideOrderButton();
-            this.hideOrderMemButton();
-            this.hidePresentButton();
-            this.hideQueryButton();
-            this.hideHisQueryButton();
-            this.hideQrCodeButton();
-            this.hideCustomerButton();
+            // this.showCloseButton();
+            // this.hideOrderButton();
+            // this.hideOrderMemButton();
+            // this.hidePresentButton();
+            // this.hideQueryButton();
+            // this.hideHisQueryButton();
+            // this.hideQrCodeButton();
+            // this.hideCustomerButton();
         }
         else {
             var user = Ext.getStore('User').load().data.items[0].data;
-            this.showCustomerButton();
+            // this.showCustomerButton();
             if (Ext.Array.contains(user.rights, "赠送")) {
                 app.OrderType = "赠送";
-                this.showOrderButton();
-                this.showOrderMemButton();
-                this.showPresentButton();
-                this.showQueryButton();
-                this.showHisQueryButton();
+                // this.showOrderButton();
+                // this.showOrderMemButton();
+                // this.showPresentButton();
+                // this.showQueryButton();
+                // this.showHisQueryButton();
                 //this.setPresentButton();
                 this.loadPresentGoods(app.CurRoom.ID);
             }
             else if (Ext.Array.contains(user.rights, "落单")) {
                 app.OrderType = "落单";
-                this.showQrCodeButton();
-                this.showCustomerButton();
-                this.showOrderButton();
-                this.showOrderMemButton();
-                this.showPresentButton();
-                this.showQueryButton();
-                this.showHisQueryButton();
+                // this.showQrCodeButton();
+                // this.showCustomerButton();
+                // this.showOrderButton();
+                // this.showOrderMemButton();
+                // this.showPresentButton();
+                // this.showQueryButton();
+                // this.showHisQueryButton();
                 this.loadOrderGoods(app.CurRoom.ID);
             }
         }
@@ -416,21 +434,21 @@ Ext.define('app.controller.order.Order', {
     onGoodsTypeTap: function (dataView, index, dataItem, dataItemModel, e, eOpts) {
         app.GoodsTypeName = dataItemModel.data.GoodsTypeName;
         var goodsStore = Ext.getStore('Goods');
-        this.hideQueryButton();
-        this.hideHisQueryButton();
-        this.hideQrCodeButton();
-        this.hideCustomerButton();
+        // this.hideQueryButton();
+        // this.hideHisQueryButton();
+        // this.hideQrCodeButton();
+        // this.hideCustomerButton();
         if (app.OrderType == "落单") {
-            this.hideOrderMemButton();
-            this.hidePresentButton();
+            // this.hideOrderMemButton();
+            // this.hidePresentButton();
         }
         else if (app.OrderType == "赠送") {
-            this.hideOrderButton();
-            this.hideOrderMemButton();
+            // this.hideOrderButton();
+            // this.hideOrderMemButton();
         }
         else if (app.OrderType == "会员点单") {
-            this.hideOrderButton();
-            this.hidePresentButton();
+            // this.hideOrderButton();
+            // this.hidePresentButton();
         }
         goodsStore.clearFilter(true);
         goodsStore.filterBy(function (goods) {
@@ -462,13 +480,13 @@ Ext.define('app.controller.order.Order', {
         if (!this.goodsdetaillist) {
             this.goodsdetaillist = Ext.widget('goodsdetaillist');
         }
-        this.hideOrderButton();
-        this.hidePresentButton();
-        this.hideOrderMemButton();
-        this.hideQueryButton();
-        this.hideHisQueryButton();
-        this.hideQrCodeButton();
-        this.hideCustomerButton();
+        // this.hideOrderButton();
+        // this.hidePresentButton();
+        // this.hideOrderMemButton();
+        // this.hideQueryButton();
+        // this.hideHisQueryButton();
+        // this.hideQrCodeButton();
+        // this.hideCustomerButton();
         frmMain.push(this.goodsdetaillist);
     },
     //选单
@@ -481,14 +499,14 @@ Ext.define('app.controller.order.Order', {
             Ext.Msg.alert("没有点取菜品!");
             return;
         }
-        this.hideOrderButton();
-        this.hidePresentButton();
-        this.hideOrderMemButton();
-        this.hideQueryButton();
-        this.hideHisQueryButton();
-        this.hideQrCodeButton();
-        this.hideCustomerButton();
-        this.hideCancelButton();
+        // this.hideOrderButton();
+        // this.hidePresentButton();
+        // this.hideOrderMemButton();
+        // this.hideQueryButton();
+        // this.hideHisQueryButton();
+        // this.hideQrCodeButton();
+        // this.hideCustomerButton();
+        // this.hideCancelButton();
 
         goodsStore.clearFilter(true);
         goodsStore.filterBy(function (goods) {
@@ -519,14 +537,14 @@ Ext.define('app.controller.order.Order', {
         //     Ext.Msg.alert("没有选取菜品!");
         //     return;
         // }
-        this.hideOrderButton();
-        this.hidePresentButton();
-        this.hideOrderMemButton();
-        this.hideQueryButton();
-        this.hideHisQueryButton();
-        this.hideQrCodeButton();
-        this.hideCustomerButton();
-        this.hideCancelButton();
+        // this.hideOrderButton();
+        // this.hidePresentButton();
+        // this.hideOrderMemButton();
+        // this.hideQueryButton();
+        // this.hideHisQueryButton();
+        // this.hideQrCodeButton();
+        // this.hideCustomerButton();
+        // this.hideCancelButton();
 
         goodsStore.clearFilter(true);
         goodsStore.filterBy(function (goods) {
@@ -551,10 +569,10 @@ Ext.define('app.controller.order.Order', {
         var curView = frmMain.getActiveItem();
         if (curView.xtype == 'ordereds' || app.OrderType != "落单") {
             app.OrderType = "落单";
-            this.showOrderButton();
-            this.showPresentButton();
-            this.showOrderMemButton();
-            this.showQueryButton();
+            // this.showOrderButton();
+            // this.showPresentButton();
+            // this.showOrderMemButton();
+            // this.showQueryButton();
             this.loadOrderGoods(app.CurRoom.ID);
         }
         else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods') {
@@ -574,15 +592,15 @@ Ext.define('app.controller.order.Order', {
         //     return orders.get('GoodsCount') > 0;
         // });
 
-        this.hideOrderButton();
-        this.hidePresentButton();
-        this.hideOrderMemButton();
-        this.hideQueryButton();
-        this.hideHisQueryButton();
-        this.hideQrCodeButton();
-        this.hideCustomerButton();
-        this.hidePosButton();
-        this.hideCancelButton();
+        // this.hideOrderButton();
+        // this.hidePresentButton();
+        // this.hideOrderMemButton();
+        // this.hideQueryButton();
+        // this.hideHisQueryButton();
+        // this.hideQrCodeButton();
+        // this.hideCustomerButton();
+        // this.hidePosButton();
+        // this.hideCancelButton();
 
 
         var frmMain = this.getRoomContainer();
@@ -615,10 +633,10 @@ Ext.define('app.controller.order.Order', {
                         app.CardCurrentMoney = msg.substr(2).split(';')[1].split(':')[1];
                         Ext.Msg.alert(msg.substr(2));
                         app.OrderType = "会员点单";
-                        me.showOrderButton();
-                        me.showPresentButton();
-                        me.showOrderMemButton();
-                        me.showQueryButton();
+                        // me.showOrderButton();
+                        // me.showPresentButton();
+                        // me.showOrderMemButton();
+                        // me.showQueryButton();
                         me.loadOrderMemGoods(app.CurRoom.ID);
                     }
                     else {
@@ -653,10 +671,10 @@ Ext.define('app.controller.order.Order', {
         var curView = frmMain.getActiveItem();
         if (curView.xtype == 'ordereds' || app.OrderType != "赠送") {
             app.OrderType = "赠送";
-            this.showOrderButton();
-            this.showPresentButton();
-            this.showOrderMemButton();
-            this.showQueryButton();
+            // this.showOrderButton();
+            // this.showPresentButton();
+            // this.showOrderMemButton();
+            // this.showQueryButton();
             this.loadPresentGoods(app.CurRoom.ID);
         }
         else if (curView.xtype == 'goodstypes' || curView.xtype == 'goods') {
@@ -668,14 +686,14 @@ Ext.define('app.controller.order.Order', {
         var frmMain = this.getRoomContainer();
         var curView = frmMain.getActiveItem();
         if (curView.xtype != 'ordereds') {
-            this.hideCommandButton();
-            if (app.CurRoom.RoomStateName == "消费"){
-            	this.showPosButton();
-            	this.showCancelButton();
-            };
+            // this.hideCommandButton();
+            // if (app.CurRoom.RoomStateName == "消费"){
+            // 	// this.showPosButton();
+            // 	// this.showCancelButton();
+            // };
                 
-            if (app.CurRoom.RoomStateName == "开房" || app.CurRoom.RoomStateName == "收银")
-                this.showCloseButton();
+            // if (app.CurRoom.RoomStateName == "开房" || app.CurRoom.RoomStateName == "收银")
+            //     this.showCloseButton();
             this.loadRoomOrder(app.CurRoom.ID);
         }
     },
@@ -684,7 +702,7 @@ Ext.define('app.controller.order.Order', {
         var frmMain = this.getRoomContainer();
         var curView = frmMain.getActiveItem();
         if (curView.xtype != 'ordereds') {
-            this.hideCommandButton();
+            // this.hideCommandButton();
     //        if (app.CurRoom.RoomStateName == "消费")
     //            this.showPosButton();
     //        if (app.CurRoom.RoomStateName == "开房" || app.CurRoom.RoomStateName == "收银")
@@ -696,8 +714,8 @@ Ext.define('app.controller.order.Order', {
     onJinglichaxun: function () {
         var frmMain = this.getRoomContainer();
         var curView = frmMain.getActiveItem();
-        this.hideDoBalanceButton();
-        this.hideMngButton();
+        // this.hideDoBalanceButton();
+        // this.hideMngButton();
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
 
         app.util.Proxy.loadOverView(function () {
@@ -760,7 +778,7 @@ Ext.define('app.controller.order.Order', {
         // this.showClearCusOrderButton();
         app.util.Proxy.loadCustomerOrder(app.CurRoom.ID, app.CurRoom.RoomOpCode,
              function () {
-                me.showClearCusOrderButton();
+                // me.showClearCusOrderButton();
                  me.selectOrders();
              })
     },
@@ -785,7 +803,7 @@ Ext.define('app.controller.order.Order', {
             }
             frmMain.down('titlebar').setTitle(app.CurRoom.RoomName + ' 买单');
             frmMain.push(this.pos);
-            this.hidePosButton();
+            // this.hidePosButton();
         }
     },
     //买单界面激活时
@@ -1109,7 +1127,58 @@ Ext.define('app.controller.order.Order', {
     onMainPush: function (view, item) {
         this.setButtonVisiable(view._activeItem.xtype);
     },
+    initRoom: function () {
+        var firstButton = this.getRoomAreaPicker().getItems().items[0];
+        this.getRoomAreaPicker().setPressedButtons(firstButton);
+        this.filterByButton(firstButton);
+    },
+    onRefresh: function () {
+        app.util.Proxy.loadRooms(function () { });
+    },
+    onBalance: function () {
+        var roomStore = Ext.getStore('Rooms');
+        roomStore.each(function (item, index, length) {
+            if (item.data.RoomStateName != "空房" && item.data.RoomStateName != "坏房") {
+                Ext.Msg.alert("房台未清空，请刷新后检查!");
+                return;
+            }
+        });
+        var me = this;
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        app.util.Proxy.doBalance(function () { me.onRefresh(); });
+    },
+    onRoomAreaChange: function (seg, btn, toggle) {
+        if (toggle) {
+            this.filterByButton(btn);
+        }
+    },
+    onRoomActivate: function () {
+        var frmMain = this.getRoomslist().parent;
+        var refreshButton = this.getRefreshButton();
+        if (refreshButton) {
+            refreshButton.show();
+        }
+        var doBalanceButton = this.getDoBalanceButton();
+        if (doBalanceButton) {
+            doBalanceButton.show();
+        }
+        var mngButton = this.getMngButton();
+        if (mngButton) {
+            mngButton.show();
+        }
+        //frmMain.getNavigationBar().hide();
+        frmMain.down('titlebar').hide();
+    },
+    filterByButton: function (btn) {
+        Ext.getStore('Rooms').clearFilter(true);
+        Ext.getStore('Rooms').filter(function (record) {
+            return record.get('RoomAreaName') == btn._text;
+        });
+    },
     hideCommandButton: function (view, item) {
+        this.hideRefreshButton();
+        this.hideDoBalanceButton();
+        this.hideMngButton();
         this.hidePosButton();
         this.hideCloseButton();
         this.hideQueryButton();
@@ -1136,8 +1205,8 @@ Ext.define('app.controller.order.Order', {
                     else if (app.OrderType == "会员点单")
                         this.showOrderMemButton();
                 }
-                this.hidePosButton();
-                this.hideCloseButton();
+                // this.hidePosButton();
+                // this.hideCloseButton();
                 break;
             case "goodstypes":
                 if (app.CurRoom.RoomStateName == "开房"
@@ -1178,8 +1247,13 @@ Ext.define('app.controller.order.Order', {
                 // this.showCancelButton();
                 // this.showExchangeButton();
                 break;
+            case "rooms":
+                this.showRefreshButton();
+                this.showDoBalanceButton();
+                this.showMngButton();
+                break;
             default:
-                this.hideCommandButton();
+                // this.hideCommandButton();
                 break;
         }
     }
