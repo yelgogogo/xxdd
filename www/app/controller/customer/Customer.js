@@ -130,7 +130,7 @@ Ext.define('app.controller.customer.Customer', {
             });
         // }
         var imgurl = "../resources/img/"+app.pgmid+"cuspos.jpg"
-        cusPosCode.setHtml('<h3 align="center">长按识别二维码支付</h3><p style="text-align:center"><img align="center" src="' + imgurl + '"/></p>');
+        cusPosCode.setHtml('<h3 align="center">长按二维码识别支付</h3><p style="text-align:center"><img align="center" src="' + imgurl + '"/></p>');
         cusPosCode.showBy(this.getCusPosButton());
     },
     onRoomOrdersActivate: function () {
@@ -252,13 +252,31 @@ Ext.define('app.controller.customer.Customer', {
     },
     //顾客自选单查询
     onCusOrder: function () {
-        var me = this;
-        // this.showClearCusOrderButton();
-        app.util.CustomerProxy.loadCustomerOrder(app.CurRoom.ID, app.CurRoom.RoomOpCode,
-             function () {
-                 me.selectOrders();
-                 me.getOrderingsButton().setText('确认修改');
-             })
+        var reg = new RegExp("(^|&)" + "Key" + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+
+        if (r == null) {
+            Ext.Msg.alert('检查提示', '地址错误!', Ext.emptyFn);
+            return;
+        }
+        var UnStr = unescape(r[2]);
+        var thisobj = this;
+        app.util.CustomerProxy.getUnStr(UnStr, function (destr) {
+            var para = destr;
+            app.util.CustomerProxy.chkCustomerOp(para, function () {
+                app.util.CustomerProxy.loadCustomerOrder(app.CurRoom.ID, app.CurRoom.RoomOpCode,function () {
+                    thisobj.selectOrders();
+                    thisobj.getOrderingsButton().setText('确认修改');
+                });
+            });
+        });
+        // var me = this;
+        // // this.showClearCusOrderButton();
+        // app.util.CustomerProxy.loadCustomerOrder(app.CurRoom.ID, app.CurRoom.RoomOpCode,
+        //      function () {
+        //          me.selectOrders();
+        //          me.getOrderingsButton().setText('确认修改');
+        // });
     },
     loadRoomOrder: function (roomID) {
         Ext.Viewport.setMasked({ xtype: 'loadmask' });

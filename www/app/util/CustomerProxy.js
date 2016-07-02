@@ -39,7 +39,12 @@ Ext.define('app.util.CustomerProxy', {
         };
         var Json_CustomerOrder = Ext.decode(data);
         Ext.Array.each(Json_CustomerOrder, function (main) {
-            var goods = goodsStore.findRecord('GoodsName', main.GoodsName);
+            // var goodsidx = goodsStore.findBy(function(goods){
+            //         return goods.get('GoodsName') == main.GoodsName;
+            //     });
+
+            // var goods = goodsStore.data.items[goodsidx];
+            var goods = goodsStore.findRecord('GoodsName', main.GoodsName, 0, false, false, true);
             goods.data.GoodsCount = main.GoodsCount;
             goods.data.Remarks = main.Remarks;
             if (main.GoodsDetails) {
