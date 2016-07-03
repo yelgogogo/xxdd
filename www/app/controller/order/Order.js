@@ -758,6 +758,8 @@ Ext.define('app.controller.order.Order', {
 
        app.util.Proxy.getEnStr(app.CurRoom.RoomOpCode + app.CurRoom.ID, function (enstr) {
             var myUrl = Ext.global.window.location.href.replace(/order\.html.*$/g,'customer.html') + "?Key=" + enstr;
+            // var myUrl = 'http://t.cn/R5nSrRs'
+            var apiurl = 'http://50r.cn/urls/add.jsonp'
             // window.location=myUrl;
             // var myUrl = "?Key=" + enstr;
             // var myUrl = Ext.global.window.location.href.replace('order', 'customer') + "?Op=" + app.CurRoom.RoomOpCode + app.CurRoom.ID;
@@ -767,8 +769,11 @@ Ext.define('app.controller.order.Order', {
             //app.qrCode.setHtml('<img src="http://qr.topscan.com/api.php?text="' + window.location.href + app.CurRoom.RoomOpCode + '>');
             app.qrCode.setHtml('<h3 align="center">扫描二维码点单</h3><p style="text-align:center"><img align="center" src="' + url + '"/></p>');
             app.qrCode.showBy(thisobj.getQrCodeButton());
-            var printstr = '<CB>'+app.CurPlace+'</CB><BR>' + '<CB>'+app.CurRoom.RoomName+'</CB><BR><QR>' +myUrl + '</QR><BR><C>'+app.CurPlacemsg+'</C>'
-            app.util.Proxy.printQrCode(printstr);
+            app.util.Proxy.getShortUrl(apiurl,myUrl,function (shorturl) {
+                // var shorturl = 'http://dwz.cn/3HoSUe';
+                var printstr = '<CB>'+app.CurPlace+'</CB><BR>' + '<CB>'+app.CurRoom.RoomName+'</CB><BR><QR>' +shorturl + '</QR><BR><C>'+app.CurPlacemsg+'</C>'
+                app.util.Proxy.printQrCode(printstr);
+            });
        });
        
     },
@@ -830,7 +835,7 @@ Ext.define('app.controller.order.Order', {
         var Sysdate = new Date();  
         var Curdate = Ext.Date.format(Sysdate, 'Y-m-d H:i:s'); 
         var first = { value: app.CurRoom.RoomName+'已结账完成', color: '#173177' },
-            tName = { value: this.getTxtTotalMoney().getValue()+'元, 支付方式为:' + this.getTxtPayMode().getValue(), color: '#173177' },
+            tName = { value: this.getTxtTotalMoney().getValue()+'元, 实收:'+this.getTxtTruePayMoney().getValue()+', 支付方式为:' + this.getTxtPayMode().getValue(), color: '#173177' },
             storeName = { value: app.CurPlace, color: '#173177' },
             gTime = { value: Curdate, color: '#173177' },
             remark = { value: '星星点单消息推送', color: '#173177' };

@@ -17,6 +17,34 @@ Ext.define('app.util.Proxy', {
     //            }
     //        });
     //requires: ['Ext.data.proxy.JsonP'],
+    //短网址API
+    getShortUrl: function (apiurl,longurl,callback) {
+        console.log(longurl);
+        var successCallback = function (result)  {
+            var data = result;
+            if (data.url == '') {
+                Ext.Msg.alert('短Url取回失败提示');
+                return;
+            };
+            // var Json_Url = Ext.decode(data);
+            // // var strvalue = Ext.decode(data);
+            // Ext.Msg.alert("撤单成功!");
+            callback(data.url);
+        };
+        var failureCallback = function (result) {
+            Ext.Msg.alert("Url转换失败!");
+        };
+       Ext.data.JsonP.request({
+            url: apiurl,
+            callbackKey: 'callback',
+            params: {
+                url: longurl
+            },
+          success: successCallback,
+          failure: failureCallback
+       });     
+    },
+    //发送微信模板消息
     sendMsg: function (strrights,templateid,url,weChatData,callback) {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
@@ -39,6 +67,7 @@ Ext.define('app.util.Proxy', {
           failure: failureCallback
        });     
     },
+    //打印
     printQrCode: function (printstr) {
         var successCallback = function (resp, ops) {
             var data = Ext.decode(resp.responseText).d;
