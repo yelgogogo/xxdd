@@ -46,8 +46,17 @@ Ext.application({
     ],
 
     launch: function () {
-        app.pgmid='';
-        app.CurPlacemsg='星星点单-微信扫码赢取好礼<BR>WIFI:雪乡烧烤 密码:81388123';
+        app.pgmid=window.location.href.split('/')[3] + '\/';
+        if (app.pgmid.indexOf('.html') >= 0){
+            app.pgmid='';
+        };
+
+        app.util.Proxy.getSysParm('txtPlaceAdress', function (pmsg) {
+            app.CurPlacemsg = pmsg;
+        });
+        app.util.Proxy.getSysParm('txtPlaceName', function (pname) {
+            app.CurPlace = pname;
+        });
         Ext.override(Ext.util.SizeMonitor, {
             constructor: function (config) {
                 var namespace = Ext.util.sizemonitor;
@@ -78,9 +87,7 @@ Ext.application({
             }
         });
 
-        app.util.Proxy.getSysParm('txtPlaceName', function (pname) {
-            app.CurPlace = pname;
-        });
+
 
         var reg = new RegExp("(^|&)" + "code" + "=([^&]*)(&|$)", "i");
         var regstate = new RegExp("(^|&)" + "state" + "=([^&]*)(&|$)", "i");

@@ -27,7 +27,10 @@ Ext.application({
     ],
 
     launch: function () {
-        app.pgmid='';
+        app.pgmid=window.location.href.split('/')[3] + '\/';
+        if (app.pgmid.indexOf('.html') >= 0){
+            app.pgmid='';
+        };
         Ext.override(Ext.util.SizeMonitor, {
             constructor: function (config) {
                 var namespace = Ext.util.sizemonitor;

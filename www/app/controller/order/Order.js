@@ -452,7 +452,11 @@ Ext.define('app.controller.order.Order', {
         }
         goodsStore.clearFilter(true);
         goodsStore.filterBy(function (goods) {
-            return goods.get('GoodsTypeName') == app.GoodsTypeName;
+            if (app.GoodsTypeName == '店长推荐'){
+                return goods.get('IsHot') == true;
+            }else{
+                return goods.get('GoodsTypeName') == app.GoodsTypeName;
+            };
         });
         var frmMain = this.getRoomContainer();
         if (!this.goodslist) {
