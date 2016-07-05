@@ -381,6 +381,7 @@ loadOrderGoods: function (roomID, callback) {
             Ext.Array.each(Ext.Object.getValues(goodsTypesArr), function (goodsType) {
                 goodsTypes.add(goodsType);
             });
+            goodsTypes.add({DisplayOrder:'99',GoodsTypeName:'店长推荐'});
         }
         callback();
     };
